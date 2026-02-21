@@ -4,13 +4,13 @@ use jobKey_in5bv;
 
 -- tabla de departamentos
 create table departamentos (
-    idDepartamento int primary key auto_increment,
+    id_departamento int primary key auto_increment,
     nombre varchar(50) not null unique
 );
 
 -- tabla de candidatos
 create table candidatos (
-    idCandidato int primary key auto_increment,
+    id_candidato int primary key auto_increment,
     nombre varchar(100) not null,
     apellido varchar(100) not null,
     email varchar(100) unique not null,
@@ -24,13 +24,13 @@ create table candidatos (
     departamento_id int,
     fecha_registro timestamp default current_timestamp,
     foreign key (departamento_id) 
-        references departamentos(idDepartamento) 
+        references departamentos(id_departamento) 
         on delete set null
 );
 
 -- tabla de empresas
 create table empresas (
-    idEmpresa int primary key auto_increment,
+    id_empresa int primary key auto_increment,
     nombre_empresa varchar(150) not null,
     email varchar(100) unique not null,
     telefono varchar(20),
@@ -41,13 +41,13 @@ create table empresas (
     departamento_id int,
     fecha_registro timestamp default current_timestamp,
     foreign key (departamento_id) 
-        references departamentos(idDepartamento) 
+        references departamentos(id_departamento) 
         on delete set null
 );
 
 -- tabla de instituciones
 create table instituciones (
-    idInstitucion int primary key auto_increment,
+    id_institucion int primary key auto_increment,
     nombre_institucion varchar(150) not null,
     email varchar(100) unique not null,
     telefono varchar(20),
@@ -58,13 +58,13 @@ create table instituciones (
     departamento_id int,
     fecha_registro timestamp default current_timestamp,
     foreign key (departamento_id) 
-        references departamentos(idDepartamento) 
+        references departamentos(id_departamento) 
         on delete set null
 );
 
 -- tabla de ofertas
 create table ofertas_trabajo (
-    idOferta int primary key auto_increment,
+    id_oferta int primary key auto_increment,
     empresa_id int not null,
     titulo varchar(150) not null,
     descripcion text not null,
@@ -79,16 +79,16 @@ create table ofertas_trabajo (
     fecha_cierre date,
     activa boolean default true,
     foreign key (empresa_id) 
-        references empresas(idEmpresa) 
+        references empresas(id_empresa) 
         on delete cascade,
     foreign key (departamento_id) 
-        references departamentos(idDepartamento) 
+        references departamentos(id_departamento) 
         on delete set null
 );
 
 -- tabla de postulaciones
 create table postulaciones (
-    idPostulacion int primary key auto_increment,
+    id_postulacion int primary key auto_increment,
     oferta_id int not null,
     candidato_id int not null,
     fecha_postulacion timestamp default current_timestamp,
@@ -96,16 +96,16 @@ create table postulaciones (
     comentarios text,
     unique key unique_postulacion (oferta_id, candidato_id),
     foreign key (oferta_id) 
-        references ofertas_trabajo(idOferta) 
+        references ofertas_trabajo(id_oferta) 
         on delete cascade,
     foreign key (candidato_id) 
-        references candidatos(idCandidato) 
+        references candidatos(id_candidato) 
         on delete cascade
 );
 
 -- tabla de reseñas
 create table resenas (
-    idResena int primary key auto_increment,
+    id_resena int primary key auto_increment,
     tipo enum('empresa_a_candidato', 'candidato_a_empresa') not null,
     empresa_id int,
     candidato_id int,
@@ -114,19 +114,19 @@ create table resenas (
     comentario text,
     fecha timestamp default current_timestamp,
     foreign key (empresa_id) 
-        references empresas(idEmpresa) 
+        references empresas(id_empresa) 
         on delete cascade,
     foreign key (candidato_id) 
-        references candidatos(idCandidato) 
+        references candidatos(id_candidato) 
         on delete cascade,
     foreign key (oferta_id) 
-        references ofertas_trabajo(idOferta) 
+        references ofertas_trabajo(id_oferta) 
         on delete set null
 );
 
 -- tabla de admins
 create table admins (
-    idAdmin int primary key auto_increment,
+    id_admin int primary key auto_increment,
     nombre varchar(100) not null,
     email varchar(100) unique not null,
     password_hash varchar(255) not null,
