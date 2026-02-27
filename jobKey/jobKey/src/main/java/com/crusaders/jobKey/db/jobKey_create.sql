@@ -1,10 +1,11 @@
-drop database if exists jobKey_in5bv;
+
+ drop database if exists jobKey_in5bv;
 create database if not exists jobKey_in5bv;
 use jobKey_in5bv;
 
 -- tabla de departamentos
 create table departamentos (
-    id_departamento int primary key auto_increment,
+   id_departamento int primary key auto_increment,
     nombre varchar(50) not null unique
 );
 
@@ -105,7 +106,13 @@ create table postulaciones (
     oferta_id int not null,
     candidato_id int not null,
     fecha_postulacion timestamp default current_timestamp,
-    estado enum('pendiente', 'revisado', 'entrevista', 'aceptado', 'rechazado') default 'pendiente',
+    estado enum(
+    'Pendiente',
+    'Revisado',
+    'Entrevista',
+    'Aceptado',
+    'Rechazado'
+        ) default 'Pendiente',
     comentarios text,
     unique key unique_postulacion (oferta_id, candidato_id),
     foreign key (oferta_id) 
@@ -146,4 +153,9 @@ create table admins (
     rol enum('super_admin', 'moderador') default 'moderador',
     ultimo_acceso timestamp null,
     fecha_registro timestamp default current_timestamp
+);
+
+create table roles (
+    id_rol int primary key auto_increment,
+    nombre_rol enum('Admin', 'Instituciones', 'Candidatos','Empresa')not null,
 );

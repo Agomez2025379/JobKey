@@ -1,4 +1,6 @@
-package com.crusaders.jobKey.entity.enums;
+package com.crusaders.jobKey.enums;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ENivelRequerido {
     PRIMARIA("Primaria"),
@@ -13,6 +15,7 @@ public enum ENivelRequerido {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

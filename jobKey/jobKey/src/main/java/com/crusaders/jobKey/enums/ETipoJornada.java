@@ -1,4 +1,6 @@
-package com.crusaders.jobKey.entity.enums;
+package com.crusaders.jobKey.enums;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ETipoJornada {
     TIEMPO_COMPLETO("tiempo completo"),
@@ -11,6 +13,7 @@ public enum ETipoJornada {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

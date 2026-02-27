@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.entity.enums;
+package com.crusaders.jobKey.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

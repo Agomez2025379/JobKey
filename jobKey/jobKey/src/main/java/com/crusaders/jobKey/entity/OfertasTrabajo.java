@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.entity;
 
-import com.crusaders.jobKey.entity.enums.EModalidad;
-import com.crusaders.jobKey.entity.enums.ENivelRequerido;
-import com.crusaders.jobKey.entity.enums.ETipoJornada;
+import com.crusaders.jobKey.enums.EModalidad;
+import com.crusaders.jobKey.enums.ENivelRequerido;
+import com.crusaders.jobKey.enums.ETipoJornada;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -96,4 +96,5 @@ public class OfertasTrabajo {
     @NotNull(message = "el estado activo no puede ser nulo")
     @Column(name = "activa", nullable = false)
     private Boolean activa = true;
+
 }
