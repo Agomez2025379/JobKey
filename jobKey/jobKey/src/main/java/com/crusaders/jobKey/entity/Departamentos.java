@@ -2,39 +2,27 @@ package com.crusaders.jobKey.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Immutable;
 
-
+@Getter
+@NoArgsConstructor
+@Setter
+@Immutable
 @JsonPropertyOrder({
         "idDepartamento",
         "departamento"
 })
 @Entity
-@Table( name = "departamentos")
+@Table(name = "departamentos")
 public class Departamentos {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_departamento")
+    @Column(name = "id_departamento", updatable = false, nullable = false)
     private Integer idDepartamento;
 
-
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false, length = 100, updatable = false)
     private String departamento;
-
-    public Integer getIdDepartamento() {
-        return idDepartamento;
-    }
-
-    public void setIdDepartamento(Integer idDepartamento) {
-        this.idDepartamento = idDepartamento;
-    }
-
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
-    }
 }
-

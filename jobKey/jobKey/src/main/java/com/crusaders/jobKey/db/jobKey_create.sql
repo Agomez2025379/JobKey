@@ -77,19 +77,20 @@ create table ofertas_trabajo (
         ) default 'presencial',
     tipo_jornada enum(
         'tiempo_completo',
-        'medio_tiempo'
+        'medio_tiempo',
+        'practicas'
         ) not null,
     nivel_requerido enum(
         'Primaria',
         'Basiscos',
         'Diversificado',
         'Universitario',
-        'Sin Estudio'
+        'Sin Requuisito'
         ) not null,
     departamento_id int,
     fecha_publicacion timestamp default current_timestamp,
-    fecha_cierre date,
-    activa boolean default true,
+    fecha_cierre date not null,
+    activa boolean default true not null,
     foreign key (empresa_id)
         references empresas(id_empresa)
         on delete cascade,
