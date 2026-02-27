@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -57,7 +58,7 @@ public class Candidatos {
     private String experiencia;
 
     @Column(name = "educacion")
-    private String eduacion;
+    private String educacion;
 
     @Column(name = "habilidades")
     private String habilidades;
@@ -69,15 +70,9 @@ public class Candidatos {
     @JoinColumn(name = "departamento_id") // esto es para decirle q busque
     private Departamentos departamentos;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreationTimestamp
+    @Column(name = "fecha_registro", updatable = false, nullable = false)
+    private LocalDateTime fechaRegistro;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 
 }
