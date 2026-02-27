@@ -10,7 +10,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -18,11 +18,10 @@ import java.util.List;
 public class DepartamentosServiceImpl implements DepartamentosService {
 
     private final DepartamentosRepository repository;
-    private final SortHandlerMethodArgumentResolverCustomizer sortCustomizer;
 
-    public DepartamentosServiceImpl(DepartamentosRepository repository, SortHandlerMethodArgumentResolverCustomizer sortCustomizer) {
+
+    public DepartamentosServiceImpl(DepartamentosRepository repository) {
         this.repository = repository;
-        this.sortCustomizer = sortCustomizer;
     }
 
     @Override

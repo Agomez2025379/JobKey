@@ -66,23 +66,35 @@ create table instituciones (
 create table ofertas_trabajo (
     id_oferta int primary key auto_increment,
     empresa_id int not null,
-    titulo varchar(150) not null,
+    titulo varchar(50) not null,
     descripcion text not null,
     requisitos text,
-    salario_min decimal(10,2),
-    salario_max decimal(10,2),
-    modalidad enum('presencial', 'remoto', 'hibrido') default 'presencial',
-    tipo_jornada enum('tiempo_completo', 'medio_tiempo', 'practicas') not null,
-    nivel_requerido enum('estudiante', 'graduado', 'junior', 'senior') not null,
+    salario decimal(10,2),
+    modalidad enum(
+        'presencial',
+        'remoto',
+        'hibrido'
+        ) default 'presencial',
+    tipo_jornada enum(
+        'tiempo_completo',
+        'medio_tiempo'
+        ) not null,
+    nivel_requerido enum(
+        'Primaria',
+        'Basiscos',
+        'Diversificado',
+        'Universitario',
+        'Sin Estudio'
+        ) not null,
     departamento_id int,
     fecha_publicacion timestamp default current_timestamp,
     fecha_cierre date,
     activa boolean default true,
-    foreign key (empresa_id) 
-        references empresas(id_empresa) 
+    foreign key (empresa_id)
+        references empresas(id_empresa)
         on delete cascade,
-    foreign key (departamento_id) 
-        references departamentos(id_departamento) 
+    foreign key (departamento_id)
+        references departamentos(id_departamento)
         on delete set null
 );
 
