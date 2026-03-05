@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.controller;
 
 
-import com.crusaders.jobKey.DTO.InstitucionDTO;
+import com.crusaders.jobKey.DTO.Intituciones.InstitucionDTO;
 import com.crusaders.jobKey.entity.Institucion;
 import com.crusaders.jobKey.repository.InstitucionRepository;
 import jakarta.validation.Valid;

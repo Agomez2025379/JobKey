@@ -1,5 +1,6 @@
 package com.crusaders.jobKey.entity;
 
+import com.crusaders.jobKey.enums.EAdminRole;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class Admins {
     //nombre del rol
     @Enumerated(EnumType.STRING)
     @Column(name = "rol")
-    private AdminRole rol;
+    private EAdminRole rol;
 
     //ultimo acceso al sistema
     @Column(name = "ultimo_acceso")

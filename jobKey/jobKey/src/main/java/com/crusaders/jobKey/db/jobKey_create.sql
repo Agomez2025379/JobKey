@@ -157,5 +157,6 @@ create table admins (
 
 create table roles (
     id_rol int primary key auto_increment,
-    nombre_rol enum('Admin', 'Instituciones', 'Candidatos','Empresa')not null,
+    nombre_rol enum('Admin', 'Instituciones', 'Candidatos','Empresa')
+    not null
 );

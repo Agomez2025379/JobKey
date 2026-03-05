@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO;
+package com.crusaders.jobKey.DTO.Intituciones;
 
 import com.crusaders.jobKey.entity.Institucion;
 import jakarta.validation.constraints.*;
