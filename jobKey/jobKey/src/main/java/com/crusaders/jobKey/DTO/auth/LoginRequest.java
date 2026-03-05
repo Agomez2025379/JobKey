@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO;
+package com.crusaders.jobKey.DTO.auth;
 
 
 import jakarta.validation.constraints.Email;

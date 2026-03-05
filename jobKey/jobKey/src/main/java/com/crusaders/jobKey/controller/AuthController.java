@@ -1,33 +1,35 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.DTO.LoginRequest;
-import com.crusaders.jobKey.DTO.LoginResponse;
+import com.crusaders.jobKey.DTO.auth.LoginRequest;
+import com.crusaders.jobKey.DTO.auth.LoginResponse;
+import com.crusaders.jobKey.DTO.auth.RegisterRequest;
 import com.crusaders.jobKey.service.AuthService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register/{tipoUsuario}")
+    public String register(
+            @PathVariable String tipoUsuario,
+            @Valid @RequestBody RegisterRequest req) {
+
+        authService.register(req, tipoUsuario);
+        return "Usuario registrado correctamente.";
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-        try {
-            LoginResponse response = authService.login(request);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            Map<String, String> error = new HashMap<>();
-            error.put("error", e.getMessage());
-            return ResponseEntity.status(401).body(error);
-        }
+    public LoginResponse login(@Valid @RequestBody LoginRequest req) {
+        return authService.login(req);
     }
 }

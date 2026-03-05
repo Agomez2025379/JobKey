@@ -1,98 +1,146 @@
 package com.crusaders.jobKey.service;
 
-import com.crusaders.jobKey.DTO.LoginRequest;
-import com.crusaders.jobKey.DTO.LoginResponse;
-import com.crusaders.jobKey.entity.*;
-import com.crusaders.jobKey.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.crusaders.jobKey.DTO.auth.LoginRequest;
+import com.crusaders.jobKey.DTO.auth.LoginResponse;
+import com.crusaders.jobKey.DTO.auth.RegisterRequest;
+import com.crusaders.jobKey.entity.Candidatos;
+import com.crusaders.jobKey.entity.Empresas;
+import com.crusaders.jobKey.entity.Institucion;
+import com.crusaders.jobKey.repository.CandidatosRepository;
+import com.crusaders.jobKey.repository.EmpresasRepository;
+import com.crusaders.jobKey.repository.InstitucionRepository;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final CandidatosRepository candidatosRepository;
+    private final EmpresasRepository empresasRepository;
+    private final InstitucionRepository institucionRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired private CandidatosRepository candidatosRepository;
-    @Autowired private EmpresasRepository empresasRepository;
-    @Autowired private InstitucionRepository institucionRepository;
-    @Autowired private AdminsRepository adminsRepository;
+    public AuthService(
+            CandidatosRepository candidatosRepository,
+            EmpresasRepository empresasRepository,
+            InstitucionRepository institucionRepository,
+            PasswordEncoder passwordEncoder) {
 
-    public LoginResponse login(LoginRequest request) {
-        return switch (request.getTipoUsuario().toLowerCase()) {
-            case "candidato"   -> loginCandidato(request);
-            case "empresa"     -> loginEmpresa(request);
-            case "institucion" -> loginInstitucion(request);
-            case "admin"       -> loginAdmin(request);
-            default -> throw new RuntimeException("Tipo de usuario no válido. Use: candidato, empresa, institucion, admin");
+        this.candidatosRepository = candidatosRepository;
+        this.empresasRepository = empresasRepository;
+        this.institucionRepository = institucionRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void register(RegisterRequest req, String tipoUsuario) {
+
+        String tipo = tipoUsuario.toLowerCase();
+        String hash = passwordEncoder.encode(req.password);
+
+        switch (tipo) {
+
+            case "candidato" -> {
+                if (candidatosRepository.existsByEmail(req.email)) {
+                    throw new IllegalArgumentException("El email ya está registrado");
+                }
+
+                Candidatos c = new Candidatos();
+                c.setNombre(req.name);
+                c.setEmail(req.email);
+                c.setPasswordHash(hash);
+
+                candidatosRepository.save(c);
+            }
+
+            case "empresa" -> {
+                if (empresasRepository.existsByEmail(req.email)) {
+                    throw new IllegalArgumentException("El email ya está registrado");
+                }
+
+                Empresas e = new Empresas();
+                e.setNombreEmpresa(req.name);
+                e.setEmail(req.email);
+                e.setPasswordHash(hash);
+
+                empresasRepository.save(e);
+            }
+
+            case "institucion" -> {
+                if (institucionRepository.existsByEmail(req.email)) {
+                    throw new IllegalArgumentException("El email ya está registrado");
+                }
+
+                Institucion i = new Institucion();
+                i.setNombreInstitucion(req.name);
+                i.setEmail(req.email);
+                i.setPassword(hash);
+
+                institucionRepository.save(i);
+            }
+
+            default -> throw new IllegalArgumentException("Tipo de usuario inválido");
+        }
+    }
+
+    public LoginResponse login(LoginRequest req) {
+
+        String tipo = req.getTipoUsuario().toLowerCase();
+
+        return switch (tipo) {
+
+            case "candidato" -> {
+                Candidatos c = candidatosRepository.findByEmail(req.getEmail())
+                        .orElseThrow(() -> new IllegalArgumentException("Correo no existe"));
+
+                validar(req.getPassword(), c.getPasswordHash());
+
+                yield new LoginResponse(
+                        c.getIdCandidato(),
+                        c.getNombre(),
+                        c.getEmail(),
+                        "candidato",
+                        "Login exitoso"
+                );
+            }
+
+            case "empresa" -> {
+                Empresas e = empresasRepository.findByEmail(req.getEmail())
+                        .orElseThrow(() -> new IllegalArgumentException("Correo no existe"));
+
+                validar(req.getPassword(), e.getPasswordHash());
+
+                yield new LoginResponse(
+                        e.getIdEmpresa(),
+                        e.getNombreEmpresa(),
+                        e.getEmail(),
+                        "empresa",
+                        "Login exitoso"
+                );
+            }
+
+            case "institucion" -> {
+                Institucion i = institucionRepository.findByEmail(req.getEmail())
+                        .orElseThrow(() -> new IllegalArgumentException("Correo no existe"));
+
+                validar(req.getPassword(), i.getPassword());
+
+                yield new LoginResponse(
+                        i.getId(),
+                        i.getNombreInstitucion(),
+                        i.getEmail(),
+                        "institucion",
+                        "Login exitoso"
+                );
+            }
+
+            default -> throw new IllegalArgumentException("Tipo de usuario inválido");
         };
-    }
-
-    private LoginResponse loginCandidato(LoginRequest request) {
-        Candidatos c = candidatosRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("No existe una cuenta con ese email"));
-        validar(request.getPassword(), c.getPasswordHash());
-        return new LoginResponse(
-                c.getIdCandidato(),
-                c.getNombre() + " " + c.getApellido(),
-                c.getEmail(),
-                "candidato",
-                "Login exitoso"
-        );
-    }
-
-    private LoginResponse loginEmpresa(LoginRequest request) {
-        Empresas e = empresasRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("No existe una cuenta con ese email"));
-        validar(request.getPassword(), e.getPasswordHash());
-        return new LoginResponse(
-                e.getIdEmpresa(),
-                e.getNombreEmpresa(),
-                e.getEmail(),
-                "empresa",
-                "Login exitoso"
-        );
-    }
-
-    private LoginResponse loginInstitucion(LoginRequest request) {
-        Institucion i = institucionRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("No existe una cuenta con ese email"));
-        validar(request.getPassword(), i.getPassword());
-        return new LoginResponse(
-                i.getId(),
-                i.getNombreInstitucion(),
-                i.getEmail(),
-                "institucion",
-                "Login exitoso"
-        );
-    }
-
-    private LoginResponse loginAdmin(LoginRequest request) {
-        Admins a = adminsRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("No existe una cuenta con ese email"));
-        validar(request.getPassword(), a.getPasswordHash());
-
-        // Registra último acceso
-        a.setUltimoAcceso(java.time.LocalDateTime.now());
-        adminsRepository.save(a);
-
-        return new LoginResponse(
-                a.getIdAdmin(),
-                a.getNombre(),
-                a.getEmail(),
-                "admin",
-                "Login exitoso"
-        );
     }
 
     private void validar(String passwordPlano, String hashDB) {
         if (!passwordEncoder.matches(passwordPlano, hashDB)) {
-            throw new RuntimeException("Contraseña incorrecta");
+            throw new IllegalArgumentException("Contraseña incorrecta");
         }
-    }
-
-    public String hashPassword(String passwordPlano) {
-        return passwordEncoder.encode(passwordPlano);
     }
 }
