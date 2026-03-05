@@ -1,6 +1,5 @@
 package com.crusaders.jobKey.controller;
 
-
 import com.crusaders.jobKey.DTO.InstitucionDTO;
 import com.crusaders.jobKey.entity.Institucion;
 import com.crusaders.jobKey.repository.InstitucionRepository;
@@ -22,8 +21,6 @@ public class InstitucionRestController {
 
     @Autowired
     private InstitucionRepository institucionRepository;
-
-    // ==================== TODOS LOS MÉTODOS SON PÚBLICOS ====================
 
     @GetMapping
     public ResponseEntity<List<Institucion>> listarTodas() {
@@ -58,8 +55,6 @@ public class InstitucionRestController {
         }
     }
 
-
-
     @PostMapping
     public ResponseEntity<Map<String, Object>> crearInstitucion(@Valid @RequestBody InstitucionDTO dto) {
         Map<String, Object> response = new HashMap<>();
@@ -70,8 +65,11 @@ public class InstitucionRestController {
                     HttpStatus.BAD_REQUEST, "El email ya está registrado");
         }
 
-        // Crear y guardar (sin departamento)
+
         Institucion institucion = dto.toEntity();
+
+        // institucion.setPassword(dto.getPassword()); // Esto ya viene en toEntity()
+
         Institucion nueva = institucionRepository.save(institucion);
 
         response.put("mensaje", "Institución creada exitosamente");
@@ -99,7 +97,7 @@ public class InstitucionRestController {
                     HttpStatus.BAD_REQUEST, "El email ya está registrado");
         }
 
-        // Actualizar datos (sin departamento)
+        // Actualizar datos
         existente.setNombreInstitucion(dto.getNombreInstitucion());
         existente.setEmail(dto.getEmail());
         existente.setTelefono(dto.getTelefono());
@@ -139,4 +137,3 @@ public class InstitucionRestController {
         return ResponseEntity.ok(institucionRepository.countByTipo());
     }
 }
-
