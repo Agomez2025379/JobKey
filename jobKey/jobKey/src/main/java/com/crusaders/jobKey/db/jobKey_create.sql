@@ -38,7 +38,7 @@ create table empresas (
     password_hash varchar(255) not null,
     descripcion text,
     sector_empresarial varchar(100),
-    logo_url longblob,
+    logo longblob,
     departamento_id int,
     fecha_registro timestamp default current_timestamp,
     foreign key (departamento_id) 
