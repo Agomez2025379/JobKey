@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
         "password_hash",
         "descripcion",               // Coloco el orden que tengo en mi tabla
         "sector_empresarial",
-        "logo_url",
+        "logo",
         "departamento_id",
         "fecha_registro"
 })
