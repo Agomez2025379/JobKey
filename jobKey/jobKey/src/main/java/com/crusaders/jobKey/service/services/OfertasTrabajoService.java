@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoRequest;
 import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoResponse;

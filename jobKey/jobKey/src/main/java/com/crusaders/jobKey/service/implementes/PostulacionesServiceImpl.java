@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 
 import com.crusaders.jobKey.DTO.postulaciones.PostulacionesRequest;
@@ -11,6 +11,7 @@ import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.CandidatosRepository;
 import com.crusaders.jobKey.repository.OfertasTrabajoRepository;
 import com.crusaders.jobKey.repository.PostulacionesRepository;
+import com.crusaders.jobKey.service.services.PostulacionesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +84,7 @@ public class PostulacionesServiceImpl implements PostulacionesService {
 
         postulacionesRepository.delete(postulacion);
     }
+
 
     private PostulacionesResponse mapToResponse(Postulaciones postulacion) {
 

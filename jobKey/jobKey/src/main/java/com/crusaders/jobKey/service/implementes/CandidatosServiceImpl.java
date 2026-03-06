@@ -1,10 +1,11 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
 import com.crusaders.jobKey.entity.Candidatos;
 import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.CandidatosRepository;
+import com.crusaders.jobKey.service.services.CandidatosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class CandidatosServiceImpl implements CandidatosService {
     @Override
     public Candidatos crear(CandidatosRequest r) {
         if (candidatosRepository.existsByEmail(r.getEmail())) {
-            throw new IllegalArgumentException("El email ya está registrado");
+            throw new ResourceNotFoundException("El email ya está registrado");
         }
         Candidatos c = new Candidatos();
         c.setNombre(r.getNombre());
@@ -57,7 +58,7 @@ public class CandidatosServiceImpl implements CandidatosService {
 
         // Si cambia el email, valida unicidad
         if (!c.getEmail().equals(r.getEmail()) && candidatosRepository.existsByEmail(r.getEmail())) {
-            throw new IllegalArgumentException("El email ya está registrado");
+            throw new ResourceNotFoundException("El email ya está registrado");
         }
 
         c.setNombre(r.getNombre());

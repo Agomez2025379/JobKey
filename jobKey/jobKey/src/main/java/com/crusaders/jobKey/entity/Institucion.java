@@ -40,6 +40,7 @@ public class Institucion {
     @Column(nullable = false)
     private TipoInstitucion tipo;
 
+    @Lob
     @Column(name = "logo_url", columnDefinition = "LONGBLOB")
     private byte[] logoUrl;
 

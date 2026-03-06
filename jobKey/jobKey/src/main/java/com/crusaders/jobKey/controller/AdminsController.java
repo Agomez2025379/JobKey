@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.entity.Admins;
-import com.crusaders.jobKey.service.AdminsService;
+import com.crusaders.jobKey.service.services.AdminsService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

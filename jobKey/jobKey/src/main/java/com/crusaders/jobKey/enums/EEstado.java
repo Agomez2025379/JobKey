@@ -1,14 +1,14 @@
 package com.crusaders.jobKey.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EEstado {
-    PENDIENTE("Pendiente"),
-    REVISADP("Revisado"),
-    ENTREVISTA("Entrevista"),
-    ACEPTADO("Aceptado"),
-    RECHAZADO("Rechazado");
-
+    PENDIENTE("pendiente"),
+    REVISADO("revisado"),
+    ENTREVISTA("entrevista"),
+    ACEPTADO("aceptado"),
+    RECHAZADO("rechazado");
 
     private final String value;
 
@@ -21,4 +21,13 @@ public enum EEstado {
         return value;
     }
 
+    @JsonCreator
+    public static EEstado fromValue(String value) {
+        for (EEstado e : EEstado.values()) {
+            if (e.value.equalsIgnoreCase(value)) {
+                return e;
+            }
+        }
+        throw new IllegalArgumentException("Modalidad inválida: " + value);
+    }
 }

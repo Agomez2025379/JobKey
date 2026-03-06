@@ -2,7 +2,7 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.entity.Resenas;
 import com.crusaders.jobKey.entity.ResenaTipo;
-import com.crusaders.jobKey.service.ResenasService;
+import com.crusaders.jobKey.service.services.ResenasService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

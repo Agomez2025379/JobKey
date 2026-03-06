@@ -2,7 +2,7 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.DTO.postulaciones.PostulacionesRequest;
 import com.crusaders.jobKey.DTO.postulaciones.PostulacionesResponse;
-import com.crusaders.jobKey.service.PostulacionesService;
+import com.crusaders.jobKey.service.services.PostulacionesService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,26 +16,26 @@ public class PostulacionesController {
 
     private final PostulacionesService postulacionesService;
 
-    @PostMapping
+    @PostMapping("/create")
     public PostulacionesResponse crearPostulacion(
             @Valid @RequestBody PostulacionesRequest request
     ) {
         return postulacionesService.crearPostulacion(request);
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public List<PostulacionesResponse> listarPostulaciones() {
         return postulacionesService.listarPostulaciones();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public PostulacionesResponse obtenerPostulacion(
             @PathVariable Integer id
     ) {
         return postulacionesService.obtenerPostulacion(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void eliminarPostulacion(
             @PathVariable Integer id
     ) {

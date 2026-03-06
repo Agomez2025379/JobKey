@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.DTO.postulaciones.PostulacionesRequest;
 import com.crusaders.jobKey.DTO.postulaciones.PostulacionesResponse;
@@ -14,5 +14,6 @@ public interface PostulacionesService {
     PostulacionesResponse obtenerPostulacion(Integer id);
 
     void eliminarPostulacion(Integer id);
+
 
 }

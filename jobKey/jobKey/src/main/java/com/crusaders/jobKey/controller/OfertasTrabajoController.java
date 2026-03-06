@@ -2,7 +2,7 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoRequest;
 import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoResponse;
-import com.crusaders.jobKey.service.OfertasTrabajoService;
+import com.crusaders.jobKey.service.services.OfertasTrabajoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class OfertasTrabajoController {
         return ResponseEntity.ok(service.obtenerPorId(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/put/{id}")
     public ResponseEntity<OfertasTrabajoResponse>
     actualizar(@PathVariable Integer id,
                @Valid @RequestBody OfertasTrabajoRequest request)
@@ -41,7 +41,7 @@ public class OfertasTrabajoController {
         return ResponseEntity.ok(service.actualizar(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();

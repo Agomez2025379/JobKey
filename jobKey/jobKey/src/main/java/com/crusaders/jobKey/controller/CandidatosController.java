@@ -3,7 +3,7 @@ package com.crusaders.jobKey.controller;
 import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
 import com.crusaders.jobKey.dto.candidatos.CandidatosResponse;
 import com.crusaders.jobKey.entity.Candidatos;
-import com.crusaders.jobKey.service.CandidatosService;
+import com.crusaders.jobKey.service.services.CandidatosService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/candidatos")
+@RequestMapping("/api/candidatos")
 @CrossOrigin(origins = "*")
 public class CandidatosController {
 

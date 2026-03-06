@@ -12,7 +12,6 @@ public enum EAdminRole {
         this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
         return value;
     }

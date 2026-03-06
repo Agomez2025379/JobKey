@@ -1,9 +1,10 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.entity.Resenas;
 import com.crusaders.jobKey.entity.ResenaTipo;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.ResenasRepository;
+import com.crusaders.jobKey.service.services.ResenasService;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;

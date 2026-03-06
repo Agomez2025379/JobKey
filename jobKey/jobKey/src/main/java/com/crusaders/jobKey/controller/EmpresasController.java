@@ -3,7 +3,7 @@ package com.crusaders.jobKey.controller;
 import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
 import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
 import com.crusaders.jobKey.entity.Empresas;
-import com.crusaders.jobKey.service.EmpresasService;
+import com.crusaders.jobKey.service.services.EmpresasService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

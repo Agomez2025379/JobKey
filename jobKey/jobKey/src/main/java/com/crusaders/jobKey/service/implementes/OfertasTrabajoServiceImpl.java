@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 
 import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoRequest;
@@ -10,7 +10,7 @@ import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.EmpresasRepository;
 import com.crusaders.jobKey.repository.OfertasTrabajoRepository;
-import com.crusaders.jobKey.service.OfertasTrabajoService;
+import com.crusaders.jobKey.service.services.OfertasTrabajoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -78,8 +78,11 @@ public class OfertasTrabajoServiceImpl implements OfertasTrabajoService {
         oferta.setDescripcion(request.getDescripcion());
         oferta.setRequisitos(request.getRequisitos());
         oferta.setSalario(request.getSalario());
+        oferta.setModalidad(null);
         oferta.setModalidad(request.getModalidad());
+        oferta.setTipoJornada(null);
         oferta.setTipoJornada(request.getTipoJornada());
+        oferta.setNivelRequerido(null);
         oferta.setNivelRequerido(request.getNivelRequerido());
         oferta.setFechaCierre(request.getFechaCierre());
 
@@ -89,7 +92,7 @@ public class OfertasTrabajoServiceImpl implements OfertasTrabajoService {
     @Override
     public void eliminar(Integer id) {
         if (!ofertasRepository.existsById(id)) {
-            throw new RuntimeException("Oferta no encontrada");
+            throw new ResourceNotFoundException("Oferta no encontrada");
         }
         ofertasRepository.deleteById(id);
     }

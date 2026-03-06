@@ -1,8 +1,9 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.entity.Admins;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.AdminsRepository;
+import com.crusaders.jobKey.service.services.AdminsService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;

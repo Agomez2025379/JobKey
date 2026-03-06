@@ -1,10 +1,11 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
 import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.entity.Empresas;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.EmpresasRepository;
+import com.crusaders.jobKey.service.services.EmpresasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

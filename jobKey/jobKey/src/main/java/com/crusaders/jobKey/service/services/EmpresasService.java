@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.service;
+package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
 import com.crusaders.jobKey.entity.Empresas;

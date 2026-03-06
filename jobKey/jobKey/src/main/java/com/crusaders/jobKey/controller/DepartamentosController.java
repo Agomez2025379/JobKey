@@ -1,10 +1,8 @@
 package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.entity.Departamentos;
-import com.crusaders.jobKey.service.DepartamentosService;
+import com.crusaders.jobKey.service.services.DepartamentosService;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

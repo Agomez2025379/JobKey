@@ -72,21 +72,21 @@ create table ofertas_trabajo (
     requisitos text,
     salario decimal(10,2),
     modalidad enum(
-        'presencial',
-        'remoto',
-        'hibrido'
-        ) default 'presencial',
+        'PRESENCIAL',
+        'REMOTO',
+        'HIBRIDO'
+        ) not null ,
     tipo_jornada enum(
-        'tiempo_completo',
-        'medio_tiempo',
-        'practicas'
+        'TIEMPO_COMPLETO',
+        'MEDIO_TIEMPO',
+        'PRACTICAS'
         ) not null,
     nivel_requerido enum(
-        'Primaria',
-        'Basiscos',
-        'Diversificado',
-        'Universitario',
-        'Sin Requuisito'
+        'PRIMARIA',
+        'BASICOS',
+        'DIVERSIFICADO',
+        'UNIVERSITARIO',
+        'SIN_REQUISITOS'
         ) not null,
     departamento_id int,
     fecha_publicacion timestamp default current_timestamp,
