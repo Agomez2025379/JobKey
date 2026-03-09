@@ -1,14 +1,20 @@
 package com.crusaders.jobKey.service.services;
 
-import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
-import com.crusaders.jobKey.entity.Empresas;
+
+import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
+import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
 
 import java.util.List;
 
 public interface EmpresasService {
-    List<Empresas> listarTodas();
-    Empresas crear(EmpresasRequest request);
-    Empresas actualizar(Integer id, EmpresasRequest request);
-    Empresas buscarPorId(Integer id);
-    void eliminar(Integer id);
+
+
+    EmpresasResponse obtenerEmpresa(Integer id);
+
+    List<EmpresasResponse> listarEmpresas();
+
+    EmpresasResponse actualizarEmpresa(Integer id, EmpresasRequest request);
+
+    void eliminarEmpresa(Integer id);
+
 }

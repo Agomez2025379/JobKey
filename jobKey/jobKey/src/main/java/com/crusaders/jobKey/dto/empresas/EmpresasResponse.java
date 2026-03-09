@@ -1,20 +1,19 @@
-package com.crusaders.jobKey.dto.empresas;
+package com.crusaders.jobKey.DTO.empresas;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@AllArgsConstructor
 public class EmpresasResponse {
-    private Integer id;
+
+    private Integer idEmpresa;
+    private Integer usuarioId;
     private String nombreEmpresa;
-    private String email;
     private String telefono;
     private String descripcion;
     private String sectorEmpresarial;
     private Integer departamentoId;
-    private String departamentoNombre;
-    private boolean tieneLogo;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime updatedAt;
+
 }

@@ -1,73 +1,49 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
-import com.crusaders.jobKey.dto.candidatos.CandidatosResponse;
-import com.crusaders.jobKey.entity.Candidatos;
+import com.crusaders.jobKey.DTO.candidatos.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/candidatos")
-@CrossOrigin(origins = "*")
 public class CandidatosController {
 
-    @Autowired
-    private CandidatosService candidatosService;
+    private final CandidatosService candidatoService;
+
+    public CandidatosController(CandidatosService candidatoService) {
+        this.candidatoService = candidatoService;
+    }
+
+
 
     @GetMapping
-    public List<Candidatos> listar() {
-        // Si prefieres devolver Response DTO, cambia a:
-        // return candidatosService.listar().stream().map(this::toResponse).toList();
-        return candidatosService.listar();
+    public ResponseEntity<List<CandidatosResponse>> listar() {
+        return ResponseEntity.ok(candidatoService.listarCandidatos());
     }
 
     @GetMapping("/{id}")
-    public CandidatosResponse obtenerPorId(@PathVariable Integer id) {
-        Candidatos c = candidatosService.obtenerPorId(id);
-        return toResponse(c);
-    }
+    public ResponseEntity<CandidatosResponse> obtener(
+            @PathVariable Integer id) {
 
-    @PostMapping
-    public CandidatosResponse crear(@Valid @RequestBody CandidatosRequest request) {
-        Candidatos c = candidatosService.crear(request);
-        return toResponse(c);
+        return ResponseEntity.ok(candidatoService.obtenerCandidato(id));
     }
 
     @PutMapping("/{id}")
-    public CandidatosResponse actualizar(@PathVariable Integer id,
-                                         @Valid @RequestBody CandidatosRequest request) {
-        Candidatos c = candidatosService.actualizar(id, request);
-        return toResponse(c);
+    public ResponseEntity<CandidatosResponse> actualizar(
+            @PathVariable Integer id,
+            @RequestBody CandidatosRequest request) {
+
+        return ResponseEntity.ok(candidatoService.actualizarCandidato(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id) {
-        candidatosService.eliminar(id);
-    }
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
 
-    // ---- Conversión manual a DTO (sin mapper externo) ----
-    private CandidatosResponse toResponse(Candidatos c) {
-        CandidatosResponse r = new CandidatosResponse();
-        r.setId(c.getIdCandidato());
-        r.setNombre(c.getNombre());
-        r.setApellido(c.getApellido());
-        r.setEmail(c.getEmail());
-        r.setTelefono(c.getTelefono());
-        r.setProfesion(c.getProfesion());
-        r.setExperiencia(c.getExperiencia());
-        r.setEducacion(c.getEducacion());
-        r.setHabilidades(c.getHabilidades());
-        r.setCurriculumUrl(c.getCurriculumUrl());
-        if (c.getDepartamentos() != null) {
-            r.setDepartamentoId(c.getDepartamentos().getIdDepartamento());
-            r.setDepartamentoNombre(c.getDepartamentos().getDepartamento());
-        }
-        r.setFechaRegistro(c.getFechaRegistro());
-        // updatedAt no existe en tu BD, lo dejamos null
-        return r;
+        candidatoService.eliminarCandidato(id);
+        return ResponseEntity.noContent().build();
     }
 }

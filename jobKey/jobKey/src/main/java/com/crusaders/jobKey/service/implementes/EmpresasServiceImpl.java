@@ -1,87 +1,97 @@
 package com.crusaders.jobKey.service.implementes;
 
-import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
+
+import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
+import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
 import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.entity.Empresas;
+import com.crusaders.jobKey.entity.Usuarios;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
+import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.EmpresasRepository;
+import com.crusaders.jobKey.repository.UsuariosRepository;
 import com.crusaders.jobKey.service.services.EmpresasService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpresasServiceImpl implements EmpresasService {
 
-    @Autowired
-    private EmpresasRepository empresasRepository;
+    private final EmpresasRepository empresasRepository;
+    private final DepartamentosRepository departamentosRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public List<Empresas> listarTodas() {
-        return empresasRepository.findAll();
+    public EmpresasServiceImpl(
+            EmpresasRepository empresasRepository,
+            UsuariosRepository usuariosRepository,
+            DepartamentosRepository departamentosRepository
+    ) {
+        this.empresasRepository = empresasRepository;
+        this.departamentosRepository = departamentosRepository;
     }
 
-    @Override
-    public Empresas crear(EmpresasRequest r) {
-        if (empresasRepository.existsByEmail(r.getEmail())) {
-            throw new IllegalArgumentException("El email ya está registrado");
-        }
-        Empresas e = new Empresas();
-        e.setNombreEmpresa(r.getNombreEmpresa());
-        e.setEmail(r.getEmail());
-        e.setTelefono(r.getTelefono());
-        e.setPasswordHash(passwordEncoder.encode(r.getPassword()));
-        e.setDescripcion(r.getDescripcion());
-        e.setSectorEmpresarial(r.getSectorEmpresarial());
-        if (r.getDepartamentoId() != null) {
-            Departamentos d = new Departamentos();
-            d.setIdDepartamento(r.getDepartamentoId());
-            e.setDepartamentos(d);
-        }
-        return empresasRepository.save(e);
-    }
 
     @Override
-    public Empresas actualizar(Integer id, EmpresasRequest r) {
-        Empresas e = empresasRepository.findById(id)
+    public EmpresasResponse obtenerEmpresa(Integer id) {
+
+        Empresas empresa = empresasRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
 
-        if (!e.getEmail().equals(r.getEmail()) && empresasRepository.existsByEmail(r.getEmail())) {
-            throw new IllegalArgumentException("El email ya está registrado");
-        }
-
-        e.setNombreEmpresa(r.getNombreEmpresa());
-        e.setEmail(r.getEmail());
-        e.setTelefono(r.getTelefono());
-        if (r.getPassword() != null && !r.getPassword().isBlank()) {
-            e.setPasswordHash(passwordEncoder.encode(r.getPassword()));
-        }
-        e.setDescripcion(r.getDescripcion());
-        e.setSectorEmpresarial(r.getSectorEmpresarial());
-        if (r.getDepartamentoId() != null) {
-            Departamentos d = new Departamentos();
-            d.setIdDepartamento(r.getDepartamentoId());
-            e.setDepartamentos(d);
-        } else {
-            e.setDepartamentos(null);
-        }
-        return empresasRepository.save(e);
+        return mapToResponse(empresa);
     }
 
     @Override
-    public Empresas buscarPorId(Integer id) {
-        return empresasRepository.findById(id)
+    public List<EmpresasResponse> listarEmpresas() {
+
+        return empresasRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmpresasResponse actualizarEmpresa(Integer id, EmpresasRequest request) {
+
+        Empresas empresa = empresasRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+
+        Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Departamento no encontrado"));
+
+        empresa.setNombreEmpresa(request.getNombreEmpresa());
+        empresa.setTelefono(request.getTelefono());
+        empresa.setDescripcion(request.getDescripcion());
+        empresa.setSectorEmpresarial(request.getSectorEmpresarial());
+        empresa.setLogo(request.getLogo());
+        empresa.setDepartamento(departamento);
+
+        empresasRepository.save(empresa);
+
+        return mapToResponse(empresa);
     }
 
     @Override
-    public void eliminar(Integer id) {
-        Empresas e = buscarPorId(id);
-        empresasRepository.delete(e);
+    public void eliminarEmpresa(Integer id) {
+
+        if (!empresasRepository.existsById(id)) {
+            throw new RuntimeException("Empresa no encontrada");
+        }
+
+        empresasRepository.deleteById(id);
+    }
+
+    private EmpresasResponse mapToResponse(Empresas empresa) {
+
+        return new EmpresasResponse(
+                empresa.getIdEmpresa(),
+                empresa.getUsuario().getIdUsuario(),
+                empresa.getNombreEmpresa(),
+                empresa.getTelefono(),
+                empresa.getDescripcion(),
+                empresa.getSectorEmpresarial(),
+                empresa.getDepartamento().getIdDepartamento()
+        );
     }
 }

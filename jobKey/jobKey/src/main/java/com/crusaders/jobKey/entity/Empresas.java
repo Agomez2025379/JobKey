@@ -1,30 +1,28 @@
 package com.crusaders.jobKey.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
-
-@Getter
-@Setter //utilizo ambas anotaciones para no tener q colocar manualmente los getter and setters
 @JsonPropertyOrder({
-        "id_empresa",
-        "nombre_empresa",
-        "email",
+        "idEmpresa",
+        "usuario",
+        "nombreEmpresa",
         "telefono",
-        "password_hash",
-        "descripcion",               // Coloco el orden que tengo en mi tabla
-        "sector_empresarial",
+        "descripcion",
+        "sectorEmpresarial",
         "logo",
-        "departamento_id",
-        "fecha_registro"
+        "departamento"
 })
+@Getter
+@Setter
 @Entity
-@Table( name = "empresas")
+@Table(name = "empresas")
 public class Empresas {
 
     @Id
@@ -32,35 +30,42 @@ public class Empresas {
     @Column(name = "id_empresa")
     private Integer idEmpresa;
 
-    @Column(name = "nombre_empresa")
+    /* relación con usuario */
+    @NotNull(message = "El usuario es obligatorio")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
+    private Usuarios usuario;
+
+    /* nombre empresa */
+    @NotBlank(message = "El nombre de la empresa es obligatorio")
+    @Size(max = 150, message = "El nombre de la empresa no puede superar los 150 caracteres")
+    @Column(name = "nombre_empresa", nullable = false, length = 150)
     private String nombreEmpresa;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "telefono")
+    /* telefono */
+    @Pattern(regexp = "^[0-9]{8,15}$", message = "El teléfono debe contener entre 8 y 15 números")
+    @Column(name = "telefono", length = 20)
     private String telefono;
 
-    @JsonIgnore //Para que no se envie al usuario
-    @Column(name = "password_hash")
-    private String passwordHash;
-
-    @Column(name = "descripcion")
+    /* descripcion */
+    @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
+    @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(name = "sector_empresarial")
-    private String  sectorEmpresarial;
+    /* sector */
+    @Size(max = 100, message = "El sector empresarial no puede superar los 100 caracteres")
+    @Column(name = "sector_empresarial", length = 100)
+    private String sectorEmpresarial;
 
+    /* logo */
     @Lob
-    @Column(name = "logo_url", columnDefinition = "LONGBLOB")
-    private byte[] logoUrl;
+    @Column(name = "logo", columnDefinition = "LONGBLOB")
+    private byte[] logo;
 
-    @ManyToOne // Utilizo esto para hacerlo llave foranea
-    @JoinColumn(name = "departamento_id") // esto es para decirle q busque departamento_id
-    private Departamentos departamentos; // Le asignamos como la clase Departamentos para q sepa q ahi debe buscar
-
-    @CreationTimestamp
-    @Column(name = "fecha_registro", updatable = false, nullable = false)
-    private LocalDateTime fechaRegistro;
+    /* departamento */
+    @NotNull(message = "El departamento es obligatorio")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departamento_id", referencedColumnName = "id_departamento", nullable = false)
+    private Departamentos departamento;
 
 }

@@ -1,33 +1,29 @@
 package com.crusaders.jobKey.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
-
-@Getter
-@Setter //utilizo ambas anotaciones para no tener q colocar manualmente los getter and setters
 @JsonPropertyOrder({
-        "id_candidato",
+        "idCandidato",
+        "usuario",
         "nombre",
         "apellido",
-        "email",
         "telefono",
-        "password_hash",
-        "profesion",                      // Coloco el orden que tengo en mi tabla
+        "profesion",
         "experiencia",
         "educacion",
         "habilidades",
-        "curriculum_url",
-        "departamento_id",
-        "fecha_registro"})
+        "curriculumUrl",
+        "departamento"
+})
+@Getter
+@Setter
 @Entity
-@Table( name = "candidatos")
+@Table(name = "candidatos")
 public class Candidatos {
 
     @Id
@@ -35,44 +31,55 @@ public class Candidatos {
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
-    @Column(name = "nombre")
+    @NotNull(message = "El usuario es obligatorio para candidatos")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
+    private Usuarios usuario;
+
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 100, message = "El nombre no puede superar 100 caracteres")
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "apellido")
+    @NotBlank(message = "El apellido es obligatorio")
+    @Size(max = 100, message = "El apellido no puede superar 100 caracteres")
+    @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "telefono")
+    @Size(max = 20, message = "El teléfono no puede superar 20 caracteres")
+    @Pattern(
+            regexp = "^[0-9+\\-() ]*$",
+            message = "El teléfono solo puede contener números y símbolos válidos"
+    )
+    @Column(name = "telefono", length = 20)
     private String telefono;
 
-    @JsonIgnore //Para que no se envie al usuario
-    @Column(name = "password_hash")
-    private String passwordHash;
-
-    @Column(name = "profesion")
+    @Size(max = 100, message = "La profesión no puede superar 100 caracteres")
+    @Column(name = "profesion", length = 100)
     private String profesion;
 
-    @Column(name = "experiencia")
+    @Size(max = 5000, message = "La experiencia es demasiado larga")
+    @Column(name = "experiencia", columnDefinition = "TEXT")
     private String experiencia;
 
-    @Column(name = "educacion")
+    @Size(max = 5000, message = "La educación es demasiado larga")
+    @Column(name = "educacion", columnDefinition = "TEXT")
     private String educacion;
 
-    @Column(name = "habilidades")
+    @Size(max = 5000, message = "Las habilidades son demasiado largas")
+    @Column(name = "habilidades", columnDefinition = "TEXT")
     private String habilidades;
 
-    @Column(name = "curriculum_url")
+    @Size(max = 255, message = "La URL del curriculum no puede superar 255 caracteres")
+    @Pattern(
+            regexp = "^(http|https)://.*$",
+            message = "La URL del currículum debe ser válida"
+    )
+    @Column(name = "curriculum_url", length = 255)
     private String curriculumUrl;
 
-    @ManyToOne // Para hacerlo llave foranea utilizo la relacion muchos a uno
-    @JoinColumn(name = "departamento_id") // esto es para decirle q busque
-    private Departamentos departamentos;
-
-    @CreationTimestamp
-    @Column(name = "fecha_registro", updatable = false, nullable = false)
-    private LocalDateTime fechaRegistro;
-
-
+    @NotNull(message = "El departamento es obligatorio")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departamento_id", referencedColumnName = "id_departamento", nullable = false)
+    private Departamentos departamento;
 }

@@ -1,67 +1,52 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
-import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
-import com.crusaders.jobKey.entity.Empresas;
+
+import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
+import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
 import com.crusaders.jobKey.service.services.EmpresasService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/empresas")
-@CrossOrigin(origins = "*")
 public class EmpresasController {
 
-    @Autowired
-    private EmpresasService empresasService;
+    private final EmpresasService empresasService;
 
-    @GetMapping
-    public List<Empresas> listar() {
-        // igual que arriba: si quieres Response DTO, mapea con toResponse(...)
-        return empresasService.listarTodas();
+    public EmpresasController(EmpresasService empresasService) {
+        this.empresasService = empresasService;
     }
 
-    @PostMapping
-    public EmpresasResponse crear(@Valid @RequestBody EmpresasRequest request) {
-        Empresas e = empresasService.crear(request);
-        return toResponse(e);
-    }
 
     @GetMapping("/{id}")
-    public EmpresasResponse obtenerPorId(@PathVariable Integer id) {
-        Empresas e = empresasService.buscarPorId(id);
-        return toResponse(e);
+    public ResponseEntity<EmpresasResponse> obtenerEmpresa(
+            @PathVariable Integer id) {
+
+        return ResponseEntity.ok(empresasService.obtenerEmpresa(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EmpresasResponse>> listarEmpresas() {
+
+        return ResponseEntity.ok(empresasService.listarEmpresas());
     }
 
     @PutMapping("/{id}")
-    public EmpresasResponse actualizar(@PathVariable Integer id, @Valid @RequestBody EmpresasRequest request) {
-        Empresas e = empresasService.actualizar(id, request);
-        return toResponse(e);
+    public ResponseEntity<EmpresasResponse> actualizarEmpresa(
+            @PathVariable Integer id,
+            @RequestBody EmpresasRequest request) {
+
+        return ResponseEntity.ok(empresasService.actualizarEmpresa(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id) {
-        empresasService.eliminar(id);
-    }
+    public ResponseEntity<Void> eliminarEmpresa(
+            @PathVariable Integer id) {
 
-    // ---- Conversión manual a DTO (sin mapper externo) ----
-    private EmpresasResponse toResponse(Empresas e) {
-        EmpresasResponse r = new EmpresasResponse();
-        r.setId(e.getIdEmpresa());
-        r.setNombreEmpresa(e.getNombreEmpresa());
-        r.setEmail(e.getEmail());
-        r.setTelefono(e.getTelefono());
-        r.setDescripcion(e.getDescripcion());
-        r.setSectorEmpresarial(e.getSectorEmpresarial());
-        if (e.getDepartamentos() != null) {
-            r.setDepartamentoId(e.getDepartamentos().getIdDepartamento());
-            r.setDepartamentoNombre(e.getDepartamentos().getDepartamento());
-        }
-        r.setTieneLogo(e.getLogoUrl() != null && e.getLogoUrl().length > 0);
-        r.setFechaRegistro(e.getFechaRegistro());
-        return r;
+        empresasService.eliminarEmpresa(id);
+        return ResponseEntity.noContent().build();
     }
 }

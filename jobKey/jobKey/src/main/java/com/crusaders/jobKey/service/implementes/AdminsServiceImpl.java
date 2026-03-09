@@ -1,15 +1,12 @@
 package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.entity.Admins;
+
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.AdminsRepository;
 import com.crusaders.jobKey.service.services.AdminsService;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -17,51 +14,35 @@ import java.util.List;
 public class AdminsServiceImpl implements AdminsService {
 
     private final AdminsRepository repository;
-    private final SortHandlerMethodArgumentResolverCustomizer sortCustomizer;
 
-    public AdminsServiceImpl(AdminsRepository repository,
-                             SortHandlerMethodArgumentResolverCustomizer sortCustomizer) {
+    public AdminsServiceImpl(AdminsRepository repository) {
         this.repository = repository;
-        this.sortCustomizer = sortCustomizer;
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Admins> listar() {
-
-        return repository.findAll(Sort.by("idAdmin").ascending());
+        return repository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Admins obtenerPorId(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Admin con id: " + id + ", no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con ID, no encontrado: " + id ));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Admins obtenerPorEmail(String email) {
+    public Admins actualizar(Integer id, Admins usuario) {
+        Admins existente = obtenerPorId(id);
 
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin con email: " + email + " no encontrado"));
-
+        existente.setNombre(existente.getNombre());
+        return repository.save(existente);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Admins obtenerPorNombre(String nombre) {
-        Admins qbe = new Admins();
-        qbe.setNombre(nombre);
-
-
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnoreCase()
-                .withMatcher("nombre",
-                        ExampleMatcher.GenericPropertyMatchers.exact());
-
-        return repository.findOne(Example.of(qbe, matcher))
-                .orElseThrow(() -> new ResourceNotFoundException("Admin no encontrado"));
+    public void eliminar(Integer id) {
+        if (!repository.existsById(id)) {
+            throw  new ResourceNotFoundException("Usuario no encontrado con id: " + id);
+        }
+        repository.deleteById(id);
     }
 }

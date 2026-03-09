@@ -1,104 +1,100 @@
 package com.crusaders.jobKey.service.implementes;
 
-import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
-import com.crusaders.jobKey.entity.Candidatos;
-import com.crusaders.jobKey.entity.Departamentos;
+
+import com.crusaders.jobKey.DTO.candidatos.*;
+import com.crusaders.jobKey.entity.*;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
-import com.crusaders.jobKey.repository.CandidatosRepository;
+import com.crusaders.jobKey.repository.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidatosServiceImpl implements CandidatosService {
 
-    @Autowired
-    private CandidatosRepository candidatosRepository;
+    private final CandidatosRepository candidatosRepository;
+    private final UsuariosRepository usuariosRepository;
+    private final DepartamentosRepository departamentosRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public List<Candidatos> listar() {
-        return candidatosRepository.findAll();
+    public CandidatosServiceImpl(
+            CandidatosRepository candidatosRepository,
+            UsuariosRepository usuariosRepository,
+            DepartamentosRepository departamentosRepository
+    ) {
+        this.candidatosRepository = candidatosRepository;
+        this.usuariosRepository = usuariosRepository;
+        this.departamentosRepository = departamentosRepository;
     }
 
-    @Override
-    public Candidatos crear(CandidatosRequest r) {
-        if (candidatosRepository.existsByEmail(r.getEmail())) {
-            throw new ResourceNotFoundException("El email ya está registrado");
-        }
-        Candidatos c = new Candidatos();
-        c.setNombre(r.getNombre());
-        c.setApellido(r.getApellido());
-        c.setEmail(r.getEmail());
-        c.setTelefono(r.getTelefono());
-        c.setPasswordHash(passwordEncoder.encode(r.getPassword()));
-        c.setProfesion(r.getProfesion());
-        c.setExperiencia(r.getExperiencia());
-        c.setEducacion(r.getEducacion());
-        c.setHabilidades(r.getHabilidades());
-        c.setCurriculumUrl(r.getCurriculumUrl());
-
-        if (r.getDepartamentoId() != null) {
-            Departamentos d = new Departamentos();
-            d.setIdDepartamento(r.getDepartamentoId()); // referencia por id
-            c.setDepartamentos(d);
-        }
-        return candidatosRepository.save(c);
-    }
 
     @Override
-    public Candidatos actualizar(Integer id, CandidatosRequest r) {
-        Candidatos c = candidatosRepository.findById(id)
+    public CandidatosResponse obtenerCandidato(Integer id) {
+
+        Candidatos candidato = candidatosRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidato no encontrado"));
 
-        // Si cambia el email, valida unicidad
-        if (!c.getEmail().equals(r.getEmail()) && candidatosRepository.existsByEmail(r.getEmail())) {
-            throw new ResourceNotFoundException("El email ya está registrado");
-        }
-
-        c.setNombre(r.getNombre());
-        c.setApellido(r.getApellido());
-        c.setEmail(r.getEmail());
-        c.setTelefono(r.getTelefono());
-        if (r.getPassword() != null && !r.getPassword().isBlank()) {
-            c.setPasswordHash(passwordEncoder.encode(r.getPassword()));
-        }
-        c.setProfesion(r.getProfesion());
-        c.setExperiencia(r.getExperiencia());
-        c.setEducacion(r.getEducacion());
-        c.setHabilidades(r.getHabilidades());
-        c.setCurriculumUrl(r.getCurriculumUrl());
-
-        if (r.getDepartamentoId() != null) {
-            Departamentos d = new Departamentos();
-            d.setIdDepartamento(r.getDepartamentoId());
-            c.setDepartamentos(d);
-        } else {
-            c.setDepartamentos(null);
-        }
-        return candidatosRepository.save(c);
+        return mapToResponse(candidato);
     }
 
     @Override
-    public void eliminar(Integer id) {
-        Candidatos c = candidatosRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Candidato no encontrado"));
-        candidatosRepository.delete(c);
+    public List<CandidatosResponse> listarCandidatos() {
+
+        return candidatosRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Candidatos obtenerPorId(Integer id) {
-        return candidatosRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Candidato no encontrado"));
+    public CandidatosResponse actualizarCandidato(Integer id, CandidatosRequest request) {
+
+        Candidatos candidato = candidatosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+
+        Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+
+        candidato.setNombre(request.getNombre());
+        candidato.setApellido(request.getApellido());
+        candidato.setTelefono(request.getTelefono());
+        candidato.setProfesion(request.getProfesion());
+        candidato.setExperiencia(request.getExperiencia());
+        candidato.setEducacion(request.getEducacion());
+        candidato.setHabilidades(request.getHabilidades());
+        candidato.setCurriculumUrl(request.getCurriculumUrl());
+        candidato.setDepartamento(departamento);
+
+        candidatosRepository.save(candidato);
+
+        return mapToResponse(candidato);
     }
 
     @Override
-    public Candidatos obtenerPorNombre(String nombre) {
-        return candidatosRepository.findByNombre(nombre);
+    public void eliminarCandidato(Integer id) {
+
+        if (!candidatosRepository.existsById(id)) {
+            throw new RuntimeException("Candidato no encontrado");
+        }
+
+        candidatosRepository.deleteById(id);
+    }
+
+    private CandidatosResponse mapToResponse(Candidatos candidato) {
+
+        return new CandidatosResponse(
+                candidato.getIdCandidato(),
+                candidato.getUsuario().getIdUsuario(),
+                candidato.getNombre(),
+                candidato.getApellido(),
+                candidato.getTelefono(),
+                candidato.getProfesion(),
+                candidato.getExperiencia(),
+                candidato.getEducacion(),
+                candidato.getHabilidades(),
+                candidato.getCurriculumUrl(),
+                candidato.getDepartamento().getIdDepartamento()
+        );
     }
 }

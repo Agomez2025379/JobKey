@@ -25,73 +25,52 @@ insert into departamentos (nombre) values
 ('totonicapan'),
 ('zacapa');
 
--- candidatos
-insert into candidatos (nombre, apellido, email, telefono, password_hash, profesion, experiencia, educacion, habilidades, curriculum_url, departamento_id) values
-('juan','perez','juan@gmail.com','55511111','hash123','programador','2 anos desarrollo web','universidad','java, mysql, html','cv1.pdf',1),
-('ana','lopez','ana@gmail.com','55522222','hash123','disenadora grafica','3 anos disenando','universidad','photoshop, illustrator','cv2.pdf',2),
-('carlos','martinez','carlos@gmail.com','55533333','hash123','soporte tecnico','1 ano soporte it','tecnico','redes, hardware','cv3.pdf',3),
-('maria','hernandez','maria@gmail.com','55544444','hash123','analista datos','2 anos analisis datos','universidad','python, sql','cv4.pdf',4),
-('luis','ramirez','luis@gmail.com','55555555','hash123','administrador','4 anos administracion','universidad','excel, gestion','cv5.pdf',5);
 
+-- usuarios
+insert into usuarios (email,password_hash,rol,ultimo_acceso) values
+('admin@jobkey.com','hash1','ADMIN',null),
+('empresa1@jobkey.com','hash2','EMPRESA',null),
+('empresa2@jobkey.com','hash3','EMPRESA',null),
+('candidato1@jobkey.com','hash4','CANDIDATO',null),
+('institucion1@jobkey.com','hash5','INSTITUCION',null);
+
+-- admins
+insert into admins (id_usuario,nombre) values
+(1,'Carlos Mendoza');
 
 -- empresas
-insert into empresas (nombre_empresa,email,telefono,password_hash,descripcion,sector_empresarial,logo_url,departamento_id) values
-('techsoft','contacto@techsoft.com','44411111','hash123','empresa desarrollo software','tecnologia',null,1),
-('marketplus','info@marketplus.com','44422222','hash123','empresa marketing digital','marketing',null,2),
-('datacorp','rrhh@datacorp.com','44433333','hash123','empresa analisis datos','tecnologia',null,3),
-('logistica gt','contacto@logistica.com','44444444','hash123','empresa transporte','logistica',null,4),
-('finanzas plus','info@finanzas.com','44455555','hash123','empresa servicios financieros','finanzas',null,5);
+insert into empresas (usuario_id,nombre_empresa,telefono,descripcion,sector_empresarial,logo,departamento_id) values
+(2,'Tech Guatemala','5551001','empresa de desarrollo de software','tecnologia',null,1),
+(3,'AgroExport GT','5551002','exportadora de productos agricolas','agricultura',null,2);
 
+-- candidatos
+insert into candidatos (usuario_id,nombre,apellido,telefono,profesion,experiencia,educacion,habilidades,curriculum_url,departamento_id) values
+(4,'Juan','Perez','5552001','Desarrollador','2 años desarrollo web','Ingenieria en sistemas','java, sql, html','cv_juan.pdf',1);
 
 -- instituciones
-insert into instituciones (nombre_institucion,email,telefono,password_hash,descripcion,tipo,logo_url,departamento_id) values
-('universidad central','info@uc.edu','33311111','hash123','universidad privada','universidad',null,1),
-('instituto tecnologico','info@it.edu','33322222','hash123','instituto tecnico','instituto',null,2),
-('bootcamp code','contacto@bootcamp.com','33333333','hash123','bootcamp programacion','bootcamp',null,3),
-('colegio moderno','info@colegio.com','33344444','hash123','colegio diversificado','colegio',null,4),
-('universidad del norte','contacto@unorte.edu','33355555','hash123','universidad tecnologia','universidad',null,5);
-
+insert into instituciones (id_usuario,nombre_institucion,telefono,descripcion,tipo,logo,departamento_id) values
+(5,'Universidad Tecnologica GT','5553001','universidad privada tecnologica','universidad',null,1);
 
 -- ofertas_trabajo
-insert into ofertas_trabajo (empresa_id,titulo,descripcion,requisitos,salario,modalidad,tipo_jornada,nivel_requerido,departamento_id,fecha_cierre,activa) values
-(1,'desarrollador junior','desarrollo aplicaciones web','conocimientos java y sql',5000,'remoto','tiempo_completo','universitario',1,'2026-12-30',true),
-(2,'disenador grafico','diseno contenido digital','manejo adobe',4500,'presencial','tiempo_completo','diversificado',2,'2026-11-15',true),
-(3,'soporte tecnico','soporte equipos y redes','conocimiento hardware',3500,'presencial','medio_tiempo','basicos',3,'2026-10-20',true),
-(4,'analista datos','analisis bases datos','python y sql',6000,'hibrido','tiempo_completo','universitario',4,'2026-09-10',true),
-(5,'asistente administrativo','gestion documentos','excel intermedio',3200,'presencial','tiempo_completo','diversificado',5,'2026-08-25',true);
-
+insert into ofertas_trabajo (empresa_id,titulo,descripcion,requisitos,salario,modalidad,tipo_jornada,nivel_requerido,departamento_id,fecha_cierre) values
+(1,'Desarrollador Java','desarrollo de aplicaciones empresariales','java y sql',8000,'PRESENCIAL','TIEMPO_COMPLETO','UNIVERSITARIO',1,'2026-12-31'),
+(1,'Soporte Tecnico','soporte a sistemas','redes basicas',4500,'PRESENCIAL','MEDIO_TIEMPO','DIVERSIFICADO',1,'2026-11-30'),
+(2,'Ingeniero Agronomo','gestion de cultivos','experiencia agricola',7000,'PRESENCIAL','TIEMPO_COMPLETO','UNIVERSITARIO',2,'2026-10-30'),
+(2,'Analista de Datos','analisis de datos agricolas','excel y sql',6500,'HIBRIDO','TIEMPO_COMPLETO','UNIVERSITARIO',2,'2026-12-15'),
+(1,'Practicante IT','apoyo en area de sistemas','conocimientos basicos',2000,'REMOTO','PRACTICAS','DIVERSIFICADO',1,'2026-09-01');
 
 -- postulaciones
 insert into postulaciones (oferta_id,candidato_id,estado,comentarios) values
-(1,1,'pendiente','primera postulacion'),
-(2,2,'revisado','perfil revisado'),
-(3,3,'entrevista','entrevista programada'),
-(4,4,'aceptado','contratado'),
-(5,5,'rechazado','no cumple requisitos');
-
+(1,1,'PENDIENTE','postulacion reciente'),
+(2,1,'REVISADO','perfil en revision'),
+(3,1,'ENTREVISTA','entrevista programada'),
+(4,1,'PENDIENTE','esperando respuesta'),
+(5,1,'ACEPTADO','candidato seleccionado');
 
 -- resenas
 insert into resenas (tipo,empresa_id,candidato_id,oferta_id,puntuacion,comentario) values
 ('empresa_a_candidato',1,1,1,5,'excelente candidato'),
-('empresa_a_candidato',2,2,2,4,'buen desempeno'),
-('candidato_a_empresa',3,3,3,3,'proceso aceptable'),
-('candidato_a_empresa',4,4,4,5,'muy buena empresa'),
-('empresa_a_candidato',5,5,5,2,'poca experiencia');
-
-
--- admins
-insert into admins (nombre,email,password_hash,rol) values
-('admin uno','admin1@jobkey.com','hash123','super_admin'),
-('admin dos','admin2@jobkey.com','hash123','moderador'),
-('admin tres','admin3@jobkey.com','hash123','moderador'),
-('admin cuatro','admin4@jobkey.com','hash123','moderador'),
-('admin cinco','admin5@jobkey.com','hash123','moderador');
-
-
--- roles
-insert into roles (nombre_rol) values
-('admin'),
-('instituciones'),
-('candidatos'),
-('empresa'),
-('empresa');
+('empresa_a_candidato',1,1,2,4,'buen desempeño'),
+('candidato_a_empresa',1,1,1,5,'muy buena empresa'),
+('candidato_a_empresa',2,1,3,4,'proceso claro'),
+('empresa_a_candidato',2,1,3,3,'perfil adecuado');

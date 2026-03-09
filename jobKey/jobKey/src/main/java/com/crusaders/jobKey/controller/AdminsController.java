@@ -15,25 +15,24 @@ public class AdminsController {
         this.service = service;
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public List<Admins> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public Admins obtener(@PathVariable Integer id) {
+    public Admins obtenerPorId(@PathVariable Integer id) {
         return service.obtenerPorId(id);
     }
 
 
-    @GetMapping("/email/{email}")
-    public Admins obtenerPorEmail(@PathVariable String email) {
-        return service.obtenerPorEmail(email);
+    @PutMapping("/{id}")
+    public Admins actualizar(@PathVariable Integer id, @RequestBody Admins admin) {
+        return service.actualizar(id, admin);
     }
 
-
-    @GetMapping("/nombre/{nombre}")
-    public Admins obtenerPorNombre(@PathVariable String nombre) {
-        return service.obtenerPorNombre(nombre);
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
     }
 }
