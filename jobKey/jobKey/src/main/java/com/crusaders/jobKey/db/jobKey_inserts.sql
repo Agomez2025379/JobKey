@@ -26,6 +26,7 @@ insert into departamentos (nombre) values
 ('zacapa');
 
 
+/*
 -- usuarios
 insert into usuarios (email,password_hash,rol,ultimo_acceso) values
 ('admin@jobkey.com','hash1','ADMIN',null),
@@ -74,3 +75,5 @@ insert into resenas (tipo,empresa_id,candidato_id,oferta_id,puntuacion,comentari
 ('candidato_a_empresa',1,1,1,5,'muy buena empresa'),
 ('candidato_a_empresa',2,1,3,4,'proceso claro'),
 ('empresa_a_candidato',2,1,3,3,'perfil adecuado');
+
+*/

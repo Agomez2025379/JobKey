@@ -72,9 +72,9 @@ create table instituciones (
     telefono varchar(20),
     descripcion text,
     tipo enum(
-    'universidad',
-    'instituto',
-    'colegio'
+    'UNIVERSIDAD',
+    'INSTITUTO',
+    'COLEGIO'
     ) not null,
     logo longblob,
     departamento_id int not null,

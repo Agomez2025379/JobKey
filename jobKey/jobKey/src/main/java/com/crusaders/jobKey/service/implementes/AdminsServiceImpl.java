@@ -34,7 +34,7 @@ public class AdminsServiceImpl implements AdminsService {
     public Admins actualizar(Integer id, Admins usuario) {
         Admins existente = obtenerPorId(id);
 
-        existente.setNombre(existente.getNombre());
+        existente.setNombre(usuario.getNombre());
         return repository.save(existente);
     }
 

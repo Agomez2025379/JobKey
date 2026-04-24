@@ -48,7 +48,7 @@ public class Institucion {
     private byte[] logo;
 
     @NotNull(message = "El departamento es obligatorio")
-    @JoinColumn(name = "id_departamento", referencedColumnName = "id_departamento", nullable = false)
+    @JoinColumn(name = "departamento_id", referencedColumnName = "id_departamento", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Departamentos departamento;
 
