@@ -3,19 +3,18 @@ package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.DTO.candidatos.CandidatosRequest;
 import com.crusaders.jobKey.DTO.candidatos.CandidatosResponse;
-
 import java.util.List;
 
 public interface CandidatosService {
 
 
 
-    CandidatosResponse obtenerCandidato(Integer id);
+    CandidatosResponse getCandidate(Integer id);
 
-    List<CandidatosResponse> listarCandidatos();
+    List<CandidatosResponse> listCandidates();
 
-    CandidatosResponse actualizarCandidato(Integer id, CandidatosRequest request);
+    CandidatosResponse updateCandidate(Integer id, CandidatosRequest request);
 
-    void eliminarCandidato(Integer id);
+    void deleteCandidate(Integer id);
 
 }

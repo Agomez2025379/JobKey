@@ -21,29 +21,29 @@ public class CandidatosController {
 
 
     @GetMapping
-    public ResponseEntity<List<CandidatosResponse>> listar() {
-        return ResponseEntity.ok(candidatoService.listarCandidatos());
+    public ResponseEntity<List<CandidatosResponse>> listCandidates() {
+        return ResponseEntity.ok(candidatoService.listCandidates());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CandidatosResponse> obtener(
+    public ResponseEntity<CandidatosResponse> getCandidate(
             @PathVariable Integer id) {
 
-        return ResponseEntity.ok(candidatoService.obtenerCandidato(id));
+        return ResponseEntity.ok(candidatoService.getCandidate(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CandidatosResponse> actualizar(
+    public ResponseEntity<CandidatosResponse> updateCandidate(
             @PathVariable Integer id,
             @RequestBody CandidatosRequest request) {
 
-        return ResponseEntity.ok(candidatoService.actualizarCandidato(id, request));
+        return ResponseEntity.ok(candidatoService.updateCandidate(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCandidate(@PathVariable Integer id) {
 
-        candidatoService.eliminarCandidato(id);
+        candidatoService.deleteCandidate(id);
         return ResponseEntity.noContent().build();
     }
 }

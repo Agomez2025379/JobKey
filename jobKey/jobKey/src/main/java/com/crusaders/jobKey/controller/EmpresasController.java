@@ -22,31 +22,31 @@ public class EmpresasController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmpresasResponse> obtenerEmpresa(
+    public ResponseEntity<EmpresasResponse> getCompany(
             @PathVariable Integer id) {
 
-        return ResponseEntity.ok(empresasService.obtenerEmpresa(id));
+        return ResponseEntity.ok(empresasService.getCompany(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<EmpresasResponse>> listarEmpresas() {
+    public ResponseEntity<List<EmpresasResponse>> listCompanies() {
 
-        return ResponseEntity.ok(empresasService.listarEmpresas());
+        return ResponseEntity.ok(empresasService.listCompanmies());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpresasResponse> actualizarEmpresa(
+    public ResponseEntity<EmpresasResponse> updateCompany(
             @PathVariable Integer id,
             @RequestBody EmpresasRequest request) {
 
-        return ResponseEntity.ok(empresasService.actualizarEmpresa(id, request));
+        return ResponseEntity.ok(empresasService.updateCompany(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarEmpresa(
+    public ResponseEntity<Void> deleteCompany(
             @PathVariable Integer id) {
 
-        empresasService.eliminarEmpresa(id);
+        empresasService.deleteCompany(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -7,7 +7,6 @@ import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,16 +29,16 @@ public class CandidatosServiceImpl implements CandidatosService {
 
 
     @Override
-    public CandidatosResponse obtenerCandidato(Integer id) {
+    public CandidatosResponse getCandidate(Integer id) {
 
         Candidatos candidato = candidatosRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Candidato no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Candidate not found"));
 
         return mapToResponse(candidato);
     }
 
     @Override
-    public List<CandidatosResponse> listarCandidatos() {
+    public List<CandidatosResponse> listCandidates() {
 
         return candidatosRepository.findAll()
                 .stream()
@@ -48,13 +47,13 @@ public class CandidatosServiceImpl implements CandidatosService {
     }
 
     @Override
-    public CandidatosResponse actualizarCandidato(Integer id, CandidatosRequest request) {
+    public CandidatosResponse updateCandidate(Integer id, CandidatosRequest request) {
 
         Candidatos candidato = candidatosRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Candidate not found"));
 
         Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
-                .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Department not found"));
 
         candidato.setNombre(request.getNombre());
         candidato.setApellido(request.getApellido());
@@ -72,10 +71,10 @@ public class CandidatosServiceImpl implements CandidatosService {
     }
 
     @Override
-    public void eliminarCandidato(Integer id) {
+    public void deleteCandidate(Integer id) {
 
         if (!candidatosRepository.existsById(id)) {
-            throw new RuntimeException("Candidato no encontrado");
+            throw new RuntimeException("Candidate not found");
         }
 
         candidatosRepository.deleteById(id);

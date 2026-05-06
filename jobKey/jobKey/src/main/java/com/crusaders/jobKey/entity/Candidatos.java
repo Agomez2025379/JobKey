@@ -31,54 +31,54 @@ public class Candidatos {
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
-    @NotNull(message = "El usuario es obligatorio para candidatos")
+    @NotNull(message = "User is mandatory for candidates")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
     private Usuarios usuario;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar 100 caracteres")
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 100, message = "Name cannot exceed 100 characters")
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @NotBlank(message = "El apellido es obligatorio")
-    @Size(max = 100, message = "El apellido no puede superar 100 caracteres")
+    @NotBlank(message = "Last name is mandatory")
+    @Size(max = 100, message = "Last name cannot exceed 100 characters")
     @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
 
-    @Size(max = 20, message = "El teléfono no puede superar 20 caracteres")
+    @Size(max = 20, message = "Phone number cannot exceed 20 characters")
     @Pattern(
             regexp = "^[0-9+\\-() ]*$",
-            message = "El teléfono solo puede contener números y símbolos válidos"
+            message = "Phone number can only contain numbers and valid symbols"
     )
     @Column(name = "telefono", length = 20)
     private String telefono;
 
-    @Size(max = 100, message = "La profesión no puede superar 100 caracteres")
+    @Size(max = 100, message = "Profession cannot exceed 100 characters")
     @Column(name = "profesion", length = 100)
     private String profesion;
 
-    @Size(max = 5000, message = "La experiencia es demasiado larga")
+    @Size(max = 5000, message = "Experience is too long")
     @Column(name = "experiencia", columnDefinition = "TEXT")
     private String experiencia;
 
-    @Size(max = 5000, message = "La educación es demasiado larga")
+    @Size(max = 5000, message = "Education is too long")
     @Column(name = "educacion", columnDefinition = "TEXT")
     private String educacion;
 
-    @Size(max = 5000, message = "Las habilidades son demasiado largas")
+    @Size(max = 5000, message = "Skills are too long")
     @Column(name = "habilidades", columnDefinition = "TEXT")
     private String habilidades;
 
-    @Size(max = 255, message = "La URL del curriculum no puede superar 255 caracteres")
+    @Size(max = 255, message = "Curriculum URL cannot exceed 255 characters")
     @Pattern(
             regexp = "^(http|https)://.*$",
-            message = "La URL del currículum debe ser válida"
+            message = "Curriculum URL must be valid"
     )
     @Column(name = "curriculum_url", length = 255)
     private String curriculumUrl;
 
-    @NotNull(message = "El departamento es obligatorio")
+    @NotNull(message = "Department is mandatory")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departamento_id", referencedColumnName = "id_departamento", nullable = false)
     private Departamentos departamento;
