@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.DTO.auth;
 
 import com.crusaders.jobKey.entity.Departamentos;
-import com.crusaders.jobKey.enums.ETipoInstitucion;
+import com.crusaders.jobKey.enums.InstitutionType;
 import com.crusaders.jobKey.enums.EUsuarioRol;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class RegisterRequest {
     private String nombreInstitucion;
     private String telefonoInstitucion;
     private String descripcionInstitucion;
-    private ETipoInstitucion tipoInstitucion;
+    private InstitutionType tipoInstitucion;
     private byte[] logoInstitucion;
 
 

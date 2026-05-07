@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.DTO.instituciones;
 
 
-import com.crusaders.jobKey.enums.ETipoInstitucion;
+import com.crusaders.jobKey.enums.InstitutionType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ public class InstitucionRequest {
     private String nombreInstitucion;
     private String telefono;
     private String descripcion;
-    private ETipoInstitucion tipo;
+    private InstitutionType tipo;
     private byte[] logo;
     private Integer departamentoId;
 }

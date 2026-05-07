@@ -3,10 +3,10 @@ package com.crusaders.jobKey.service.implementes;
 
 
 import com.crusaders.jobKey.entity.Departamentos;
-import com.crusaders.jobKey.entity.Institucion;
+import com.crusaders.jobKey.entity.Institutions;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
-import com.crusaders.jobKey.repository.InstitucionRepository;
+import com.crusaders.jobKey.repository.InstitutionRepository;
 import com.crusaders.jobKey.service.services.InstitucionService;
 import org.springframework.stereotype.Service;
 import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
@@ -33,10 +33,10 @@ public class InstitucionServiceImpl implements InstitucionService {
     @Override
     public InstitucionResponse obtenerPorId(Integer id) {
 
-        Institucion institucion = institucionRepository.findById(id)
+        Institutions institutions = institucionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Institucion no encontrada"));
 
-        return mapToResponse(institucion);
+        return mapToResponse(institutions);
     }
 
     @Override
@@ -51,22 +51,22 @@ public class InstitucionServiceImpl implements InstitucionService {
     @Override
     public InstitucionResponse actualizarInstitucion(Integer id, InstitucionRequest request) {
 
-        Institucion institucion = institucionRepository.findById(id)
+        Institutions institutions = institucionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Institucion no encontrada"));
 
         Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
                 .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
 
-        institucion.setNombreInstitucion(request.getNombreInstitucion());
-        institucion.setTelefono(request.getTelefono());
-        institucion.setDescripcion(request.getDescripcion());
-        institucion.setTipo(request.getTipo());
-        institucion.setLogo(request.getLogo());
-        institucion.setDepartamento(departamento);
+        institutions.setNombreInstitucion(request.getNombreInstitucion());
+        institutions.setTelefono(request.getTelefono());
+        institutions.setDescripcion(request.getDescripcion());
+        institutions.setTipo(request.getTipo());
+        institutions.setLogo(request.getLogo());
+        institutions.setDepartamento(departamento);
 
-        institucionRepository.save(institucion);
+        institucionRepository.save(institutions);
 
-        return mapToResponse(institucion);
+        return mapToResponse(institutions);
     }
 
     @Override
@@ -79,16 +79,16 @@ public class InstitucionServiceImpl implements InstitucionService {
         institucionRepository.deleteById(id);
     }
 
-    private InstitucionResponse mapToResponse(Institucion institucion) {
+    private InstitucionResponse mapToResponse(Institutions institutions) {
 
         return new InstitucionResponse(
-                institucion.getIdInstitucion(),
-                institucion.getUsuario().getIdUsuario(),
-                institucion.getNombreInstitucion(),
-                institucion.getTelefono(),
-                institucion.getDescripcion(),
-                institucion.getTipo(),
-                institucion.getDepartamento().getIdDepartamento()
+                institutions.getIdInstitucion(),
+                institutions.getUsuario().getIdUsuario(),
+                institutions.getNombreInstitucion(),
+                institutions.getTelefono(),
+                institutions.getDescripcion(),
+                institutions.getTipo(),
+                institutions.getDepartamento().getIdDepartamento()
         );
     }
 }
