@@ -117,20 +117,20 @@ public class AuthService {
 
             case INSTITUCION -> {
                 Institutions institution = new Institutions();  // ← Cambiado de "institutions" a "institution"
-                institution.setUsuario(usuario);
-                institution.setNombreInstitucion(req.getNombreInstitucion());
-                institution.setTelefono(req.getTelefonoInstitucion());
-                institution.setDescripcion(req.getDescripcionInstitucion());
-                institution.setTipo(req.getTipoInstitucion());
+                institution.setUser(institution.getUser());
+                institution.setInstitutionName(req.getNombreInstitucion());
+                institution.setPhone(req.getTelefonoInstitucion());
+                institution.setDescription(req.getDescripcionInstitucion());
+                institution.setType(req.getTipoInstitucion());
                 institution.setLogo(req.getLogoInstitucion());
 
-                institution.setDepartamento(departamentosRepository.findById(req.getDepartamentoId())
+                institution.setDepartment(departamentosRepository.findById(req.getDepartamentoId())
                         .orElseThrow(() -> new ResourceNotFoundException("Departamento no encontrado")));
 
                 institution = institucionRepository.save(institution);  // ← Cambiado variable
 
-                nombre = institution.getNombreInstitucion();
-                entidadId = institution.getIdInstitucion();
+                nombre = institution.getInstitutionName();
+                entidadId = institution.getInstitutionId();
             }
         }
 

@@ -7,7 +7,7 @@ import com.crusaders.jobKey.entity.Institutions;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.InstitutionRepository;
-import com.crusaders.jobKey.service.services.InstitucionService;
+import com.crusaders.jobKey.service.services.InstitutionService;
 import org.springframework.stereotype.Service;
 import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
 import com.crusaders.jobKey.DTO.instituciones.InstitucionRequest;
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class InstitucionServiceImpl implements InstitucionService {
+public class InstitucionServiceImpl implements InstitutionService {
 
-    private final InstitucionRepository institucionRepository;
+    private final InstitutionRepository institucionRepository;
     private final DepartamentosRepository departamentosRepository;
 
     public InstitucionServiceImpl(
-            InstitucionRepository institucionRepository,
+            InstitutionRepository institucionRepository,
             DepartamentosRepository departamentosRepository) {
 
         this.institucionRepository = institucionRepository;
@@ -57,12 +57,12 @@ public class InstitucionServiceImpl implements InstitucionService {
         Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
                 .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
 
-        institutions.setNombreInstitucion(request.getNombreInstitucion());
-        institutions.setTelefono(request.getTelefono());
-        institutions.setDescripcion(request.getDescripcion());
-        institutions.setTipo(request.getTipo());
+        institutions.setInstitutionName(request.getNombreInstitucion());
+        institutions.setPhone(request.getTelefono());
+        institutions.setDescription(request.getDescripcion());
+        institutions.setType(request.getTipo());
         institutions.setLogo(request.getLogo());
-        institutions.setDepartamento(departamento);
+        institutions.setDepartment(departamento);
 
         institucionRepository.save(institutions);
 
@@ -82,13 +82,13 @@ public class InstitucionServiceImpl implements InstitucionService {
     private InstitucionResponse mapToResponse(Institutions institutions) {
 
         return new InstitucionResponse(
-                institutions.getIdInstitucion(),
-                institutions.getUsuario().getIdUsuario(),
-                institutions.getNombreInstitucion(),
-                institutions.getTelefono(),
-                institutions.getDescripcion(),
-                institutions.getTipo(),
-                institutions.getDepartamento().getIdDepartamento()
+                institutions.getInstitutionId(),
+                institutions.getUser().(),
+                institutions.getInstitutionName(),
+                institutions.getPhone(),
+                institutions.getDescription(),
+                institutions.getType(),
+                institutions.getDepartment().getIdDepartamento()
         );
     }
 }

@@ -2,7 +2,7 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.DTO.instituciones.InstitucionRequest;
 import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
-import com.crusaders.jobKey.service.services.InstitucionService;
+import com.crusaders.jobKey.service.implementes.InstitucionServiceImpl;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/api/instituciones")
 public class InstitucionController {
 
-    private final InstitucionService institucionService;
+    private final InstitucionServiceImpl institucionService;
 
-    public InstitucionController(InstitucionService institucionService) {
+    public InstitucionController(InstitucionServiceImpl institucionService) {
         this.institucionService = institucionService;
     }
 
