@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
+// import org.apache.catalina.User;  ← ELIMINA ESTE IMPORT
 
 @Entity
 @Table(name = "institutions")
@@ -22,9 +22,9 @@ public class Institutions {
     private Integer institutionId;
 
     @NotNull(message = "The user is required")
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id_usuario", nullable = false)  // ← Cambiar a "id_usuario"
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    private User user;
+    private Usuarios user;  // ← Cambiar a Usuarios (tu entidad)
 
     @NotBlank(message = "The name of the institution is required")
     @Size(max = 150, message = "The name of the institution must not exceed 150 characters")
@@ -52,6 +52,4 @@ public class Institutions {
     @JoinColumn(name = "department_id", referencedColumnName = "department_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Departamentos department;
-
 }
-

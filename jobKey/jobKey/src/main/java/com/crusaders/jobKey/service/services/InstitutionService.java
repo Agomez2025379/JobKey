@@ -1,17 +1,18 @@
 package com.crusaders.jobKey.service.services;
 
 
-import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
+import com.crusaders.jobKey.DTO.institutions.InstitutionResponse;
+import com.crusaders.jobKey.DTO.institutions.InstitutionRequest;
 
 import java.util.List;
 
 public interface InstitutionService {
 
-    InstitucionResponse getById(Integer id);
+    InstitutionResponse getById(Integer id);
 
-    List<InstitucionResponse> listInstitutions();
+    List<InstitutionResponse> listInstitutions();
 
-    InstitucionResponse updateInstitution(Integer id, InstitucionResponse request);
+    InstitutionResponse updateInstitution(Integer id, InstitutionRequest request);  // ← Cambiar a InstitutionRequest
 
     void deleteInstitution(Integer id);
 }
