@@ -20,14 +20,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Ruta raíz
-    @GetMapping("/")
-    public String index() {
-        return "home";
-    }
-
-    // Ruta /home (ahora solo hay una)
-    @GetMapping("/home")
+    @GetMapping({"/", "/home"})
     public String home() {
         return "home";
     }
