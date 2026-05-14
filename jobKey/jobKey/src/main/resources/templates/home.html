@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Home - JobKey</title>
+</head>
+<body>
+<header>
+    <nav>
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}" class="btn">Sign In</a>
+            <a th:href="@{/register}" class="btn">Register</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <span>Bienvenido, <b sec:authentication="name">Usuario</b></span>
+
+            <a th:href="@{/candidatos}">Ver Candidatos</a>
+            <a th:href="@{/empresas}">Ver Empresas</a>
+
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit">Log Out</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <h1>Bienvenido a JobKey</h1>
+    <p>Tu plataforma de empleo en Guatemala.</p>
+
+    <div sec:authorize="isAnonymous()">
+        <p>Inicia sesión para postularte a las mejores ofertas.</p>
+    </div>
+</main>
+</body>
+</html>
