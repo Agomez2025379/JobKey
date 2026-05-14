@@ -12,7 +12,7 @@
 	<artifactId>jobKey</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jobKey</name>
-	<description>un proyecto de la fila 2 llamada crusaders acerca de una plataforma de postulaciones de trabajo</description>
+	<description>un proyecto de la fila 2 llamada JobKey acerca de una plataforma de postulaciones de trabajo</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -81,6 +81,15 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <!-- THYMELEAF -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
