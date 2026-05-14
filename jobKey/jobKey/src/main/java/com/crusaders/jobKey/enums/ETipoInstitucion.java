@@ -3,14 +3,14 @@ package com.crusaders.jobKey.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum InstitutionType {
-    UNIVERSITY("university"),
-    INSTITUTE("institute"),
-    SCHOOL("school");
+public enum ETipoInstitucion {
+    UNIVERSIDAD("universidad"),
+    INSTITUTO("instituto"),
+    COLEGIO("colegio");
 
     private final String value;
 
-    InstitutionType(String value) {
+    ETipoInstitucion(String value) {
         this.value = value;
     }
 
@@ -20,13 +20,13 @@ public enum InstitutionType {
     }
 
     @JsonCreator
-    public static InstitutionType fromValue(String value) {
-        for (InstitutionType t : InstitutionType.values()) {
+    public static ETipoInstitucion fromValue(String value) {
+        for (ETipoInstitucion t : ETipoInstitucion.values()) {
             if (t.value.equalsIgnoreCase(value)) {
                 return t;
             }
         }
-        throw new IllegalArgumentException("Invalid institution type: " + value);
+        throw new IllegalArgumentException("Tipo de institución inválida: " + value);
     }
 
 }

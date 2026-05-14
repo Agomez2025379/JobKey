@@ -39,7 +39,7 @@ public class Usuarios {
     private EUsuarioRol rol;
 
     @PastOrPresent
-    @Column(name = "ultimo_acceso")
+    @Column(name = "ultimo_acces")
     private LocalDateTime ultimoAcceso;
 
     @CreationTimestamp

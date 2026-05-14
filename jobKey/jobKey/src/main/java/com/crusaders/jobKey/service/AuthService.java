@@ -19,7 +19,7 @@ public class AuthService {
     private final UsuariosRepository usuarioRepository;
     private final CandidatosRepository candidatoRepository;
     private final EmpresasRepository empresaRepository;
-    private final InstitutionRepository institucionRepository;
+    private final InstitucionRepository institucionRepository;
     private final AdminsRepository adminRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -116,25 +116,23 @@ public class AuthService {
             }
 
             case INSTITUCION -> {
-                Institutions institution = new Institutions();  // ← Cambiado de "institutions" a "institution"
-                institution.setUser(institution.getUser());
-                institution.setInstitutionName(req.getNombreInstitucion());
-                institution.setPhone(req.getTelefonoInstitucion());
-                institution.setDescription(req.getDescripcionInstitucion());
-                institution.setType(req.getTipoInstitucion());
-                institution.setLogo(req.getLogoInstitucion());
+                Institucion institucion = new Institucion();
+                institucion.setUsuario(usuario);
+                institucion.setNombreInstitucion(req.getNombreInstitucion());
+                institucion.setTelefono(req.getTelefonoInstitucion());
+                institucion.setDescripcion(req.getDescripcionInstitucion());
+                institucion.setTipo(req.getTipoInstitucion());
+                institucion.setLogo(req.getLogoInstitucion());
 
-                institution.setDepartment(departamentosRepository.findById(req.getDepartamentoId())
+                institucion.setDepartamento(departamentosRepository.findById(req.getDepartamentoId())
                         .orElseThrow(() -> new ResourceNotFoundException("Departamento no encontrado")));
 
-                institution = institucionRepository.save(institution);  // ← Cambiado variable
+                institucion = institucionRepository.save(institucion);
 
-                nombre = institution.getInstitutionName();
-                entidadId = institution.getInstitutionId();
+                nombre = institucion.getNombreInstitucion();
+                entidadId = institucion.getIdInstitucion();
             }
         }
-
-
         // aqui devolvemos la respuesta del registro
         // basicamente informacion del usuario que acaba de crearse
         // devuelve el nombre y tal, como el juja cuando se pone jugar
@@ -190,9 +188,9 @@ public class AuthService {
             }
 
             case INSTITUCION -> {
-                Institutions institutions = institucionRepository.findByUser_UserId(usuario.getIdUsuario());
-                nombre = institutions.getInstitutionName();
-                entidadId = institutions.getInstitutionId();
+                Institucion institucion = institucionRepository.findByUsuario_IdUsuario(usuario.getIdUsuario());
+                nombre = institucion.getNombreInstitucion();
+                entidadId = institucion.getIdInstitucion();
             }
         }
 
