@@ -43,7 +43,7 @@ public class EmpresasServiceImpl implements EmpresasService {
     }
 
     @Override
-    public List<EmpresasResponse> listCompanmies() {
+    public List<EmpresasResponse> listCompanies() {
 
         return empresasRepository.findAll()
                 .stream()

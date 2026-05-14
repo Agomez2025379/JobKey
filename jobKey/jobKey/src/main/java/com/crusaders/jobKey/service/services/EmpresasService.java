@@ -11,7 +11,7 @@ public interface EmpresasService {
 
     EmpresasResponse getCompany(Integer id);
 
-    List<EmpresasResponse> listCompanmies();
+    List<EmpresasResponse> listCompanies();
 
     EmpresasResponse updateCompany(Integer id, EmpresasRequest request);
 
