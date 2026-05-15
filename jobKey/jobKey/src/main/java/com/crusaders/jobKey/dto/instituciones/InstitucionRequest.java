@@ -1,18 +1,19 @@
-package com.crusaders.jobKey.DTO.instituciones;
+package com.crusaders.jobKey.dto.instituciones;
+
 
 import com.crusaders.jobKey.enums.ETipoInstitucion;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
-public class InstitucionResponse {
+@Setter
+public class InstitucionRequest {
 
-    private Integer idInstitucion;
-    private Integer usuarioId;
+    private Integer usuarioId;       // id_usuario existente
     private String nombreInstitucion;
     private String telefono;
     private String descripcion;
     private ETipoInstitucion tipo;
+    private byte[] logo;
     private Integer departamentoId;
 }

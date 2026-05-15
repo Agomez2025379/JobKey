@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO.postulaciones;
+package com.crusaders.jobKey.dto.postulaciones;
 
 import com.crusaders.jobKey.enums.EEstado;
 import lombok.Getter;

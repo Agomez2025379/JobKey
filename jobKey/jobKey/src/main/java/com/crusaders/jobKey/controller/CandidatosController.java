@@ -1,5 +1,6 @@
 package com.crusaders.jobKey.controller;
 
+import com.crusaders.jobKey.dto.candidatos.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

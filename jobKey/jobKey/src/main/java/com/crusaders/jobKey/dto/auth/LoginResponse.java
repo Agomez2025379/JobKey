@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO.auth;
+package com.crusaders.jobKey.dto.auth;
 
 import com.crusaders.jobKey.enums.EUsuarioRol;
 import lombok.AllArgsConstructor;

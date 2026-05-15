@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.service.services;
 
 
-import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
-import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
+import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
+import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
 
 import java.util.List;
 

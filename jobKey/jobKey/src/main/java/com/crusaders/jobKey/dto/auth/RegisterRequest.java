@@ -1,9 +1,7 @@
-package com.crusaders.jobKey.DTO.auth;
+package com.crusaders.jobKey.dto.auth;
 
-import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.enums.ETipoInstitucion;
 import com.crusaders.jobKey.enums.EUsuarioRol;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
