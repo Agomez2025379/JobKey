@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.service.implementes;
 
 
-import com.crusaders.jobKey.DTO.candidatos.*;
+import com.crusaders.jobKey.dto.candidatos.*;
 import com.crusaders.jobKey.entity.*;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.*;

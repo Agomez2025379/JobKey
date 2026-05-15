@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.service.services;
 
 
-import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
-import com.crusaders.jobKey.DTO.instituciones.InstitucionRequest;
+import com.crusaders.jobKey.dto.instituciones.InstitucionResponse;
+import com.crusaders.jobKey.dto.instituciones.InstitucionRequest;
 
 import java.util.List;
 

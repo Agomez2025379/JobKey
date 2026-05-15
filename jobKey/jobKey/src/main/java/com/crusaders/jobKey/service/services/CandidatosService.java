@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.service.services;
 
 
-import com.crusaders.jobKey.DTO.candidatos.CandidatosRequest;
-import com.crusaders.jobKey.DTO.candidatos.CandidatosResponse;
+import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
+import com.crusaders.jobKey.dto.candidatos.CandidatosResponse;
 
 import java.util.List;
 

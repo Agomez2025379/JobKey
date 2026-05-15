@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.service.services;
 
-import com.crusaders.jobKey.DTO.postulaciones.PostulacionesRequest;
-import com.crusaders.jobKey.DTO.postulaciones.PostulacionesResponse;
+import com.crusaders.jobKey.dto.postulaciones.PostulacionesRequest;
+import com.crusaders.jobKey.dto.postulaciones.PostulacionesResponse;
 
 import java.util.List;
 

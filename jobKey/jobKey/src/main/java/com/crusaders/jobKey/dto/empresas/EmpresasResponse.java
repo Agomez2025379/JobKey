@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO.empresas;
+package com.crusaders.jobKey.dto.empresas;
 
 
 import lombok.AllArgsConstructor;
