@@ -133,7 +133,6 @@ public class AuthService {
                 entidadId = institucion.getIdInstitucion();
             }
         }
-
         // aqui devolvemos la respuesta del registro
         // basicamente informacion del usuario que acaba de crearse
         // devuelve el nombre y tal, como el juja cuando se pone jugar
