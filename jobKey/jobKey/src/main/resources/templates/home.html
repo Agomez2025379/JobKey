@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Home - JobKey</title>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"><strong>JobKey</strong></div>
+    <div style="display: flex; align-items: center;">
+        <a th:href="@{/home}" style="margin-right: 15px;">Home</a>
+
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Login</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center;">
+            <span style="color: white; margin-right: 15px;">
+                Bienvenido, <strong sec:authentication="name">Usuario</strong>
+            </span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-family: inherit; font-size: inherit; font-weight: bold;">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container hero">
+    <h1>Welcome to <span style="color: var(--accent-hover)">JobKey</span></h1>
+    <p>Connecting talent with the best opportunities in the market.</p>
+
+    <div class="grid" style="margin-top: 3rem;">
+        <div class="card">
+            <h2>Candidates</h2>
+            <p>Explore professional profiles and find the perfect match for your team.</p>
+            <a th:href="@{/candidatos}" class="btn" style="margin-top: 1rem;">View Candidates</a>
+        </div>
+        <div class="card">
+            <h2>Companies</h2>
+            <p>Discover leading companies and their latest job openings.</p>
+            <a th:href="@{/empresas}" class="btn" style="margin-top: 1rem;">View Companies</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

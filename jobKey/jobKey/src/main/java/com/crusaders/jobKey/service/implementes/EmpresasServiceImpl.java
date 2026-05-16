@@ -33,16 +33,16 @@ public class EmpresasServiceImpl implements EmpresasService {
 
 
     @Override
-    public EmpresasResponse obtenerEmpresa(Integer id) {
+    public EmpresasResponse getCompany(Integer id) {
 
         Empresas empresa = empresasRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 
         return mapToResponse(empresa);
     }
 
     @Override
-    public List<EmpresasResponse> listarEmpresas() {
+    public List<EmpresasResponse> listCompanies() {
 
         return empresasRepository.findAll()
                 .stream()
@@ -51,13 +51,13 @@ public class EmpresasServiceImpl implements EmpresasService {
     }
 
     @Override
-    public EmpresasResponse actualizarEmpresa(Integer id, EmpresasRequest request) {
+    public EmpresasResponse updateCompany(Integer id, EmpresasRequest request) {
 
         Empresas empresa = empresasRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 
         Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Departamento no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
 
         empresa.setNombreEmpresa(request.getNombreEmpresa());
         empresa.setTelefono(request.getTelefono());
@@ -72,10 +72,10 @@ public class EmpresasServiceImpl implements EmpresasService {
     }
 
     @Override
-    public void eliminarEmpresa(Integer id) {
+    public void deleteCompany(Integer id) {
 
         if (!empresasRepository.existsById(id)) {
-            throw new RuntimeException("Empresa no encontrada");
+            throw new RuntimeException("Company not found");
         }
 
         empresasRepository.deleteById(id);

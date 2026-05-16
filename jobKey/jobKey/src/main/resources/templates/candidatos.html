@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Pool - JobKey</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"><strong>JobKey</strong></div>
+    <div class="nav-links">
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/candidatos}" style="border-bottom: 2px solid var(--accent);">Candidates</a>
+        <a th:href="@{/empresas}">Companies</a>
+    </div>
+</nav>
+
+<div class="container">
+    <header style="margin-bottom: 3rem;">
+        <h1>Discover <span style="color: var(--accent-hover)">Top Talent</span></h1>
+        <p>Find the most qualified professionals for your company.</p>
+    </header>
+
+    <div class="grid">
+        <div th:each="c : ${candidatos}" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h3 th:text="${c.nombre + ' ' + c.apellido}" style="margin-bottom: 0.5rem;">Candidate Name</h3>
+                <span style="background: var(--card-hover); color: var(--accent-hover); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">ID: [[${c.idCandidato}]]</span>
+            </div>
+            <p style="color: var(--primary-hover); font-weight: 600;" th:text="${c.profesion}">Profession</p>
+            <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+            <p><strong>Skills:</strong></p>
+            <p th:text="${c.habilidades}" style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">Skills list...</p>
+
+            <div style="display: flex; gap: 10px;">
+                <a href="#" class="btn">View Profile</a>
+                <a th:href="${c.curriculumUrl}" class="btn" style="background-color: var(--accent); color: var(--primary);" target="_blank">CV</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

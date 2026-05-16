@@ -5,7 +5,8 @@ import com.crusaders.jobKey.dto.postulaciones.PostulacionesResponse;
 
 import java.util.List;
 
-public interface PostulacionesService {
+public interface
+PostulacionesService {
 
     PostulacionesResponse crearPostulacion(PostulacionesRequest request);
 

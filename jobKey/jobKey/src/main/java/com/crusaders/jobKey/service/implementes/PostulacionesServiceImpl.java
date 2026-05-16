@@ -33,7 +33,7 @@ public class PostulacionesServiceImpl implements PostulacionesService {
                 .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
 
         Candidatos candidato = candidatosRepository.findById(request.getCandidatoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Candidato no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("CP no encontrado"));
 
         //llamamos el metodo en el repositorio para verificar si ya existe una postulación para esa oferta y candidato
 

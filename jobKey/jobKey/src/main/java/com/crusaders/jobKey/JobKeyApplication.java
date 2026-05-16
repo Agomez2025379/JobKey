@@ -15,7 +15,7 @@ public class JobKeyApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Aplicación JobKey iniciada correctamente, Abriendo puertas..");
+        System.out.println("JobKey application started successfully, Opening doors..");
 
     }
 
