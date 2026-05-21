@@ -1,144 +1,47 @@
-// ── usuarios.js ──────────────────────────────────────────
-// Lógica para la vista de gestión de usuarios:
-//   - Búsqueda en tiempo real por email
-//   - Filtro por rol (pills)
-//   - Modales: Ver detalle, Editar, Eliminar
+// usuarios.js
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // ── Estado del filtro activo ─────────────────────────
-    let rolActivo = 'todos';
-
-    // ── Búsqueda por email ───────────────────────────────
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            aplicarFiltros(searchInput.value.trim().toLowerCase(), rolActivo);
-        });
-    }
-
-    // ── Filtro por rol (pills) ───────────────────────────
-    document.querySelectorAll('.pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            rolActivo = pill.dataset.rol;
-            const texto = searchInput ? searchInput.value.trim().toLowerCase() : '';
-            aplicarFiltros(texto, rolActivo);
-        });
-    });
-
-    // ── Botones de la tabla (delegación de eventos) ──────
-    const tbody = document.querySelector('#tablaUsuarios tbody');
-    if (tbody) {
-        tbody.addEventListener('click', e => {
-            const fila = e.target.closest('tr[data-id]');
-            if (!fila) return;
-
-            const datos = {
-                id       : fila.dataset.id,
-                email    : fila.dataset.email,
-                rol      : fila.dataset.rol,
-                acceso   : fila.dataset.acceso,
-                registro : fila.dataset.registro,
-            };
-
-            if (e.target.closest('.btn-ver'))      abrirDetalle(datos);
-            if (e.target.closest('.btn-editar'))   abrirEditar(datos);
-            if (e.target.closest('.btn-eliminar')) abrirEliminar(datos);
-        });
-    }
-
-    // ── Cerrar modales con botones data-close ────────────
-    document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => cerrarModal(btn.dataset.close));
-    });
-
-    // ── Cerrar modal al hacer click en el overlay ────────
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', e => {
-            if (e.target === overlay) cerrarModal(overlay.id);
-        });
-    });
-
-    // ── Cerrar modal con Escape ──────────────────────────
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.open')
-                    .forEach(m => cerrarModal(m.id));
-        }
-    });
-
-    // ── Auto-ocultar alertas después de 4s ──────────────
-    document.querySelectorAll('.alert').forEach(alert => {
-        setTimeout(() => {
-            alert.style.transition = 'opacity 0.5s';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 500);
-        }, 4000);
-    });
-
-});
-
-// ── Función principal de filtrado ────────────────────────
-function aplicarFiltros(texto, rol) {
-    const filas = document.querySelectorAll('#tablaUsuarios tbody tr[data-email]');
+// ── Búsqueda en tabla ────────────────────────────────────
+function filtrar() {
+    const q = document.getElementById('search')?.value.toLowerCase() ?? '';
+    const filas = document.querySelectorAll('#tabla tbody tr[data-email]');
     let visibles = 0;
 
     filas.forEach(fila => {
-        const emailMatch = fila.dataset.email.toLowerCase().includes(texto);
-        const rolMatch   = rol === 'todos' || fila.dataset.rol === rol;
-
-        if (emailMatch && rolMatch) {
-            fila.style.display = '';
-            visibles++;
-        } else {
-            fila.style.display = 'none';
-        }
+        const email = fila.dataset.email?.toLowerCase() ?? '';
+        const rol   = fila.dataset.rol?.toLowerCase()   ?? '';
+        const match = email.includes(q) || rol.includes(q);
+        fila.style.display = match ? '' : 'none';
+        if (match) visibles++;
     });
 
-    const noResults = document.getElementById('noResults');
-    if (noResults) noResults.style.display = visibles === 0 ? 'block' : 'none';
+    const emptyRow = document.getElementById('empty-row');
+    if (emptyRow) emptyRow.style.display = visibles === 0 ? '' : 'none';
 }
 
-// ── Modal: Ver detalle ───────────────────────────────────
-function abrirDetalle({ id, email, rol, acceso, registro }) {
-    document.getElementById('det-id').textContent       = id;
-    document.getElementById('det-email').textContent    = email;
-    document.getElementById('det-rol').textContent      = rol;
-    document.getElementById('det-acceso').textContent   = acceso;
-    document.getElementById('det-registro').textContent = registro;
-    abrirModal('modalDetalle');
-}
+// ── Validación formulario EDITAR ─────────────────────────
+function validarEditar() {
+    let ok = true;
+    limpiarErrores();
 
-// ── Modal: Editar ────────────────────────────────────────
-function abrirEditar({ id, email, rol }) {
-    document.getElementById('edit-id').value    = id;
-    document.getElementById('edit-email').value = email;
-    document.getElementById('edit-rol').value   = rol;
-    abrirModal('modalEditar');
-}
+    const email = document.getElementById('email');
 
-// ── Modal: Eliminar ──────────────────────────────────────
-function abrirEliminar({ id, email }) {
-    document.getElementById('del-id').value          = id;
-    document.getElementById('del-email').textContent = email;
-    abrirModal('modalEliminar');
-}
-
-// ── Helpers de modal ─────────────────────────────────────
-function abrirModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) {
-        modal.classList.add('open');
-        document.body.style.overflow = 'hidden';
+    if (!email.value.trim() || !email.value.includes('@')) {
+        mostrarError('err-email', 'Ingresa un email válido.');
+        ok = false;
     }
+
+    return ok;
 }
 
-function cerrarModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) {
-        modal.classList.remove('open');
-        document.body.style.overflow = '';
-    }
+// ── Helpers ──────────────────────────────────────────────
+function mostrarError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
+
+function limpiarErrores() {
+    document.querySelectorAll('.field-error').forEach(el => {
+        el.textContent = '';
+        el.style.display = 'none';
+    });
 }
