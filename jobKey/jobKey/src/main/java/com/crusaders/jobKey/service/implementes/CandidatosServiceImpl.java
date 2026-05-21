@@ -81,10 +81,21 @@ public class CandidatosServiceImpl implements CandidatosService {
     }
 
     private CandidatosResponse mapToResponse(Candidatos candidato) {
+        // Validamos de forma segura si el usuario es null
+        Integer usuarioId = null;
+        if (candidato.getUsuario() != null) {
+            usuarioId = candidato.getUsuario().getIdUsuario();
+        }
+
+        // Validamos de forma segura si el departamento es null
+        Integer departamentoId = null;
+        if (candidato.getDepartamento() != null) {
+            departamentoId = candidato.getDepartamento().getIdDepartamento();
+        }
 
         return new CandidatosResponse(
                 candidato.getIdCandidato(),
-                candidato.getUsuario().getIdUsuario(),
+                usuarioId, // Usa la variable segura
                 candidato.getNombre(),
                 candidato.getApellido(),
                 candidato.getTelefono(),
@@ -93,7 +104,43 @@ public class CandidatosServiceImpl implements CandidatosService {
                 candidato.getEducacion(),
                 candidato.getHabilidades(),
                 candidato.getCurriculumUrl(),
-                candidato.getDepartamento().getIdDepartamento()
+                departamentoId // Usa la variable segura
         );
     }
+
+    // ... Tus métodos anteriores se quedan igual ...
+
+    @Override
+    public CandidatosResponse findByUsuarioId(Integer idUsuario) {
+        Candidatos candidato = candidatosRepository.findByUsuario_IdUsuario(idUsuario);
+        if (candidato == null) {
+            return null; // No se ha postulado todavía
+        }
+        return mapToResponse(candidato);
+    }
+
+    @Override
+    public CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario) {
+        Usuarios usuario = usuariosRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+
+        Candidatos candidato = new Candidatos();
+        candidato.setUsuario(usuario); // Aquí lo enlazamos al usuario de la sesión
+        candidato.setNombre(request.getNombre());
+        candidato.setApellido(request.getApellido());
+        candidato.setTelefono(request.getTelefono());
+        candidato.setProfesion(request.getProfesion());
+        candidato.setExperiencia(request.getExperiencia());
+        candidato.setEducacion(request.getEducacion());
+        candidato.setHabilidades(request.getHabilidades());
+        candidato.setCurriculumUrl(request.getCurriculumUrl());
+        candidato.setDepartamento(departamento);
+
+        candidatosRepository.save(candidato);
+        return mapToResponse(candidato);
+    }
+
 }

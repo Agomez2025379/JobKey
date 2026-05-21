@@ -17,4 +17,8 @@ public interface EmpresasService {
 
     void deleteCompany(Integer id);
 
+    EmpresasResponse findByUsuarioId(Integer idUsuario);
+
+    EmpresasResponse createCompany(EmpresasRequest request, Integer idUsuario);
+
 }

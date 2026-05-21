@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Company Profile - JobKey</title>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo"><strong>JobKey Business</strong></div>
+    <div>
+        <a th:href="@{/home}">Home</a>
+    </div>
+</nav>
+
+<div class="container hero">
+    <h1>Company <span style="color: var(--accent-hover)">Dashboard</span></h1>
+    <p>Manage the public data of your corporate profile.</p>
+
+    <div class="card" style="max-width: 650px; margin: 3rem auto; text-align: left; padding: 2.5rem;">
+        <div style="border-bottom: 1px solid #eee; margin-bottom: 1.5rem; padding-bottom: 1rem;">
+            <h2 th:text="${empresa.nombreEmpresa}" style="color: var(--primary-color); margin-bottom: 0.5rem;">Company Name</h2>
+            <p style="font-size: 1.2rem; font-weight: bold; color: #4a5568;" th:text="${empresa.sectorEmpresarial}">Business Sector</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+            <p><strong>Description:</strong></p>
+            <p style="background: #f7fafc; padding: 1rem; border-radius: 6px; border-left: 4px solid var(--primary-color);" th:text="${empresa.descripcion}">Company description...</p>
+            <p><strong>Contact Phone:</strong> <span th:text="${empresa.telefono}">0000-0000</span></p>
+            <p><strong>Location ID:</strong> <span th:text="${empresa.departamentoId}">1</span></p>
+        </div>
+
+        <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+            <a th:href="@{/empresas/editar/{id}(id=${empresa.idEmpresa})}" class="btn" style="text-decoration: none; text-align: center;">
+                Edit Profile
+            </a>
+
+            <form th:action="@{/empresas/eliminar/{id}(id=${empresa.idEmpresa})}" method="post"
+                  onsubmit="return confirm('Are you sure you want to delete your corporate company profile?');" style="display: inline;">
+                <button type="submit" class="btn" style="background-color: #e53e3e; color: white; border: none; cursor: pointer;">
+                    Delete Profile
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
