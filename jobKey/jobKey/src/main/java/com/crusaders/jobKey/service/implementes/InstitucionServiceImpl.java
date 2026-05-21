@@ -11,8 +11,8 @@ import com.crusaders.jobKey.service.services.InstitucionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
-import com.crusaders.jobKey.DTO.instituciones.InstitucionRequest;
+import com.crusaders.jobKey.dto.instituciones.InstitucionResponse;
+import com.crusaders.jobKey.dto.instituciones.InstitucionRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;

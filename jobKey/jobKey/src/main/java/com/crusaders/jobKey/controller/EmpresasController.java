@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.controller;
 
 
-import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
-import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
+import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
+import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
 import com.crusaders.jobKey.service.services.EmpresasService;
 
 import org.springframework.http.ResponseEntity;

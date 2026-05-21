@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.service.implementes;
 
 
-import com.crusaders.jobKey.DTO.empresas.EmpresasRequest;
-import com.crusaders.jobKey.DTO.empresas.EmpresasResponse;
+import com.crusaders.jobKey.dto.empresas.EmpresasRequest;
+import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
 import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.entity.Empresas;
 import com.crusaders.jobKey.entity.Usuarios;

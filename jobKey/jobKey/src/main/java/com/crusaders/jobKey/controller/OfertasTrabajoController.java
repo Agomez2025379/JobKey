@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoRequest;
-import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoResponse;
+import com.crusaders.jobKey.dto.ofertas.OfertasTrabajoRequest;
+import com.crusaders.jobKey.dto.ofertas.OfertasTrabajoResponse;
 import com.crusaders.jobKey.service.services.OfertasTrabajoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

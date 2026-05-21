@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.service;
 
-import com.crusaders.jobKey.DTO.auth.LoginRequest;
-import com.crusaders.jobKey.DTO.auth.LoginResponse;
-import com.crusaders.jobKey.DTO.auth.RegisterRequest;
+import com.crusaders.jobKey.dto.auth.LoginRequest;
+import com.crusaders.jobKey.dto.auth.LoginResponse;
+import com.crusaders.jobKey.dto.auth.RegisterRequest;
 import com.crusaders.jobKey.entity.*;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.*;

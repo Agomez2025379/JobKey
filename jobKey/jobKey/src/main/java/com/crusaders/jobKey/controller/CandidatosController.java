@@ -1,6 +1,6 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.DTO.candidatos.*;
+import com.crusaders.jobKey.dto.candidatos.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
 
 import org.springframework.http.ResponseEntity;

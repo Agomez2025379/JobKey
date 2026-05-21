@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO.instituciones;
+package com.crusaders.jobKey.dto.instituciones;
 
 import com.crusaders.jobKey.enums.ETipoInstitucion;
 import lombok.AllArgsConstructor;

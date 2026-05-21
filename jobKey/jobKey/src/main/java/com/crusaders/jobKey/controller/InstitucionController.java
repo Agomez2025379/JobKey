@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.DTO.instituciones.InstitucionRequest;
-import com.crusaders.jobKey.DTO.instituciones.InstitucionResponse;
+import com.crusaders.jobKey.dto.instituciones.InstitucionRequest;
+import com.crusaders.jobKey.dto.instituciones.InstitucionResponse;
 import com.crusaders.jobKey.service.services.InstitucionService;
 
 import org.springframework.stereotype.Controller;

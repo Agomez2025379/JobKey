@@ -1,4 +1,4 @@
-package com.crusaders.jobKey.DTO.ofertas;
+package com.crusaders.jobKey.dto.ofertas;
 
 import com.crusaders.jobKey.enums.EModalidad;
 import com.crusaders.jobKey.enums.ENivelRequerido;

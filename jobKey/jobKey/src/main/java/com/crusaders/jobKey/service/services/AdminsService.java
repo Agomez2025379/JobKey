@@ -1,20 +1,14 @@
+// AdminsService.java
 package com.crusaders.jobKey.service.services;
 
-import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoRequest;
-import com.crusaders.jobKey.DTO.ofertas.OfertasTrabajoResponse;
+import com.crusaders.jobKey.dto.admins.*;
 import com.crusaders.jobKey.entity.Admins;
-
 import java.util.List;
 
 public interface AdminsService {
-
-
-    List<Admins> listar();
-
-    Admins obtenerPorId(Integer id);
-
-    Admins actualizar(Integer id, Admins admin);
-
+    List<AdminResponse> listar();
+    AdminResponse obtenerPorId(Integer id);
+    AdminResponse crear(AdminRequest request);
+    AdminResponse actualizar(Integer id, AdminUpdateRequest request);
     void eliminar(Integer id);
-
 }
