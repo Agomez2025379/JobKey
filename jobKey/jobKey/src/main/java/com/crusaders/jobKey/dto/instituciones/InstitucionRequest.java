@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class InstitucionRequest {
 
-    private Integer usuarioId;       // id_usuario existente
+    private Integer usuarioId;
     private String nombreInstitucion;
     private String telefono;
     private String descripcion;

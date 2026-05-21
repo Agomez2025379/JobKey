@@ -35,13 +35,13 @@ public class CandidatosController {
 
         if (candidato != null) {
             model.addAttribute("candidato", candidato);
-            return "mi-perfil-candidato"; // templates/mi-perfil-candidato.html
+            return "mi-perfil-candidato";
         }
 
         // Enviamos la lista de departamentos para el select
         model.addAttribute("listaDepartamentos", departamentosRepository.findAll());
         model.addAttribute("nuevoCandidato", new CandidatosRequest());
-        return "formulario-postulacion"; // templates/formulario-postulacion.html
+        return "formulario-postulacion";
     }
 
     @PostMapping("/guardar")

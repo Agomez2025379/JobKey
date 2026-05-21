@@ -68,8 +68,6 @@ public class EmpresasServiceImpl implements EmpresasService {
         empresasRepository.delete(empresa);
     }
 
-    // --- NUEVOS MÉTODOS REQUERIDOS ---
-
     @Override
     public EmpresasResponse findByUsuarioId(Integer idUsuario) {
         Empresas empresa = empresasRepository.findByUsuario_IdUsuario(idUsuario);
@@ -79,7 +77,7 @@ public class EmpresasServiceImpl implements EmpresasService {
         return mapToResponse(empresa);
     }
 
-    @Override
+    @Override // Metodo creado para la postulacion de la empresa en su formulario
     public EmpresasResponse createCompany(EmpresasRequest request, Integer idUsuario) {
         Usuarios usuario = usuariosRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado para asociar a la empresa"));
@@ -99,8 +97,6 @@ public class EmpresasServiceImpl implements EmpresasService {
         Empresas empresaGuardada = empresasRepository.save(nuevaEmpresa);
         return mapToResponse(empresaGuardada);
     }
-
-    // --- MÉTODO DE MAPEO REUTILIZABLE ---
 
     private EmpresasResponse mapToResponse(Empresas empresa) {
         Integer usuarioId = (empresa.getUsuario() != null) ? empresa.getUsuario().getIdUsuario() : null;

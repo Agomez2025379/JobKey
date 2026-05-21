@@ -81,13 +81,12 @@ public class CandidatosServiceImpl implements CandidatosService {
     }
 
     private CandidatosResponse mapToResponse(Candidatos candidato) {
-        // Validamos de forma segura si el usuario es null
+
         Integer usuarioId = null;
         if (candidato.getUsuario() != null) {
             usuarioId = candidato.getUsuario().getIdUsuario();
         }
 
-        // Validamos de forma segura si el departamento es null
         Integer departamentoId = null;
         if (candidato.getDepartamento() != null) {
             departamentoId = candidato.getDepartamento().getIdDepartamento();
@@ -95,7 +94,7 @@ public class CandidatosServiceImpl implements CandidatosService {
 
         return new CandidatosResponse(
                 candidato.getIdCandidato(),
-                usuarioId, // Usa la variable segura
+                usuarioId,
                 candidato.getNombre(),
                 candidato.getApellido(),
                 candidato.getTelefono(),
@@ -104,22 +103,20 @@ public class CandidatosServiceImpl implements CandidatosService {
                 candidato.getEducacion(),
                 candidato.getHabilidades(),
                 candidato.getCurriculumUrl(),
-                departamentoId // Usa la variable segura
+                departamentoId
         );
     }
-
-    // ... Tus métodos anteriores se quedan igual ...
 
     @Override
     public CandidatosResponse findByUsuarioId(Integer idUsuario) {
         Candidatos candidato = candidatosRepository.findByUsuario_IdUsuario(idUsuario);
         if (candidato == null) {
-            return null; // No se ha postulado todavía
+            return null;
         }
         return mapToResponse(candidato);
     }
 
-    @Override
+    @Override // Metodo creado para la postulacion del formulario
     public CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario) {
         Usuarios usuario = usuariosRepository.findById(idUsuario)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -128,7 +125,7 @@ public class CandidatosServiceImpl implements CandidatosService {
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
 
         Candidatos candidato = new Candidatos();
-        candidato.setUsuario(usuario); // Aquí lo enlazamos al usuario de la sesión
+        candidato.setUsuario(usuario);
         candidato.setNombre(request.getNombre());
         candidato.setApellido(request.getApellido());
         candidato.setTelefono(request.getTelefono());
