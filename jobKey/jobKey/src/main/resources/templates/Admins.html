@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
     <span class="navbar-brand">⚿ JobKey Admin</span>
     <div>
@@ -20,11 +19,9 @@
 
 <div class="container">
 
-    <!-- FLASH MESSAGES -->
     <div th:if="${successMsg}" class="alert alert-success" th:text="${successMsg}"></div>
     <div th:if="${errorMsg}"   class="alert alert-error"   th:text="${errorMsg}"></div>
 
-    <!-- HEADER -->
     <div class="page-header">
         <div>
             <h1 class="page-title">Gestión de Administradores</h1>
@@ -35,7 +32,6 @@
         </a>
     </div>
 
-    <!-- STAT CARDS -->
     <div class="stats">
         <div class="stat-card">
             <div class="stat-label">Total admins</div>
@@ -51,7 +47,6 @@
         </div>
     </div>
 
-    <!-- TABLA -->
     <div class="card">
         <div class="search-bar">
             <input type="text" id="search" placeholder="Buscar por nombre o email…" oninput="filtrar()"/>
