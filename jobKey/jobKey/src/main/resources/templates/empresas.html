@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Companies - JobKey</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"><strong>JobKey</strong></div>
+    <div class="nav-links">
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/candidatos}">Candidates</a>
+        <a th:href="@{/empresas}" style="border-bottom: 2px solid var(--accent);">Companies</a>
+    </div>
+</nav>
+
+<div class="container">
+    <header style="margin-bottom: 3rem;">
+        <h1>Our <span style="color: var(--accent-hover)">Partner Companies</span></h1>
+        <p>Connect with industry leaders and find your dream job.</p>
+    </header>
+
+    <div class="grid">
+        <div th:each="e : ${empresas}" class="card">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">
+                <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    LOGO
+                </div>
+                <div>
+                    <h3 th:text="${e.nombreEmpresa}">Company Name</h3>
+                    <small th:text="${e.sectorEmpresarial}" style="color: var(--accent-hover); font-weight: bold; text-transform: uppercase;">Sector</small>
+                </div>
+            </div>
+            <p th:text="${e.descripcion}" style="font-size: 0.9rem; height: 60px; overflow: hidden; text-overflow: ellipsis;">Description...</p>
+            <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.85rem; color: #888;"><i class="icon"></i> Phone: [[${e.telefono}]]</span>
+                <a href="#" class="btn" style="width: auto; padding: 8px 20px;">Open Jobs</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

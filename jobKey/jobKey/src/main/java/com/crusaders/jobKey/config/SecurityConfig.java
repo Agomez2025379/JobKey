@@ -2,61 +2,40 @@ package com.crusaders.jobKey.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        return http
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf(csrf -> csrf.disable())
-
                 .authorizeHttpRequests(auth -> auth
-
-                        // endpoints públicos
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        // ADMIN tiene acceso total
-                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
-
-                        // CANDIDATOS
-                        .requestMatchers("/api/candidatos/**")
-                        .hasAnyRole("CANDIDATO", "EMPRESA", "INSTITUCION", "ADMIN")
-
-                        // EMPRESAS
-                        .requestMatchers("/api/empresas/**")
-                        .hasAnyRole("EMPRESA", "CANDIDATO", "ADMIN")
-
-                        // INSTITUCIONES
-                        .requestMatchers("/api/instituciones/**")
-                        .hasAnyRole("INSTITUCION", "ADMIN", "CANDIDATO")
-
-                        // OFERTAS DE TRABAJO
-                        .requestMatchers("/api/ofertas/**")
-                        .hasAnyRole("EMPRESA", "CANDIDATO", "ADMIN")
-
-                        // POSTULACIONES
-                        .requestMatchers("/api/postulaciones/**")
-                        .hasAnyRole("CANDIDATO", "EMPRESA", "ADMIN")
-
-                        // RESEÑAS
-                        .requestMatchers("/api/resenas/**")
-                        .hasAnyRole("CANDIDATO", "EMPRESA", "ADMIN")
-
-                        // DEPARTAMENTOS (datos públicos)
-                        .requestMatchers("/api/departamentos/**")
-                        .permitAll()
-
-                        // cualquier otro endpoint requiere login
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/login", "/register", "/", "/home").permitAll()
+                        .requestMatchers("/candidatos/**", "/empresas/**").authenticated()
                         .anyRequest().authenticated()
                 )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
 
-                .httpBasic(Customizer.withDefaults())
+        return http.build();
+    }
 
-                .build();
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 }

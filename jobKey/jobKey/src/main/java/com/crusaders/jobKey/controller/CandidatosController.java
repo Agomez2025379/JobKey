@@ -2,48 +2,24 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.dto.candidatos.*;
 import com.crusaders.jobKey.service.services.CandidatosService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/candidatos")
+@Controller
+@RequestMapping("/candidatos")
 public class CandidatosController {
 
-    private final CandidatosService candidatoService;
+    private final CandidatosService candidatosService;
 
-    public CandidatosController(CandidatosService candidatoService) {
-        this.candidatoService = candidatoService;
+    public CandidatosController(CandidatosService candidatosService) {
+        this.candidatosService = candidatosService;
     }
-
-
 
     @GetMapping
-    public ResponseEntity<List<CandidatosResponse>> listar() {
-        return ResponseEntity.ok(candidatoService.listarCandidatos());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CandidatosResponse> obtener(
-            @PathVariable Integer id) {
-
-        return ResponseEntity.ok(candidatoService.obtenerCandidato(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CandidatosResponse> actualizar(
-            @PathVariable Integer id,
-            @RequestBody CandidatosRequest request) {
-
-        return ResponseEntity.ok(candidatoService.actualizarCandidato(id, request));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-
-        candidatoService.eliminarCandidato(id);
-        return ResponseEntity.noContent().build();
+    public String showCandidates(Model model) {
+        model.addAttribute("candidatos", candidatosService.listCandidates());
+        return "candidatos";
     }
 }

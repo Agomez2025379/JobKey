@@ -9,12 +9,12 @@ import java.util.List;
 public interface EmpresasService {
 
 
-    EmpresasResponse obtenerEmpresa(Integer id);
+    EmpresasResponse getCompany(Integer id);
 
-    List<EmpresasResponse> listarEmpresas();
+    List<EmpresasResponse> listCompanies();
 
-    EmpresasResponse actualizarEmpresa(Integer id, EmpresasRequest request);
+    EmpresasResponse updateCompany(Integer id, EmpresasRequest request);
 
-    void eliminarEmpresa(Integer id);
+    void deleteCompany(Integer id);
 
 }

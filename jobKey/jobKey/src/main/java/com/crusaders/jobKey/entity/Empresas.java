@@ -31,29 +31,29 @@ public class Empresas {
     private Integer idEmpresa;
 
     /* relación con usuario */
-    @NotNull(message = "El usuario es obligatorio")
+    @NotNull(message = "User is mandatory")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
     private Usuarios usuario;
 
     /* nombre empresa */
-    @NotBlank(message = "El nombre de la empresa es obligatorio")
-    @Size(max = 150, message = "El nombre de la empresa no puede superar los 150 caracteres")
+    @NotBlank(message = "Company name is mandatory")
+    @Size(max = 150, message = "Company name cannot exceed 150 characters")
     @Column(name = "nombre_empresa", nullable = false, length = 150)
     private String nombreEmpresa;
 
     /* telefono */
-    @Pattern(regexp = "^[0-9]{8,15}$", message = "El teléfono debe contener entre 8 y 15 números")
+    @Pattern(regexp = "^[0-9]{8,15}$", message = "Phone number must contain between 8 and 15 digits")
     @Column(name = "telefono", length = 20)
     private String telefono;
 
     /* descripcion */
-    @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
     /* sector */
-    @Size(max = 100, message = "El sector empresarial no puede superar los 100 caracteres")
+    @Size(max = 100, message = "Business sector cannot exceed 100 characters")
     @Column(name = "sector_empresarial", length = 100)
     private String sectorEmpresarial;
 
@@ -63,7 +63,7 @@ public class Empresas {
     private byte[] logo;
 
     /* departamento */
-    @NotNull(message = "El departamento es obligatorio")
+    @NotNull(message = "Department is mandatory")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departamento_id", referencedColumnName = "id_departamento", nullable = false)
     private Departamentos departamento;
