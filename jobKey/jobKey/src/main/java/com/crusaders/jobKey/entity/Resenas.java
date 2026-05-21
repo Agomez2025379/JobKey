@@ -1,8 +1,8 @@
 package com.crusaders.jobKey.entity;
 
+import com.crusaders.jobKey.enums.ResenaTipo;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
-import com.crusaders.jobKey.entity.ResenaTipo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +31,7 @@ public class Resenas {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, columnDefinition = "enum('empresa_a_candidato','candidato_a_empresa')")
-    private ResenaTipo  tipo;
+    private ResenaTipo tipo;
 
     //id de la empresa
     @Column(name = "empresa_id")
