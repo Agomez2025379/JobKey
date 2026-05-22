@@ -22,12 +22,12 @@ public class InstitucionServiceImpl implements InstitucionService {
 
     private final InstitucionRepository institucionRepository;
     private final DepartamentosRepository departamentosRepository;
-    private final UsuariosRepository usuarioRepository; // ← AGREGAR
+    private final UsuariosRepository usuarioRepository;
 
     public InstitucionServiceImpl(
             InstitucionRepository institucionRepository,
             DepartamentosRepository departamentosRepository,
-            UsuariosRepository usuarioRepository) { // ← AGREGAR
+            UsuariosRepository usuarioRepository) {
         this.institucionRepository = institucionRepository;
         this.departamentosRepository = departamentosRepository;
         this.usuarioRepository = usuarioRepository;
@@ -35,79 +35,111 @@ public class InstitucionServiceImpl implements InstitucionService {
 
     @Override
     public InstitucionResponse obtenerPorId(Integer id) {
+        System.out.println("=== BUSCANDO INSTITUCIÓN POR ID: " + id);
         Institucion institucion = institucionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Institucion no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Institución no encontrada con ID: " + id));
+        System.out.println("Institución encontrada: " + institucion.getNombreInstitucion());
         return mapToResponse(institucion);
     }
 
     @Override
     public List<InstitucionResponse> listarInstituciones() {
+        System.out.println("=== LISTANDO TODAS LAS INSTITUCIONES");
         return institucionRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public InstitucionResponse crearInstitucion(InstitucionRequest request) {
+        System.out.println("=== CREANDO NUEVA INSTITUCIÓN");
         Institucion institucion = new Institucion();
+
+        // Buscar departamento por nombre "guatemala"
+        Departamentos departamento = departamentosRepository.findAll()
+                .stream()
+                .filter(d -> d.getDepartamento() != null && d.getDepartamento().equalsIgnoreCase("guatemala"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Departamento 'guatemala' no existe en la base de datos"));
+
+        System.out.println("Departamento encontrado: ID=" + departamento.getIdDepartamento() +
+                ", Nombre=" + departamento.getDepartamento());
+        institucion.setDepartamento(departamento);
 
         // Asignar campos básicos
         institucion.setNombreInstitucion(request.getNombreInstitucion());
         institucion.setTelefono(request.getTelefono());
         institucion.setDescripcion(request.getDescripcion());
         institucion.setTipo(request.getTipo());
-        institucion.setLogo(request.getLogo());
 
-        // Asignar departamento (si existe)
-        if (request.getDepartamentoId() != null) {
-            Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
-                    .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
-            institucion.setDepartamento(departamento);
+        if (request.getLogo() != null && request.getLogo().length > 0) {
+            institucion.setLogo(request.getLogo());
         }
 
-        // Asignar usuario (puedes obtener el usuario actual o usar uno por defecto)
-        // Temporal: usar el primer usuario o necesitas el ID del usuario logueado
+        // Asignar usuario
         if (request.getUsuarioId() != null) {
             Usuarios usuario = usuarioRepository.findById(request.getUsuarioId())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + request.getUsuarioId()));
             institucion.setUsuario(usuario);
+            System.out.println("Usuario encontrado: ID=" + usuario.getIdUsuario() + ", Email=" + usuario.getEmail());
+        } else {
+            throw new RuntimeException("Se requiere un usuarioId para crear la institucion");
         }
 
         Institucion saved = institucionRepository.save(institucion);
+        System.out.println("Institución guardada con ID: " + saved.getIdInstitucion());
         return mapToResponse(saved);
     }
 
     @Override
     public InstitucionResponse actualizarInstitucion(Integer id, InstitucionRequest request) {
+        System.out.println("=== ACTUALIZANDO INSTITUCIÓN ID: " + id);
         Institucion institucion = institucionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Institucion no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Institución no encontrada con ID: " + id));
 
-        if (request.getDepartamentoId() != null) {
-            Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
-                    .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
-            institucion.setDepartamento(departamento);
-        }
-
+        // Actualizar campos
         institucion.setNombreInstitucion(request.getNombreInstitucion());
         institucion.setTelefono(request.getTelefono());
         institucion.setDescripcion(request.getDescripcion());
         institucion.setTipo(request.getTipo());
-        institucion.setLogo(request.getLogo());
 
-        institucionRepository.save(institucion);
-        return mapToResponse(institucion);
+        if (request.getLogo() != null && request.getLogo().length > 0) {
+            institucion.setLogo(request.getLogo());
+        }
+
+        // Actualizar departamento si se proporciona
+        if (request.getDepartamentoId() != null) {
+            Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
+                    .orElseThrow(() -> new RuntimeException("Departamento no encontrado con ID: " + request.getDepartamentoId()));
+            institucion.setDepartamento(departamento);
+            System.out.println("Departamento actualizado: ID=" + departamento.getIdDepartamento());
+        }
+
+        // Actualizar email del usuario si se proporciona
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+            Usuarios usuario = institucion.getUsuario();
+            if (usuario != null) {
+                usuario.setEmail(request.getEmail());
+                usuarioRepository.save(usuario);
+                System.out.println("Email de usuario actualizado: " + request.getEmail());
+            }
+        }
+
+        Institucion saved = institucionRepository.save(institucion);
+        System.out.println("Institución actualizada correctamente");
+        return mapToResponse(saved);
     }
 
     @Override
     public void eliminarInstitucion(Integer id) {
+        System.out.println("=== Eliminando Institucion ID: " + id);
         if (!institucionRepository.existsById(id)) {
-            throw new RuntimeException("Institucion no encontrada");
+            throw new RuntimeException("Institución no encontrada con ID: " + id);
         }
         institucionRepository.deleteById(id);
+        System.out.println("Institución eliminada correctamente");
     }
-
 
     @Override
     public Page<InstitucionResponse> listarInstitucionesPaginadas(Pageable pageable) {
@@ -116,14 +148,35 @@ public class InstitucionServiceImpl implements InstitucionService {
     }
 
     private InstitucionResponse mapToResponse(Institucion institucion) {
+        System.out.println("Mapeando institución ID: " + institucion.getIdInstitucion());
+
+        Integer usuarioId = null;
+        String email = null;  // ← AGREGAR
+        if (institucion.getUsuario() != null) {
+            usuarioId = institucion.getUsuario().getIdUsuario();
+            email = institucion.getUsuario().getEmail();  // ← AGREGAR
+            System.out.println("  - Usuario ID: " + usuarioId + ", Email: " + email);
+        } else {
+            System.out.println("  - ADVERTENCIA: La institución no tiene usuario asociado");
+        }
+
+        Integer departamentoId = null;
+        if (institucion.getDepartamento() != null) {
+            departamentoId = institucion.getDepartamento().getIdDepartamento();
+            System.out.println("  - Departamento ID: " + departamentoId);
+        } else {
+            System.out.println("  - ADVERTENCIA: La institución no tiene departamento asociado");
+        }
+
         return new InstitucionResponse(
                 institucion.getIdInstitucion(),
-                institucion.getUsuario() != null ? institucion.getUsuario().getIdUsuario() : null,
+                usuarioId,
+                email,  // ← AGREGAR
                 institucion.getNombreInstitucion(),
                 institucion.getTelefono(),
                 institucion.getDescripcion(),
                 institucion.getTipo(),
-                institucion.getDepartamento() != null ? institucion.getDepartamento().getIdDepartamento() : null
+                departamentoId
         );
     }
 }

@@ -4,37 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Instituciones - JobKey</title>
-
-    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/instituciones.css}">
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar">
     <div>
         <strong>JobKey Admin</strong>
     </div>
     <div>
         <a th:href="@{/instituciones}">Instituciones</a>
-        <a href="/vacantes">Vacantes</a>
         <a href="/usuarios">Usuarios</a>
     </div>
 </nav>
 
-<!-- Contenido Principal -->
 <div class="container">
     <div th:if="${success}" class="alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert-error" th:text="${error}"></div>
 
     <div class="header">
         <h1>🏢 Instituciones</h1>
-        <button class="btn" onclick="openModal()">➕ Nueva</button>
+        <a th:href="@{/instituciones/nueva}" class="btn">➕ Nueva</a>
     </div>
 
     <div class="card">
         <div class="table-container">
-            <table>
+            <table id="tablaInstituciones">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -48,29 +43,21 @@
                 <tbody>
                 <tr th:each="inst : ${instituciones}">
                     <td th:text="${inst.idInstitucion}">1</td>
-
-                    <!-- LOGO PLACEHOLDER SEGURO -->
                     <td>
                         <div class="logo-placeholder"
                              th:text="${inst.nombreInstitucion != null ? inst.nombreInstitucion.charAt(0) : 'I'}">
                         </div>
                     </td>
-
                     <td th:text="${inst.nombreInstitucion}">Nombre</td>
-
                     <td>
                         <span class="badge"
                               th:classappend="'badge-' + ${inst.tipo}"
                               th:text="${inst.tipo}">
                         </span>
                     </td>
-
                     <td th:text="${inst.telefono}">12345678</td>
-
                     <td>
-                        <!-- ONCLICK CORREGIDO -->
-                        <button class="btn btn-sm" th:onclick="|edit(${inst.idInstitucion})|">Editar</button>
-
+                        <a th:href="@{/instituciones/editar/{id}(id=${inst.idInstitucion})}" class="btn btn-sm">Editar</a>
                         <a th:href="@{/instituciones/eliminar/{id}(id=${inst.idInstitucion})}"
                            class="btn btn-sm btn-danger"
                            onclick="return confirm('¿Eliminar esta institución?')">
@@ -82,57 +69,12 @@
                 <tr th:if="${instituciones.empty}">
                     <td colspan="6" style="text-align: center;">No hay instituciones registradas</td>
                 </tr>
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle">Nueva Institución</h3>
-            <button class="close-modal" onclick="closeModal()">&times;</button>
-        </div>
-
-        <div class="modal-body">
-            <form id="institucionForm">
-                <input type="hidden" id="id" name="idInstitucion">
-
-                <label>Nombre de la Institución *</label>
-                <input type="text" id="nombre" name="nombreInstitucion" required>
-
-                <label>Teléfono</label>
-                <input type="tel" id="telefono" name="telefono">
-
-                <label>Tipo *</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="UNIVERSIDAD">Universidad</option>
-                    <option value="INSTITUTO">Instituto</option>
-                    <option value="COLEGIO">Colegio</option>
-                </select>
-
-                <label>Logo URL</label>
-                <input type="text" id="logo" name="logo" placeholder="https://ejemplo.com/logo.png">
-
-                <label>Descripción</label>
-                <textarea id="descripcion" name="descripcion" rows="3"></textarea>
-
-                <label>Departamento ID</label>
-                <input type="number" id="departamentoId" name="departamentoId">
-            </form>
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn" onclick="closeModal()" style="background:#64748b">Cancelar</button>
-            <button class="btn" onclick="save()">Guardar</button>
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript -->
 <script th:src="@{/js/instituciones.js}"></script>
 
 </body>
