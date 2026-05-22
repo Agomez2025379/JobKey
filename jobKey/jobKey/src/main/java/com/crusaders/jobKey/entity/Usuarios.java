@@ -29,7 +29,7 @@ public class Usuarios {
     private String email;
 
     @NotBlank
-    @Size(min = 60, max = 255) // bcrypt ocupa ~60
+    @Size(max = 255)
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 

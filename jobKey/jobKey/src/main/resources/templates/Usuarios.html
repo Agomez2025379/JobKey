@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Gestión de Usuarios – JobKey</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-    <link rel="stylesheet" th:href="@{/css/admins.css}"/>
+    <link rel="stylesheet" th:href="@{/css/Usuarios.css}"/>>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 </head>
 <body>
@@ -13,6 +13,8 @@
 <nav class="navbar">
     <span class="navbar-brand">⚿ JobKey Admin</span>
     <div>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/admins}" >Admins</a>
         <a th:href="@{/usuarios}" style="color:var(--accent)">Usuarios</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
     </div>

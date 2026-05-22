@@ -121,3 +121,6 @@ values ('empresa_a_candidato', 1, 1, 1, 5, 'excelente candidato'),
 
 insert into admins (id_usuario, nombre)
 values (1, 'super admin');
+
+
+select * from usuarios;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Gestión de Administradores – JobKey</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/css/Admins.css}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 </head>
 <body>
@@ -11,7 +12,7 @@
 <nav class="navbar">
     <span class="navbar-brand">⚿ JobKey Admin</span>
     <div>
-
+        <a th:href="@{/home}">Home</a>
         <a th:href="@{/admins}" style="color:var(--accent)">Admins</a>
         <a th:href="@{/usuarios}">Usuarios</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
@@ -28,9 +29,6 @@
             <h1 class="page-title">Gestión de Administradores</h1>
             <p class="page-subtitle">Crea, edita y elimina cuentas de administrador</p>
         </div>
-        <a th:href="@{/admins/nuevo}" class="btn btn-primary">
-            <i class="ti ti-plus" aria-hidden="true"></i> Nuevo admin
-        </a>
     </div>
 
     <div class="stats">
