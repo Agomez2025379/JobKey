@@ -29,7 +29,7 @@ public class Usuarios {
     private String email;
 
     @NotBlank
-    @Size(min = 60, max = 255) // bcrypt ocupa ~60
+    // @Size(min = 60, max = 255)  // ← COMENTADO para evitar error en edición
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -48,14 +48,7 @@ public class Usuarios {
 
     public Usuarios() {}
 
-    public Usuarios(
-            String passwordHash,
-            String email,
-            EUsuarioRol rol,
-            LocalDateTime ultimoAcceso,
-            LocalDateTime fechaRegistro
-    )
-    {
+    public Usuarios(String passwordHash, String email, EUsuarioRol rol, LocalDateTime ultimoAcceso, LocalDateTime fechaRegistro) {
         this.passwordHash = passwordHash;
         this.email = email;
         this.rol = rol;
@@ -63,12 +56,7 @@ public class Usuarios {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Usuarios(
-            String email,
-            String passwordHash,
-            EUsuarioRol rol
-    )
-    {
+    public Usuarios(String email, String passwordHash, EUsuarioRol rol) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.rol = rol;

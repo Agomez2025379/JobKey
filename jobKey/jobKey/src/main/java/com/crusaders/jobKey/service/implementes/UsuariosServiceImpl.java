@@ -20,7 +20,6 @@ public class UsuariosServiceImpl implements UsuariosService {
         this.usuariosRepository = usuariosRepository;
     }
 
-    // ── Listar ───────────────────────────────────────────
     @Override
     public List<UsuarioResponse> listar() {
         return usuariosRepository.findAll()
@@ -29,13 +28,11 @@ public class UsuariosServiceImpl implements UsuariosService {
                 .toList();
     }
 
-    // ── Obtener por ID ───────────────────────────────────
     @Override
     public UsuarioResponse obtenerPorId(Integer id) {
         return toResponse(buscarOLanzar(id));
     }
 
-    // ── Actualizar ───────────────────────────────────────
     @Override
     @Transactional
     public UsuarioResponse actualizar(Integer id, UsuarioUpdateRequest request) {
@@ -51,31 +48,24 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         usuario.setEmail(request.getEmail());
         usuario.setRol(request.getRol());
+        // NO modificar password_hash en edición
         usuariosRepository.save(usuario);
 
         return toResponse(usuario);
     }
 
-    // ── Eliminar ─────────────────────────────────────────
     @Override
     @Transactional
     public void eliminar(Integer id) {
         if (!usuariosRepository.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    "Usuario no encontrado con ID: " + id
-            );
+            throw new ResourceNotFoundException("Usuario no encontrado con ID: " + id);
         }
-        // El cascade en la DB elimina automáticamente
-        // el registro hijo (admins, candidatos, etc.)
         usuariosRepository.deleteById(id);
     }
 
-    // ── Helpers ──────────────────────────────────────────
     private Usuarios buscarOLanzar(Integer id) {
         return usuariosRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Usuario no encontrado con ID: " + id
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
     }
 
     private UsuarioResponse toResponse(Usuarios u) {
