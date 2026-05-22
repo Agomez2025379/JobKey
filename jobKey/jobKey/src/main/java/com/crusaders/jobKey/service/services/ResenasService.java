@@ -1,8 +1,7 @@
 package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.entity.Resenas;
-import com.crusaders.jobKey.entity.ResenaTipo;
-
+import com.crusaders.jobKey.enums.ResenaTipo;
 import java.util.List;
 
 public interface ResenasService {
@@ -10,4 +9,5 @@ public interface ResenasService {
     Resenas obtenerPorId(Integer id);
     List<Resenas> obtenerPorTipo(ResenaTipo tipo);
     List<Resenas> obtenerPorEmpresaId(Integer empresaId);
+    Resenas guardar(Resenas resena);
 }
