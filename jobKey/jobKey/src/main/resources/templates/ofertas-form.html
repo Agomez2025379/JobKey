@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title th:text="${modoEdicion} ? 'Edit Job Offer' : 'Create Job Offer'">
+        Job Offer
+    </title>
+
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/ofertas-trabajo.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div>
+        <strong>Job Portal</strong>
+    </div>
+    <div>
+        <a href="/">Home</a>
+        <a href="/ofertas">Offers</a>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <h1 th:text="${modoEdicion} ? 'Edit Job Offer' : 'Create Job Offer'">
+        Job Offer
+    </h1>
+
+    <form method="post"
+          th:action="${modoEdicion} ? @{/ofertas/editar/{id}(id=${id})} : @{/ofertas/crear}"
+          th:object="${oferta}">
+
+        <!-- GLOBAL ERRORS -->
+        <div class="form-errors" th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <!-- TITLE -->
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" placeholder="Offer title" th:field="*{titulo}">
+            <small class="error" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></small>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+            <label>Description</label>
+            <textarea rows="5" placeholder="Job description" th:field="*{descripcion}"></textarea>
+            <small class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></small>
+        </div>
+
+        <!-- REQUIREMENTS -->
+        <div class="form-group">
+            <label>Requirements</label>
+            <textarea rows="4" placeholder="Job requirements" th:field="*{requisitos}"></textarea>
+            <small class="error" th:if="${#fields.hasErrors('requisitos')}" th:errors="*{requisitos}"></small>
+        </div>
+
+        <!-- SALARY -->
+        <div class="form-group">
+            <label>Salary</label>
+            <input type="number" step="0.01" placeholder="0.00" th:field="*{salario}">
+            <small class="error" th:if="${#fields.hasErrors('salario')}" th:errors="*{salario}"></small>
+        </div>
+
+        <!-- MODALITY -->
+        <div class="form-group">
+            <label>Modality</label>
+            <select th:field="*{modalidad}">
+                <option value="">Select an option</option>
+                <option th:each="m : ${T(com.crusaders.jobKey.enums.EModalidad).values()}"
+                        th:value="${m}"
+                        th:text="${m.value}">
+                </option>
+            </select>
+            <small class="error" th:if="${#fields.hasErrors('modalidad')}" th:errors="*{modalidad}"></small>
+        </div>
+
+        <!-- WORKDAY TYPE -->
+        <div class="form-group">
+            <label>Job Type / Shift</label>
+            <select th:field="*{tipoJornada}">
+                <option value="">Select a shift</option>
+                <option th:each="j : ${T(com.crusaders.jobKey.enums.ETipoJornada).values()}"
+                        th:value="${j}"
+                        th:text="${j.name()}">
+                </option>
+            </select>
+            <small class="error" th:if="${#fields.hasErrors('tipoJornada')}" th:errors="*{tipoJornada}"></small>
+        </div>
+
+        <!-- REQUIRED LEVEL -->
+        <div class="form-group">
+            <label>Required Experience Level</label>
+            <select th:field="*{nivelRequerido}">
+                <option value="">Select a level</option>
+                <option th:each="n : ${T(com.crusaders.jobKey.enums.ENivelRequerido).values()}"
+                        th:value="${n}"
+                        th:text="${n.name()}">
+                </option>
+            </select>
+            <small class="error" th:if="${#fields.hasErrors('nivelRequerido')}" th:errors="*{nivelRequerido}"></small>
+        </div>
+
+        <!-- CLOSING DATE -->
+        <div class="form-group">
+            <label>Closing Date</label>
+            <input type="date" th:field="*{fechaCierre}">
+            <small class="error" th:if="${#fields.hasErrors('fechaCierre')}" th:errors="*{fechaCierre}"></small>
+        </div>
+
+        <!-- COMPANY SELECT -->
+        <div class="form-group">
+            <label>Company</label>
+            <select th:field="*{empresaId}">
+                <option value="">Select a company</option>
+                <option th:each="emp : ${empresas}"
+                        th:value="${emp.idEmpresa}"
+                        th:text="${emp.nombreEmpresa}">
+                </option>
+            </select>
+            <small class="error" th:if="${#fields.hasErrors('empresaId')}" th:errors="*{empresaId}"></small>
+        </div>
+
+        <!-- DEPARTMENT SELECT -->
+        <div class="form-group">
+            <label>Department</label>
+            <select th:field="*{departamentoId}">
+                <option value="">Select a department</option>
+                <option th:each="dep : ${departamentos}"
+                        th:value="${dep.idDepartamento}"
+                        th:text="${dep.departamento}">
+                </option>
+            </select>
+            <small class="error" th:if="${#fields.hasErrors('departamentoId')}" th:errors="*{departamentoId}"></small>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="form-actions">
+            <button type="submit" th:text="${modoEdicion} ? 'Update' : 'Create'">
+                Save
+            </button>
+            <a href="/ofertas">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

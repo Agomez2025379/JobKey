@@ -14,37 +14,55 @@ import java.time.LocalDate;
 @Setter
 public class OfertasTrabajoRequest {
 
-    @NotNull
+    @NotNull(message = "Company ID is required")
     private Integer empresaId;
 
-    @NotNull
+    @NotNull(message = "Department ID is required")
     private Integer departamentoId;
 
-    @NotBlank
-    @Size(min = 2, max = 50)
+    @NotBlank(message = "Title is required")
+    @Size(
+            min = 2,
+            max = 50,
+            message = "Title must be between 2 and 50 characters"
+    )
     private String titulo;
 
-    @NotBlank
-    @Size(min = 20, max = 200)
+    @NotBlank(message = "Description is required")
+    @Size(
+            min = 20,
+            max = 200,
+            message = "Description must be between 20 and 200 characters"
+    )
     private String descripcion;
 
-    @Size(max = 100)
+    @Size(
+            max = 100,
+            message = "Requirements cannot exceed 100 characters"
+    )
     private String requisitos;
 
-    @DecimalMin("0.01")
-    @Digits(integer = 8, fraction = 2)
+    @DecimalMin(
+            value = "0.01",
+            message = "Salary must be greater than 0"
+    )
+    @Digits(
+            integer = 8,
+            fraction = 2,
+            message = "Salary format is invalid"
+    )
     private BigDecimal salario;
 
-    @NotNull
+    @NotNull(message = "Work modality is required")
     private EModalidad modalidad;
 
-    @NotNull
+    @NotNull(message = "Work schedule is required")
     private ETipoJornada tipoJornada;
 
-    @NotNull
+    @NotNull(message = "Required level is required")
     private ENivelRequerido nivelRequerido;
 
-    @NotNull
-    @Future
+    @NotNull(message = "Closing date is required")
+    @Future(message = "Closing date must be in the future")
     private LocalDate fechaCierre;
 }

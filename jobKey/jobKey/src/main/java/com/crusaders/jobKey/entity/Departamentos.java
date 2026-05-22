@@ -2,6 +2,7 @@ package com.crusaders.jobKey.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.Immutable;
         "idDepartamento",
         "departamento"
 })
+@Data
 @Entity
 @Table(name = "departamentos")
 public class Departamentos {

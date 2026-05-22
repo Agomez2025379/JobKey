@@ -2,6 +2,7 @@ package com.crusaders.jobKey.service.services;
 
 import com.crusaders.jobKey.dto.ofertas.OfertasTrabajoRequest;
 import com.crusaders.jobKey.dto.ofertas.OfertasTrabajoResponse;
+import com.crusaders.jobKey.enums.EModalidad;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface OfertasTrabajoService {
     OfertasTrabajoResponse actualizar(Integer id, OfertasTrabajoRequest request);
 
     void eliminar(Integer id);
+
+    List<OfertasTrabajoResponse> filtrar(String keyword, Integer departamentoId, EModalidad modalidad);
 }

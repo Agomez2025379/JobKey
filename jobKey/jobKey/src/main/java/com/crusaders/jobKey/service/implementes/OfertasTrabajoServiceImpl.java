@@ -6,6 +6,7 @@ import com.crusaders.jobKey.dto.ofertas.OfertasTrabajoResponse;
 import com.crusaders.jobKey.entity.Departamentos;
 import com.crusaders.jobKey.entity.Empresas;
 import com.crusaders.jobKey.entity.OfertasTrabajo;
+import com.crusaders.jobKey.enums.EModalidad;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.EmpresasRepository;
@@ -121,4 +122,16 @@ public class OfertasTrabajoServiceImpl implements OfertasTrabajoService {
 
         return dto;
     }
+
+    @Override
+    public List<OfertasTrabajoResponse> filtrar(String keyword,
+                                                Integer departamentoId,
+                                                EModalidad modalidad) {
+
+        return ofertasRepository.filtrar(keyword, departamentoId, modalidad)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
 }
