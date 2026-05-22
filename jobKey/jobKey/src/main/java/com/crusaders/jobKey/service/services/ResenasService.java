@@ -14,4 +14,5 @@ public interface ResenasService {
     List<Resenas> obtenerPorTipo(ResenaTipo tipo);
 
     List<Resenas> obtenerPorEmpresaId(Integer empresaId);
+    Resenas guardar(Resenas resena);
 }

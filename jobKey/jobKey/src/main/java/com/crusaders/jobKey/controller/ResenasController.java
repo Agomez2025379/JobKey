@@ -3,8 +3,9 @@ package com.crusaders.jobKey.controller;
 import com.crusaders.jobKey.entity.Resenas;
 import com.crusaders.jobKey.enums.ResenaTipo;
 import com.crusaders.jobKey.service.services.ResenasService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
@@ -27,17 +28,24 @@ public class ResenasController {
         return service.obtenerPorId(id);
     }
 
-    // Buscar por tipo: empresa_a_candidato | candidato_a_empresa
     @GetMapping("/tipo/{tipo}")
     public List<Resenas> obtenerPorTipo(@PathVariable String tipo) {
-        // convertir String a Enum (mismo nombre exacto del enum)
-        ResenaTipo t = ResenaTipo.valueOf(tipo);
-        return service.obtenerPorTipo(t);
+        try {
+            ResenaTipo t = ResenaTipo.valueOf(tipo.trim());
+            return service.obtenerPorTipo(t);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de reseña inválido: " + tipo);
+        }
     }
 
-    // Buscar por empresa_id
     @GetMapping("/empresa/{empresaId}")
     public List<Resenas> obtenerPorEmpresa(@PathVariable Integer empresaId) {
         return service.obtenerPorEmpresaId(empresaId);
+    }
+
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Resenas guardar(@RequestBody Resenas resena) {
+        return service.guardar(resena);
     }
 }

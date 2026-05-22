@@ -1,11 +1,10 @@
 package com.crusaders.jobKey.entity;
 
-import com.crusaders.jobKey.enums.ResenaTipo;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import com.crusaders.jobKey.enums.ResenaTipo;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -53,7 +52,6 @@ public class Resenas {
     @Column(name = "comentario", columnDefinition = "TEXT")
     private String comentario;
 
-    //fecha automatica
     @Column(name = "fecha", insertable = false, updatable = false)
     private LocalDateTime fecha;
 }

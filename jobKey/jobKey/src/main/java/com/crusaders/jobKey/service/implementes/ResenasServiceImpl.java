@@ -9,7 +9,6 @@ import org.springframework.data.domain.*;
 import org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -46,11 +45,7 @@ public class ResenasServiceImpl implements ResenasService {
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("tipo", ExampleMatcher.GenericPropertyMatchers.exact());
 
-        List<Resenas> result = repository.findAll(Example.of(qbe, matcher), Sort.by("idResena").ascending());
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("No hay reseñas con tipo: " + tipo);
-        }
-        return result;
+        return repository.findAll(Example.of(qbe, matcher), Sort.by("idResena").ascending());
     }
 
     @Override
@@ -62,10 +57,12 @@ public class ResenasServiceImpl implements ResenasService {
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("empresaId", ExampleMatcher.GenericPropertyMatchers.exact());
 
-        List<Resenas> result = repository.findAll(Example.of(qbe, matcher), Sort.by("idResena").ascending());
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("No hay reseñas para empresa_id: " + empresaId);
-        }
-        return result;
+        return repository.findAll(Example.of(qbe, matcher), Sort.by("idResena").ascending());
+    }
+
+    @Override
+    @Transactional
+    public Resenas guardar(Resenas resena) {
+        return repository.save(resena);
     }
 }
