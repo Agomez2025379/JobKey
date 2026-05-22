@@ -10,6 +10,7 @@ public class InstitucionResponse {
 
     private Integer idInstitucion;
     private Integer usuarioId;
+    private String email;
     private String nombreInstitucion;
     private String telefono;
     private String descripcion;

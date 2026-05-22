@@ -2,6 +2,9 @@ package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.dto.instituciones.InstitucionRequest;
 import com.crusaders.jobKey.dto.instituciones.InstitucionResponse;
+import com.crusaders.jobKey.entity.Usuarios;
+import com.crusaders.jobKey.repository.DepartamentosRepository;
+import com.crusaders.jobKey.repository.UsuariosRepository;
 import com.crusaders.jobKey.service.services.InstitucionService;
 
 import org.springframework.stereotype.Controller;
@@ -16,77 +19,84 @@ import java.util.List;
 public class InstitucionController {
 
     private final InstitucionService institucionService;
+    private final UsuariosRepository usuarioRepository;
+    private final DepartamentosRepository departamentosRepository;
 
-    public InstitucionController(InstitucionService institucionService) {
+    public InstitucionController(InstitucionService institucionService,
+                                 UsuariosRepository usuarioRepository,
+                                 DepartamentosRepository departamentosRepository) {
         this.institucionService = institucionService;
+        this.usuarioRepository = usuarioRepository;
+        this.departamentosRepository = departamentosRepository;
     }
 
-    /**
-     * Muestra la página principal con la lista de instituciones
-     */
     @GetMapping
     public String index(Model model) {
         List<InstitucionResponse> instituciones = institucionService.listarInstituciones();
         model.addAttribute("instituciones", instituciones);
-        return "instituciones"; // Renderiza instituciones.html
+        return "instituciones";
     }
 
-    /**
-     * Muestra el formulario para crear una nueva institución
-     */
     @GetMapping("/nueva")
     public String mostrarFormularioCrear(Model model) {
         model.addAttribute("institucion", new InstitucionRequest());
         model.addAttribute("accion", "crear");
+        model.addAttribute("departamentos", departamentosRepository.findAll());
         return "formulario-institucion";
     }
 
-    /**
-     * Procesa la creación de una nueva institución
-     */
     @PostMapping("/guardar")
-    public String crearInstitucion(@ModelAttribute InstitucionRequest request,
+    public String crearOActualizar(@ModelAttribute InstitucionRequest request,
+                                   @RequestParam(required = false) Integer idInstitucion,
                                    RedirectAttributes redirectAttributes) {
         try {
-            // Necesitas agregar el método crearInstitucion a tu service
-            // institucionService.crearInstitucion(request);
-            redirectAttributes.addFlashAttribute("success", "Institución creada exitosamente");
+            System.out.println("Dato Recibidos");
+            System.out.println("Email: " + request.getEmail());
+            System.out.println("Nombre: " + request.getNombreInstitucion());
+            System.out.println("Tipo: " + request.getTipo());
+
+            // Buscar usuario por email
+            if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+                Usuarios usuario = usuarioRepository.findByEmail(request.getEmail())
+                        .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + request.getEmail()));
+                request.setUsuarioId(usuario.getIdUsuario());
+                System.out.println("Usuario encontrado ID: " + usuario.getIdUsuario());
+            }
+
+            if (request.getUsuarioId() == null || request.getUsuarioId() == 0) {
+                throw new RuntimeException("Debes proporcionar un email de usuario válido");
+            }
+
+            if (idInstitucion != null && idInstitucion > 0) {
+                institucionService.actualizarInstitucion(idInstitucion, request);
+                redirectAttributes.addFlashAttribute("success", "Institución actualizada exitosamente");
+            } else {
+                institucionService.crearInstitucion(request);
+                redirectAttributes.addFlashAttribute("success", "Institución creada exitosamente");
+            }
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al crear la institución");
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error: " + e.getMessage());
         }
         return "redirect:/instituciones";
     }
 
-    /**
-     * Muestra el formulario para editar una institución
-     */
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Integer id, Model model) {
-        InstitucionResponse institucion = institucionService.obtenerPorId(id);
-        model.addAttribute("institucion", institucion);
-        model.addAttribute("accion", "editar");
-        return "formulario-institucion";
-    }
-
-    /**
-     * Procesa la actualización de una institución
-     */
-    @PostMapping("/actualizar/{id}")
-    public String actualizarInstitucion(@PathVariable Integer id,
-                                        @ModelAttribute InstitucionRequest request,
-                                        RedirectAttributes redirectAttributes) {
         try {
-            institucionService.actualizarInstitucion(id, request);
-            redirectAttributes.addFlashAttribute("success", "Institución actualizada exitosamente");
+            System.out.println("=== Editar Institucion ID: " + id);
+            InstitucionResponse institucion = institucionService.obtenerPorId(id);
+            System.out.println("Institución encontrada: " + institucion.getNombreInstitucion());
+            model.addAttribute("institucion", institucion);
+            model.addAttribute("accion", "editar");
+            model.addAttribute("departamentos", departamentosRepository.findAll());
+            return "formulario-institucion";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al actualizar la institución");
+            e.printStackTrace();
+            throw e;
         }
-        return "redirect:/instituciones";
     }
 
-    /**
-     * Elimina una institución
-     */
     @GetMapping("/eliminar/{id}")
     public String eliminarInstitucion(@PathVariable Integer id,
                                       RedirectAttributes redirectAttributes) {

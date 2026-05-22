@@ -1,101 +1,102 @@
 // admins.js
 
-// ── Búsqueda en tabla ────────────────────────────────────
-function filtrar() {
-    const q = document.getElementById('search')?.value.toLowerCase() ?? '';
-    const filas = document.querySelectorAll('#tabla tbody tr[data-nombre]');
-    let visibles = 0;
+function validarCrear() {
+    let isValid = true;
 
-    filas.forEach(fila => {
-        const nombre = fila.dataset.nombre?.toLowerCase() ?? '';
-        const email  = fila.dataset.email?.toLowerCase()  ?? '';
-        const match  = nombre.includes(q) || email.includes(q);
-        fila.style.display = match ? '' : 'none';
-        if (match) visibles++;
-    });
+    document.getElementById('err-nombre').innerText = '';
+    document.getElementById('err-email').innerText = '';
+    document.getElementById('err-pass').innerText = '';
+    document.getElementById('err-pass2').innerText = '';
 
-    const emptyRow = document.getElementById('empty-row');
-    if (emptyRow) emptyRow.style.display = visibles === 0 ? '' : 'none';
+    document.getElementById('nombre').classList.remove('error');
+    document.getElementById('email').classList.remove('error');
+    document.getElementById('password').classList.remove('error');
+    document.getElementById('password2').classList.remove('error');
+
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre) {
+        document.getElementById('err-nombre').innerText = 'El nombre es obligatorio';
+        document.getElementById('nombre').classList.add('error');
+        isValid = false;
+    }
+
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+        document.getElementById('err-email').innerText = 'El email es obligatorio';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+    } else if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('err-email').innerText = 'Ingresa un email válido';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+    }
+
+    const password = document.getElementById('password').value;
+    if (!password) {
+        document.getElementById('err-pass').innerText = 'La contraseña es obligatoria';
+        document.getElementById('password').classList.add('error');
+        isValid = false;
+    } else if (password.length < 8) {
+        document.getElementById('err-pass').innerText = 'La contraseña debe tener al menos 8 caracteres';
+        document.getElementById('password').classList.add('error');
+        isValid = false;
+    }
+
+    const password2 = document.getElementById('password2').value;
+    if (!password2) {
+        document.getElementById('err-pass2').innerText = 'Confirma tu contraseña';
+        document.getElementById('password2').classList.add('error');
+        isValid = false;
+    } else if (password !== password2) {
+        document.getElementById('err-pass2').innerText = 'Las contraseñas no coinciden';
+        document.getElementById('password2').classList.add('error');
+        isValid = false;
+    }
+
+    return isValid;
 }
 
-// ── Toggle mostrar/ocultar contraseña ────────────────────
-function togglePass(inputId, btn) {
-    const input = document.getElementById(inputId);
-    const icon  = btn.querySelector('i');
+function validarEditar() {
+    let isValid = true;
+
+    document.getElementById('err-nombre').innerText = '';
+    document.getElementById('err-email').innerText = '';
+
+    document.getElementById('nombre').classList.remove('error');
+    document.getElementById('email').classList.remove('error');
+
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre) {
+        document.getElementById('err-nombre').innerText = 'El nombre es obligatorio';
+        document.getElementById('nombre').classList.add('error');
+        isValid = false;
+    }
+
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+        document.getElementById('err-email').innerText = 'El email es obligatorio';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+    } else if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('err-email').innerText = 'Ingresa un email válido';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function togglePass(fieldId, button) {
+    const input = document.getElementById(fieldId);
+    const icon = button.querySelector('i');
+
     if (input.type === 'password') {
         input.type = 'text';
-        icon.classList.replace('ti-eye', 'ti-eye-off');
+        icon.classList.remove('ti-eye');
+        icon.classList.add('ti-eye-off');
     } else {
         input.type = 'password';
-        icon.classList.replace('ti-eye-off', 'ti-eye');
+        icon.classList.remove('ti-eye-off');
+        icon.classList.add('ti-eye');
     }
-}
-
-// ── Validación formulario CREAR ──────────────────────────
-function validarCrear() {
-    let ok = true;
-
-    const nombre = document.getElementById('nombre');
-    const email  = document.getElementById('email');
-    const pass   = document.getElementById('password');
-    const pass2  = document.getElementById('password2');
-
-    limpiarErrores();
-
-    if (!nombre.value.trim()) {
-        mostrarError('err-nombre', 'El nombre es obligatorio.');
-        ok = false;
-    }
-
-    if (!email.value.trim() || !email.value.includes('@')) {
-        mostrarError('err-email', 'Ingresa un email válido.');
-        ok = false;
-    }
-
-    if (pass.value.length < 8) {
-        mostrarError('err-pass', 'La contraseña debe tener al menos 8 caracteres.');
-        ok = false;
-    }
-
-    if (pass.value !== pass2.value) {
-        mostrarError('err-pass2', 'Las contraseñas no coinciden.');
-        ok = false;
-    }
-
-    return ok;
-}
-
-// ── Validación formulario EDITAR ─────────────────────────
-function validarEditar() {
-    let ok = true;
-
-    const nombre = document.getElementById('nombre');
-    const email  = document.getElementById('email');
-
-    limpiarErrores();
-
-    if (!nombre.value.trim()) {
-        mostrarError('err-nombre', 'El nombre es obligatorio.');
-        ok = false;
-    }
-
-    if (!email.value.trim() || !email.value.includes('@')) {
-        mostrarError('err-email', 'Ingresa un email válido.');
-        ok = false;
-    }
-
-    return ok;
-}
-
-// ── Helpers ──────────────────────────────────────────────
-function mostrarError(id, msg) {
-    const el = document.getElementById(id);
-    if (el) { el.textContent = msg; el.style.display = 'block'; }
-}
-
-function limpiarErrores() {
-    document.querySelectorAll('.field-error').forEach(el => {
-        el.textContent = '';
-        el.style.display = 'none';
-    });
 }

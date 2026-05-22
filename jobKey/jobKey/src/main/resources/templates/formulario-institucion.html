@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Institución</title>
+    <link rel="stylesheet" th:href="@{/css/instituciones.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div><strong>JobKey Admin</strong></div>
+    <div>
+        <a th:href="@{/instituciones}">Instituciones</a>
+        <a href="/usuarios">Usuarios</a>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 600px;">
+    <div class="header">
+        <a th:href="@{/instituciones}" class="btn" style="background: #64748b;">← Volver</a>
+        <h1 th:text="${accion == 'crear' ? 'Nueva Institución' : 'Editar Institución'}">Formulario</h1>
+    </div>
+
+    <div th:if="${success}" class="alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+
+    <div class="card">
+        <form th:action="@{/instituciones/guardar}" method="post">
+            <input type="hidden" name="idInstitucion" th:value="${institucion.idInstitucion}" />
+
+            <div class="form-group">
+                <label>Email del usuario *</label>
+                <input type="email" name="email" th:value="${institucion.email}" required
+                       placeholder="ejemplo@institucion.com" />
+                <small>Usa: institucion1@jobkey.com (ya existe en la BD)</small>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre de la Institución *</label>
+                <input type="text" name="nombreInstitucion" th:value="${institucion.nombreInstitucion}" required />
+            </div>
+
+            <div class="form-group">
+                <label>Tipo *</label>
+                <select name="tipo" required>
+                    <option value="UNIVERSIDAD" th:selected="${institucion.tipo == 'UNIVERSIDAD'}">Universidad</option>
+                    <option value="INSTITUTO" th:selected="${institucion.tipo == 'INSTITUTO'}">Instituto</option>
+                    <option value="COLEGIO" th:selected="${institucion.tipo == 'COLEGIO'}">Colegio</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" th:value="${institucion.telefono}" />
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea name="descripcion" rows="3">[[${institucion.descripcion}]]</textarea>
+            </div>
+
+            <div class="form-actions" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button type="submit" class="btn" style="background: #1B2A4A;">Guardar</button>
+                <a th:href="@{/instituciones}" class="btn" style="background: #64748b;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

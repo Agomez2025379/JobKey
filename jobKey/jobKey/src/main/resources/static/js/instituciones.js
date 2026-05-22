@@ -1,65 +1,52 @@
-function openModal() {
-    document.getElementById('modal').classList.add('active');
-    document.getElementById('modalTitle').innerHTML = 'Nueva Institución';
-    document.getElementById('institucionForm').reset();
-    document.getElementById('id').value = '';
-}
-
-function closeModal() {
-    document.getElementById('modal').classList.remove('active');
-}
+// instituciones.js - Versión simplificada
 
 function edit(id) {
-    fetch('/api/instituciones/' + id)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('modalTitle').innerHTML = 'Editar Institución';
-            document.getElementById('id').value = data.idInstitucion;
-            document.getElementById('nombre').value = data.nombreInstitucion || '';
-            document.getElementById('telefono').value = data.telefono || '';
-            document.getElementById('tipo').value = data.tipo || 'UNIVERSIDAD';
-            document.getElementById('logo').value = data.logo || '';
-            document.getElementById('descripcion').value = data.descripcion || '';
-            document.getElementById('departamentoId').value = data.idDepartamento || '';
-            openModal();
-        })
-        .catch(error => {
-            alert('Error al cargar los datos');
-        });
+    window.location.href = '/instituciones/editar/' + id;
 }
 
-function save() {
-    const id = document.getElementById('id').value;
-    const data = {
-        nombreInstitucion: document.getElementById('nombre').value,
-        telefono: document.getElementById('telefono').value,
-        tipo: document.getElementById('tipo').value,
-        logo: document.getElementById('logo').value,
-        descripcion: document.getElementById('descripcion').value,
-        departamentoId: document.getElementById('departamentoId').value ? parseInt(document.getElementById('departamentoId').value) : null
-    };
+function confirmarEliminar(url) {
+    return confirm('¿Estás seguro de eliminar esta institución?');
+}
 
-    if (!data.nombreInstitucion || !data.tipo) {
-        alert('Complete los campos obligatorios');
-        return;
-    }
+// Función de búsqueda/filtro para la tabla
+function filtrarInstituciones() {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
 
-    const url = id ? '/api/instituciones/' + id : '/api/instituciones';
-    const method = id ? 'PUT' : 'POST';
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById('tablaInstituciones');
+    if (!table) return;
 
-    fetch(url, {
-        method: method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (response.ok) {
-            location.reload();
-        } else {
-            alert('Error al guardar');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        const nombreCell = rows[i].getElementsByTagName('td')[2];
+        const tipoCell = rows[i].getElementsByTagName('td')[3];
+
+        if (nombreCell || tipoCell) {
+            const nombre = nombreCell ? nombreCell.textContent || nombreCell.innerText : '';
+            const tipo = tipoCell ? tipoCell.textContent || tipoCell.innerText : '';
+
+            if (nombre.toUpperCase().indexOf(filter) > -1 || tipo.toUpperCase().indexOf(filter) > -1) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
         }
-    })
-    .catch(error => {
-        alert('Error de conexión');
-    });
+    }
 }
+
+// Agregar barra de búsqueda cuando carga la página
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.header');
+    if (header && !document.getElementById('searchInput')) {
+        const searchDiv = document.createElement('div');
+        searchDiv.style.marginTop = '1rem';
+        searchDiv.innerHTML = `
+            <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre o tipo..."
+                   style="padding: 0.5rem; width: 100%; max-width: 300px; border-radius: 6px; border: 1px solid #E2E8F0;"
+                   onkeyup="filtrarInstituciones()">
+        `;
+        header.appendChild(searchDiv);
+    }
+});

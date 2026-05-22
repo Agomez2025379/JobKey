@@ -2,23 +2,15 @@ package com.crusaders.jobKey.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-@JsonPropertyOrder({
-        "idAdmin",
-        "usuario",
-        "nombre"
-})
+@JsonPropertyOrder({"idAdmin", "usuario", "nombre"})
 @Entity
-// nombre de la table de nuestra db
 @Table(name = "admins")
 public class Admins {
 
@@ -32,10 +24,7 @@ public class Admins {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private Usuarios usuario;
 
-    //nombre del admin
     @NotBlank(message = "El nombre es obligatorio")
     @Column(name = "nombre")
     private String nombre;
-
-
 }
