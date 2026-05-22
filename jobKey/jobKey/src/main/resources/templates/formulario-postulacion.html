@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Apply - JobKey</title>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo"><strong>JobKey</strong></div>
+    <div>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/candidatos}">My Profile</a>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 600px; margin-top: 3rem; margin-bottom: 3rem;">
+    <div class="card" style="text-align: left; padding: 2.5rem;">
+        <h2 style="margin-bottom: 1.5rem; text-align: center;">Professional Information</h2>
+
+        <form th:action="@{/candidatos/guardar}" th:object="${nuevoCandidato}" method="post">
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">First Name</label>
+                    <input type="text" th:field="*{nombre}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Last Name</label>
+                    <input type="text" th:field="*{apellido}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Phone Number</label>
+                <input type="text" th:field="*{telefono}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Profession / Job Title</label>
+                <input type="text" th:field="*{profesion}" placeholder="e.g. Java Backend Developer" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Education</label>
+                <input type="text" th:field="*{educacion}" placeholder="e.g. Computer Science Engineering / Technician" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Work Experience</label>
+                <textarea th:field="*{experiencia}" rows="3" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; font-family: inherit;"></textarea>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Skills</label>
+                <input type="text" th:field="*{habilidades}" placeholder="Java, Spring Boot, MySQL" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Resume URL</label>
+                <input type="url" th:field="*{curriculumUrl}" placeholder="https://..." style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Location (Department)</label>
+                <select th:field="*{departamentoId}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; background-color: white;">
+                    <option value="" disabled selected>-- Select your department --</option>
+                    <th:block th:if="${listaDepartamentos != null}">
+                        <option th:each="dep : ${listaDepartamentos}"
+                                th:value="${dep.idDepartamento}"
+                                th:text="${dep.departamento}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 2rem; border: none; cursor: pointer;">Save Application</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

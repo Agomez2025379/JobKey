@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Register Company - JobKey</title>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo"><strong>JobKey Business</strong></div>
+    <div>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/empresas}">My Company</a>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 600px; margin-top: 3rem; margin-bottom: 3rem;">
+    <div class="card" style="text-align: left; padding: 2.5rem;">
+        <h2 style="margin-bottom: 1.5rem; text-align: center;">Company Profile</h2>
+
+        <form th:action="@{/empresas/guardar}" th:object="${nuevaEmpresa}" method="post">
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Company Name</label>
+                <input type="text" th:field="*{nombreEmpresa}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Corporate Phone Number</label>
+                <input type="text" th:field="*{telefono}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Business Sector</label>
+                <input type="text" th:field="*{sectorEmpresarial}" placeholder="e.g. Technology, Banking, Healthcare" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Company Description</label>
+                <textarea th:field="*{descripcion}" rows="4" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; font-family: inherit;"></textarea>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Location (Department)</label>
+                <select th:field="*{departamentoId}" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; background-color: white;">
+                    <option value="" disabled selected>-- Select company location --</option>
+                    <th:block th:if="${listaDepartamentos != null}">
+                        <option th:each="dep : ${listaDepartamentos}"
+                                th:value="${dep.idDepartamento}"
+                                th:text="${dep.departamento}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 2rem; border: none; cursor: pointer;">Save Company Profile</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

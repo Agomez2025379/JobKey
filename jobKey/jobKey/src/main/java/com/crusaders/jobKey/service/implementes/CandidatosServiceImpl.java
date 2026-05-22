@@ -82,9 +82,19 @@ public class CandidatosServiceImpl implements CandidatosService {
 
     private CandidatosResponse mapToResponse(Candidatos candidato) {
 
+        Integer usuarioId = null;
+        if (candidato.getUsuario() != null) {
+            usuarioId = candidato.getUsuario().getIdUsuario();
+        }
+
+        Integer departamentoId = null;
+        if (candidato.getDepartamento() != null) {
+            departamentoId = candidato.getDepartamento().getIdDepartamento();
+        }
+
         return new CandidatosResponse(
                 candidato.getIdCandidato(),
-                candidato.getUsuario().getIdUsuario(),
+                usuarioId,
                 candidato.getNombre(),
                 candidato.getApellido(),
                 candidato.getTelefono(),
@@ -93,7 +103,41 @@ public class CandidatosServiceImpl implements CandidatosService {
                 candidato.getEducacion(),
                 candidato.getHabilidades(),
                 candidato.getCurriculumUrl(),
-                candidato.getDepartamento().getIdDepartamento()
+                departamentoId
         );
     }
+
+    @Override
+    public CandidatosResponse findByUsuarioId(Integer idUsuario) {
+        Candidatos candidato = candidatosRepository.findByUsuario_IdUsuario(idUsuario);
+        if (candidato == null) {
+            return null;
+        }
+        return mapToResponse(candidato);
+    }
+
+    @Override // Metodo creado para la postulacion del formulario
+    public CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario) {
+        Usuarios usuario = usuariosRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Departamentos departamento = departamentosRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+
+        Candidatos candidato = new Candidatos();
+        candidato.setUsuario(usuario);
+        candidato.setNombre(request.getNombre());
+        candidato.setApellido(request.getApellido());
+        candidato.setTelefono(request.getTelefono());
+        candidato.setProfesion(request.getProfesion());
+        candidato.setExperiencia(request.getExperiencia());
+        candidato.setEducacion(request.getEducacion());
+        candidato.setHabilidades(request.getHabilidades());
+        candidato.setCurriculumUrl(request.getCurriculumUrl());
+        candidato.setDepartamento(departamento);
+
+        candidatosRepository.save(candidato);
+        return mapToResponse(candidato);
+    }
+
 }

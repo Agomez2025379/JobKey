@@ -1,14 +1,10 @@
 package com.crusaders.jobKey.service.services;
 
-
 import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
 import com.crusaders.jobKey.dto.candidatos.CandidatosResponse;
-
 import java.util.List;
 
 public interface CandidatosService {
-
-
 
     CandidatosResponse getCandidate(Integer id);
 
@@ -18,4 +14,8 @@ public interface CandidatosService {
 
     void deleteCandidate(Integer id);
 
+    CandidatosResponse findByUsuarioId(Integer idUsuario);
+
+    CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario);
+    
 }

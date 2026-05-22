@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>My Profile - JobKey</title>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo"><strong>JobKey</strong></div>
+    <div>
+        <a th:href="@{/home}">Home</a>
+    </div>
+</nav>
+
+<div class="container hero">
+    <h1>Candidate <span style="color: var(--accent-hover)">Profile</span></h1>
+    <p>Manage and review your professional background information.</p>
+
+    <div class="card" style="max-width: 650px; margin: 3rem auto; text-align: left; padding: 2.5rem;">
+        <div style="border-bottom: 1px solid #eee; margin-bottom: 1.5rem; padding-bottom: 1rem;">
+            <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">
+                <span th:text="${candidato.nombre}">First Name</span> <span th:text="${candidato.apellido}">Last Name</span>
+            </h2>
+            <p style="font-size: 1.2rem; font-weight: bold; color: #4a5568;" th:text="${candidato.profesion}">Profession</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+            <p><strong>Education:</strong> <span th:text="${candidato.educacion}">Education details...</span></p>
+            <p><strong>Work Experience:</strong></p>
+            <p style="background: #f7fafc; padding: 1rem; border-radius: 6px; border-left: 4px solid var(--primary-color);" th:text="${candidato.experiencia}">Experience description...</p>
+            <p><strong>Skills:</strong> <span th:text="${candidato.habilidades}">Skills list...</span></p>
+            <p><strong>Phone Number:</strong> <span th:text="${candidato.telefono}">0000-0000</span></p>
+            <p><strong>Location ID:</strong> <span th:text="${candidato.departamentoId}">1</span></p>
+
+            <p th:if="${candidato.curriculumUrl != null}">
+                <strong>Resume Link:</strong>
+                <a th:href="${candidato.curriculumUrl}" target="_blank" style="color: var(--primary-color); text-decoration: underline;">View Attachment</a>
+            </p>
+        </div>
+
+        <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+            <a th:href="@{/candidatos/editar/{id}(id=${candidato.idCandidato})}" class="btn" style="text-decoration: none; text-align: center;">
+                Edit Profile
+            </a>
+
+            <form th:action="@{/candidatos/eliminar/{id}(id=${candidato.idCandidato})}" method="post"
+                  onsubmit="return confirm('Are you sure you want to delete your profile? This action cannot be undone.');" style="display: inline;">
+                <button type="submit" class="btn" style="background-color: #e53e3e; color: white; border: none; cursor: pointer;">
+                    Delete Profile
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
