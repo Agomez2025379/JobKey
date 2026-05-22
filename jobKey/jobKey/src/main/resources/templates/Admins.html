@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gestión de Administradores – JobKey</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="navbar-brand">⚿ JobKey Admin</span>
+    <div>
+
+        <a th:href="@{/admins}" style="color:var(--accent)">Admins</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div th:if="${successMsg}" class="alert alert-success" th:text="${successMsg}"></div>
+    <div th:if="${errorMsg}"   class="alert alert-error"   th:text="${errorMsg}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Gestión de Administradores</h1>
+            <p class="page-subtitle">Crea, edita y elimina cuentas de administrador</p>
+        </div>
+        <a th:href="@{/admins/nuevo}" class="btn btn-primary">
+            <i class="ti ti-plus" aria-hidden="true"></i> Nuevo admin
+        </a>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-label">Total admins</div>
+            <div class="stat-value" th:text="${admins.size()}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Registrados este mes</div>
+            <div class="stat-value" th:text="${adminsEsteMes}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Último acceso hoy</div>
+            <div class="stat-value" th:text="${adminsActivosHoy}">0</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Buscar por nombre o email…" oninput="filtrar()"/>
+        </div>
+
+        <table id="tabla">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Admin</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Fecha registro</th>
+                <th>Último acceso</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${admins}" th:attr="data-nombre=${a.nombre}, data-email=${a.email}">
+                <td th:text="'#' + ${a.idAdmin}" style="color:#94a3b8;font-size:.8rem"></td>
+
+                <!-- Nombre con iniciales -->
+                <td>
+                    <div class="user-cell">
+                        <div class="initials" th:text="${#strings.toUpperCase(#strings.substring(a.nombre,0,1))}">A</div>
+                        <span th:text="${a.nombre}">Nombre</span>
+                    </div>
+                </td>
+
+                <td>
+                    <span class="user-email" th:text="${a.email}">email@jobkey.com</span>
+                </td>
+
+                <td><span class="badge badge-admin">ADMIN</span></td>
+
+                <td th:text="${#temporals.format(a.fechaRegistro, 'dd MMM yyyy')}">—</td>
+                <td th:text="${a.ultimoAcceso != null ? #temporals.format(a.ultimoAcceso, 'dd MMM yyyy') : '—'}">—</td>
+
+                <!-- ACCIONES -->
+                <td>
+                    <div class="actions">
+                        <a th:href="@{/admins/editar/{id}(id=${a.idAdmin})}" class="btn btn-edit btn-sm">
+                            <i class="ti ti-edit" aria-hidden="true"></i> Editar
+                        </a>
+                        <a th:href="@{/admins/eliminar/{id}(id=${a.idAdmin})}" class="btn btn-delete btn-sm">
+                            <i class="ti ti-trash" aria-hidden="true"></i> Eliminar
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Sin resultados -->
+            <tr id="empty-row" style="display:none">
+                <td colspan="7" class="empty-state">
+                    <i class="ti ti-user-off" aria-hidden="true"></i>
+                    No se encontraron administradores.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${admins.empty}" class="empty-state">
+            <i class="ti ti-user-off" aria-hidden="true"></i>
+            No hay administradores registrados.
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/js/admins.js}"></script>
+</body>
+</html>

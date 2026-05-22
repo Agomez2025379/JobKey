@@ -1,5 +1,6 @@
 package com.crusaders.jobKey.dto.candidatos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

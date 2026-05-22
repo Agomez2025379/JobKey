@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Editar Usuario – JobKey</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/css/Usuarios.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="navbar-brand">⚿ JobKey Admin</span>
+    <div>
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/admins}">Admins</a>
+        <a th:href="@{/usuarios}" style="color:var(--accent)">Usuarios</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</nav>
+
+<div class="container" style="max-width:540px">
+
+    <div class="page-header">
+        <div>
+            <a th:href="@{/usuarios}" class="back-link">
+                <i class="ti ti-arrow-left" aria-hidden="true"></i> Volver a usuarios
+            </a>
+            <h1 class="page-title" style="margin-top:.5rem">Editar Usuario</h1>
+            <p class="page-subtitle" th:text="'Editando: ' + ${usuario.email}">Editando: —</p>
+        </div>
+    </div>
+
+    <div th:if="${errorMsg}" class="alert alert-error" th:text="${errorMsg}"></div>
+
+    <div class="card">
+        <form th:action="@{/usuarios/editar}" method="post" onsubmit="return validarEditar()">
+            <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}"/>
+            <input type="hidden" name="id" th:value="${usuario.idUsuario}"/>
+
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email"
+                       th:value="${usuario.email}"
+                       required/>
+                <span class="field-error" id="err-email"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol">
+                    <option th:each="r : ${roles}"
+                            th:value="${r.name()}"
+                            th:text="${r.getValue()}"
+                            th:selected="${r == usuario.rol}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Info solo lectura -->
+            <div class="info-row">
+                <span class="info-label">
+                    <i class="ti ti-calendar" aria-hidden="true"></i> Fecha de registro
+                </span>
+                <span th:text="${#temporals.format(usuario.fechaRegistro, 'dd MMM yyyy')}">—</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">
+                    <i class="ti ti-clock" aria-hidden="true"></i> Último acceso
+                </span>
+                <span th:text="${usuario.ultimoAcceso != null
+                                 ? #temporals.format(usuario.ultimoAcceso, 'dd MMM yyyy HH:mm')
+                                 : 'Nunca'}">—</span>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="ti ti-check" aria-hidden="true"></i> Guardar cambios
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script th:src="@{/js/Usuarios.js}"></script>
+</body>
+</html>
