@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/admins")
+@RequestMapping("/admins")
 public class AdminVistaController {
 
     private final AdminsService service;
@@ -19,21 +19,21 @@ public class AdminVistaController {
         this.service = service;
     }
 
-    // ── GET /admin/admins  →  lista ──────────────────────
+    // ── GET /admin/admins  →  lista ──
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("admins", service.listar());
-        return "admin/admins";
+        return "admins";
     }
 
-    // ── GET /admin/admins/nuevo  →  formulario crear ─────
+    // ── GET /admin formulario crear ─────
     @GetMapping("/nuevo")
     public String nuevoPagina(Model model) {
         model.addAttribute("adminRequest", new AdminRequest());
-        return "admin/admins-crear";
+        return "Adminscrear";
     }
 
-    // ── POST /admin/admins/crear  →  procesar crear ──────
+    // ── POST /admin/crear  →  procesar crear ───
     @PostMapping("/crear")
     public String crear(
             @Valid @ModelAttribute AdminRequest request,
@@ -41,22 +41,22 @@ public class AdminVistaController {
     ) {
         try {
             service.crear(request);
-            redirectAttrs.addFlashAttribute("successMsg", "Admin creado correctamente.");
+            redirectAttrs.addFlashAttribute("successMsg", "Admin successfully updated.");
         } catch (IllegalArgumentException e) {
             redirectAttrs.addFlashAttribute("errorMsg", e.getMessage());
-            return "redirect:/admin/admins/nuevo";
+            return "redirect:/admins/nuevo";
         }
-        return "redirect:/admin/admins";
+        return "redirect:/admins";
     }
 
-    // ── GET /admin/admins/editar/{id}  →  formulario editar
+    // ── GET /admin/editar/{id}  →  formulario editar
     @GetMapping("/editar/{id}")
     public String editarPagina(@PathVariable Integer id, Model model) {
         model.addAttribute("admin", service.obtenerPorId(id));
-        return "admin/admins-editar";
+        return "Adminseditar";
     }
 
-    // ── POST /admin/admins/editar  →  procesar editar ────
+    // ── POST /admin/editar  →  procesar editar ────
     @PostMapping("/editar")
     public String editar(
             @RequestParam Integer id,
@@ -65,19 +65,19 @@ public class AdminVistaController {
     ) {
         try {
             service.actualizar(id, request);
-            redirectAttrs.addFlashAttribute("successMsg", "Admin actualizado correctamente.");
+            redirectAttrs.addFlashAttribute("successMsg", "Admin successfully created.");
         } catch (IllegalArgumentException e) {
             redirectAttrs.addFlashAttribute("errorMsg", e.getMessage());
-            return "redirect:/admin/admins/editar/" + id;
+            return "redirect:/admins/editar/" + id;
         }
-        return "redirect:/admin/admins";
+        return "redirect:/admins";
     }
 
-    // ── GET /admin/admins/eliminar/{id}  →  confirmación ─
+    // ── GET /admin/eliminar/{id}  →  confirmación ─
     @GetMapping("/eliminar/{id}")
     public String eliminarPagina(@PathVariable Integer id, Model model) {
         model.addAttribute("admin", service.obtenerPorId(id));
-        return "admin/admins-eliminar";
+        return "Adminseliminar";
     }
 
     // ── POST /admin/admins/eliminar  →  procesar eliminar ─
@@ -88,6 +88,6 @@ public class AdminVistaController {
     ) {
         service.eliminar(id);
         redirectAttrs.addFlashAttribute("successMsg", "Admin eliminado correctamente.");
-        return "redirect:/admin/admins";
+        return "redirect:/admins";
     }
 }

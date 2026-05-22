@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/usuarios")
+@RequestMapping("usuarios")
 public class AdminUsuariosController {
 
     private final UsuariosService service;
@@ -31,18 +31,18 @@ public class AdminUsuariosController {
         model.addAttribute("totalCandidatos",   contarPorRol(usuarios, EUsuarioRol.CANDIDATO));
         model.addAttribute("totalInstituciones",contarPorRol(usuarios, EUsuarioRol.INSTITUCION));
 
-        return "admin/usuarios";
+        return "usuarios";
     }
 
-    // ── GET /admin/usuarios/editar/{id}  →  formulario ───
+    // ── GET usuarios/editar/{id}  →  formulario ───
     @GetMapping("/editar/{id}")
     public String editarPagina(@PathVariable Integer id, Model model) {
         model.addAttribute("usuario", service.obtenerPorId(id));
         model.addAttribute("roles", EUsuarioRol.values());
-        return "admin/usuarios-editar";
+        return "Usuarioseditor";
     }
 
-    // ── POST /admin/usuarios/editar  →  procesar ─────────
+    // ── POST usuarios/editar  →  procesar ─────
     @PostMapping("/editar")
     public String editar(
             @RequestParam Integer id,
@@ -51,30 +51,30 @@ public class AdminUsuariosController {
     ) {
         try {
             service.actualizar(id, request);
-            redirectAttrs.addFlashAttribute("successMsg", "Usuario actualizado correctamente.");
+            redirectAttrs.addFlashAttribute("successMsg", "User successfully updated.");
         } catch (IllegalArgumentException e) {
             redirectAttrs.addFlashAttribute("errorMsg", e.getMessage());
-            return "redirect:/admin/usuarios/editar/" + id;
+            return "redirect:/usuarios/editar/" + id;
         }
-        return "redirect:/admin/usuarios";
+        return "redirect:/usuarios";
     }
 
-    // ── GET /admin/usuarios/eliminar/{id}  →  confirmación
+    // ── GET usuarios/eliminar/{id}  →  confirmación
     @GetMapping("/eliminar/{id}")
     public String eliminarPagina(@PathVariable Integer id, Model model) {
         model.addAttribute("usuario", service.obtenerPorId(id));
-        return "admin/usuarios-eliminar";
+        return "Usuarioseliminar";
     }
 
-    // ── POST /admin/usuarios/eliminar  →  procesar ───────
+    // ── POST usuarios/eliminar  →  procesar ───────
     @PostMapping("/eliminar")
     public String eliminar(
             @RequestParam Integer id,
             RedirectAttributes redirectAttrs
     ) {
         service.eliminar(id);
-        redirectAttrs.addFlashAttribute("successMsg", "Usuario eliminado correctamente.");
-        return "redirect:/admin/usuarios";
+        redirectAttrs.addFlashAttribute("successMsg", "User successfully deleted.");
+        return "redirect:/usuarios";
     }
 
     // ── Helper ───────────────────────────────────────────

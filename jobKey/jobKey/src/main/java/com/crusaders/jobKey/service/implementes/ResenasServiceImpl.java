@@ -1,7 +1,7 @@
 package com.crusaders.jobKey.service.implementes;
 
 import com.crusaders.jobKey.entity.Resenas;
-import com.crusaders.jobKey.entity.Resenas;
+import com.crusaders.jobKey.enums.ResenaTipo;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
 import com.crusaders.jobKey.repository.ResenasRepository;
 import com.crusaders.jobKey.service.services.ResenasService;
@@ -37,8 +37,8 @@ public class ResenasServiceImpl implements ResenasService {
                 .orElseThrow(() -> new ResourceNotFoundException("Reseña con id: " + id + ", no encontrada"));
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public List<Resenas> obtenerPorTipo(ResenaTipo tipo) {
         Resenas qbe = new Resenas();
         qbe.setTipo(tipo);

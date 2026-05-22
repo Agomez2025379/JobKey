@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Editar Usuario – JobKey</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-    <link rel="stylesheet" th:href="@{/css/admins.css}"/>
+    <link rel="stylesheet" th:href="@{/css/Usuarios.css}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div>
         <a th:href="@{/admin/dashboard}">Dashboard</a>
         <a th:href="@{/admin/admins}">Admins</a>
-        <a th:href="@{/admin/usuarios}" style="color:var(--accent)">Usuarios</a>
+        <a th:href="@{/usuarios}" style="color:var(--accent)">Usuarios</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </nav>
@@ -23,7 +23,7 @@
 
     <div class="page-header">
         <div>
-            <a th:href="@{/admin/usuarios}" class="back-link">
+            <a th:href="@{/usuarios}" class="back-link">
                 <i class="ti ti-arrow-left" aria-hidden="true"></i> Volver a usuarios
             </a>
             <h1 class="page-title" style="margin-top:.5rem">Editar Usuario</h1>
@@ -34,8 +34,8 @@
     <div th:if="${errorMsg}" class="alert alert-error" th:text="${errorMsg}"></div>
 
     <div class="card">
-        <form th:action="@{/admin/usuarios/editar}" method="post" onsubmit="return validarEditar()">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <form th:action="@{/usuarios/editar}" method="post" onsubmit="return validarEditar()">
+            <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}"/>
             <input type="hidden" name="id" th:value="${usuario.idUsuario}"/>
 
             <div class="form-group">
@@ -74,7 +74,7 @@
             </div>
 
             <div class="form-actions">
-                <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Cancelar</a>
+                <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
                 <button type="submit" class="btn btn-primary">
                     <i class="ti ti-check" aria-hidden="true"></i> Guardar cambios
                 </button>
@@ -84,6 +84,6 @@
 
 </div>
 
-<script th:src="@{/js/usuarios.js}"></script>
+<script th:src="@{/js/Usuarios.js}"></script>
 </body>
 </html>

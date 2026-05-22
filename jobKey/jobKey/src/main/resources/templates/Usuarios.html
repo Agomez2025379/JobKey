@@ -13,9 +13,7 @@
 <nav class="navbar">
     <span class="navbar-brand">⚿ JobKey Admin</span>
     <div>
-        <a th:href="@{/admin/dashboard}">Dashboard</a>
-        <a th:href="@{/admin/admins}">Admins</a>
-        <a th:href="@{/admin/usuarios}" style="color:var(--accent)">Usuarios</a>
+        <a th:href="@{/usuarios}" style="color:var(--accent)">Usuarios</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </nav>
@@ -102,11 +100,11 @@
 
                 <td>
                     <div class="actions">
-                        <a th:href="@{/admin/usuarios/editar/{id}(id=${u.idUsuario})}"
+                        <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}"
                            class="btn btn-edit btn-sm">
                             <i class="ti ti-edit" aria-hidden="true"></i> Editar
                         </a>
-                        <a th:href="@{/admin/usuarios/eliminar/{id}(id=${u.idUsuario})}"
+                        <a th:href="@{/usuarios/eliminar/{id}(id=${u.idUsuario})}"
                            class="btn btn-delete btn-sm">
                             <i class="ti ti-trash" aria-hidden="true"></i> Eliminar
                         </a>

@@ -12,7 +12,7 @@
     <span class="navbar-brand">⚿ JobKey Admin</span>
     <div>
         <a th:href="@{/admin/dashboard}">Dashboard</a>
-        <a th:href="@{/admin/admins}" style="color:var(--accent)">Admins</a>
+        <a th:href="@{/admins}" style="color:var(--accent)">Admins</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </nav>
@@ -21,7 +21,7 @@
 
     <div class="page-header">
         <div>
-            <a th:href="@{/admin/admins}" class="back-link">
+            <a th:href="@{/admins}" class="back-link">
                 <i class="ti ti-arrow-left" aria-hidden="true"></i> Volver a admins
             </a>
             <h1 class="page-title" style="margin-top:.5rem">Eliminar Administrador</h1>
@@ -56,12 +56,12 @@
             </div>
         </div>
 
-        <form th:action="@{/admin/admins/eliminar}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <form th:action="@{/admins/eliminar}" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}"/>
             <input type="hidden" name="id" th:value="${admin.idAdmin}"/>
 
             <div class="form-actions">
-                <a th:href="@{/admin/admins}" class="btn btn-secondary">Cancelar</a>
+                <a th:href="@{/admins}" class="btn btn-secondary">Cancelar</a>
                 <button type="submit" class="btn btn-danger">
                     <i class="ti ti-trash" aria-hidden="true"></i> Sí, eliminar
                 </button>
