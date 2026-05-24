@@ -10,7 +10,9 @@ public interface InstitucionService {
 
     InstitucionResponse obtenerPorId(Integer id);
 
-    List<InstitucionResponse> listarInstituciones();
+    List<InstitucionResponse> listarTodas();
+
+    List<InstitucionResponse> listarPorUsuario(Integer usuarioId);
 
     InstitucionResponse actualizarInstitucion(Integer id, InstitucionRequest request);
 

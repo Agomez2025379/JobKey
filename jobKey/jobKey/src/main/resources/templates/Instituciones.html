@@ -9,9 +9,7 @@
 <body>
 
 <nav class="navbar">
-    <div>
-        <strong>JobKey Admin</strong>
-    </div>
+    <div><strong>JobKey Admin</strong></div>
     <div>
         <a th:href="@{/instituciones}">Instituciones</a>
     </div>
@@ -23,7 +21,7 @@
 
     <div class="header">
         <h1>🏢 Instituciones</h1>
-        <a th:href="@{/instituciones/nueva}" class="btn">➕ Nueva</a>
+        <a th:if="${puedeCrear}" th:href="@{/instituciones/nueva}" class="btn">➕ Nueva</a>
     </div>
 
     <div class="card">
@@ -43,25 +41,29 @@
                 <tr th:each="inst : ${instituciones}">
                     <td th:text="${inst.idInstitucion}">1</td>
                     <td>
-                        <div class="logo-placeholder"
+                        <img th:if="${inst.logoBase64 != null}"
+                             th:src="'data:image/jpeg;base64,' + ${inst.logoBase64}"
+                             style="width:35px; height:35px; border-radius:50%; object-fit:cover;"/>
+                        <div th:unless="${inst.logoBase64 != null}" class="logo-placeholder"
                              th:text="${inst.nombreInstitucion != null ? inst.nombreInstitucion.charAt(0) : 'I'}">
                         </div>
                     </td>
                     <td th:text="${inst.nombreInstitucion}">Nombre</td>
                     <td>
-                        <span class="badge"
-                              th:classappend="'badge-' + ${inst.tipo}"
-                              th:text="${inst.tipo}">
-                        </span>
+                        <span class="badge" th:classappend="'badge-' + ${inst.tipo}" th:text="${inst.tipo}"></span>
                     </td>
                     <td th:text="${inst.telefono}">12345678</td>
                     <td>
-                        <a th:href="@{/instituciones/editar/{id}(id=${inst.idInstitucion})}" class="btn btn-sm">Editar</a>
-                        <a th:href="@{/instituciones/eliminar/{id}(id=${inst.idInstitucion})}"
-                           class="btn btn-sm btn-danger"
-                           onclick="return confirm('¿Eliminar esta institución?')">
-                            Eliminar
-                        </a>
+                        <!-- VER - visible para todos (usa parámetro id) -->
+                        <a th:href="@{/instituciones(id=${inst.idInstitucion})}" class="btn btn-sm">Ver</a>
+
+                        <!-- EDITAR/ELIMINAR - solo si tiene permisos -->
+                        <div th:if="${puedeEditar}" style="display: inline-block;">
+                            <a th:href="@{/instituciones/editar/{id}(id=${inst.idInstitucion})}" class="btn btn-sm">Editar</a>
+                            <a th:href="@{/instituciones/eliminar/{id}(id=${inst.idInstitucion})}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Eliminar esta institución?')">Eliminar</a>
+                        </div>
                     </td>
                 </tr>
 

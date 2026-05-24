@@ -32,7 +32,7 @@
                 <label>Email del usuario *</label>
                 <input type="email" name="email" th:value="${institucion.email}" required
                        placeholder="ejemplo@institucion.com" />
-                <small>Usa: institucion1@jobkey.com (ya existe en la BD)</small>
+                <small>El usuario debe existir en el sistema</small>
             </div>
 
             <div class="form-group">
@@ -59,6 +59,33 @@
                 <textarea name="descripcion" rows="3">[[${institucion.descripcion}]]</textarea>
             </div>
 
+            <div class="form-group">
+                <label>Departamento *</label>
+                <select name="departamentoId" required>
+                    <option value="">-- Seleccione un departamento --</option>
+                    <option th:each="dep : ${departamentos}"
+                            th:value="${dep.idDepartamento}"
+                            th:text="${dep.departamento}"
+                            th:selected="${institucion.departamentoId == dep.idDepartamento}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Logo</label>
+
+                <div th:if="${institucion.logoBase64 != null}" style="margin-bottom: .75rem;">
+                    <img th:src="'data:image/jpeg;base64,' + ${institucion.logoBase64}"
+                         style="width:80px; height:80px; border-radius:50%; object-fit:cover;"/>
+                    <p style="font-size:.8rem; color:#64748b; margin-top:.25rem;">Logo actual</p>
+                </div>
+
+                <input type="file" id="logoInput" accept="image/*" onchange="convertirBase64(this)"/>
+                <img id="logoPreview" style="display:none; width:80px; height:80px;
+                     border-radius:50%; object-fit:cover; margin-top:.5rem;"/>
+                <input type="hidden" name="logoBase64" id="logoBase64"/>
+            </div>
+
             <div class="form-actions" style="display: flex; gap: 1rem; margin-top: 1rem;">
                 <button type="submit" class="btn" style="background: #1B2A4A;">Guardar</button>
                 <a th:href="@{/instituciones}" class="btn" style="background: #64748b;">Cancelar</a>
@@ -67,5 +94,6 @@
     </div>
 </div>
 
+<script th:src="@{/js/instituciones.js}"></script>
 </body>
 </html>

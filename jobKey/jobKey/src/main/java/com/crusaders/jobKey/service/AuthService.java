@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -188,12 +190,17 @@ public class AuthService {
             }
 
             case INSTITUCION -> {
-                Institucion institucion = institucionRepository.findByUsuario_IdUsuario(usuario.getIdUsuario());
-                nombre = institucion.getNombreInstitucion();
-                entidadId = institucion.getIdInstitucion();
+                Optional<Institucion> optInstitucion = institucionRepository.findByUsuario_IdUsuario(usuario.getIdUsuario());
+                if (optInstitucion.isPresent()) {
+                    Institucion institucion = optInstitucion.get();
+                    nombre = institucion.getNombreInstitucion();
+                    entidadId = institucion.getIdInstitucion();
+                } else {
+                    nombre = "";
+                    entidadId = null;
+                }
             }
         }
-
         // devolvemos la informacion del login exitoso
         // no me pagan lo suficiente
         // ser scup mashler no esta chido :(

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituciones - JobKey</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/instituciones-cards.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div><strong>JobKey</strong></div>
+    <div>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/instituciones}">Instituciones</a>
+        <a th:href="@{/ofertas}">Ofertas</a>
+        <a th:href="@{/empresas}">Empresas</a>
+        <a th:href="@{/candidatos}">Candidatos</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1><i class="bi bi-building"></i> Instituciones Educativas</h1>
+        <p>Descubre las mejores instituciones educativas del país</p>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre o tipo..." onkeyup="filtrarInstituciones()">
+    </div>
+
+    <div class="cards-grid" id="cardsGrid">
+        <div th:each="inst : ${instituciones}" class="card-institution"
+             data-nombre="${inst.nombreInstitucion}" data-tipo="${inst.tipo}">
+
+            <div class="card-header">
+                <div class="card-logo">
+                    <img th:if="${inst.logoBase64 != null}"
+                         th:src="'data:image/jpeg;base64,' + ${inst.logoBase64}"
+                         alt="Logo"/>
+                    <div th:unless="${inst.logoBase64 != null}" class="logo-placeholder">
+                        <i class="ti ti-school" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="card-title">
+                    <h3 th:text="${inst.nombreInstitucion}">Nombre</h3>
+                    <span class="badge" th:classappend="'badge-' + ${inst.tipo}" th:text="${inst.tipo}"></span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="info-row">
+                    <i class="ti ti-phone"></i>
+                    <span th:text="${inst.telefono != null ? inst.telefono : 'No especificado'}">Teléfono</span>
+                </div>
+                <div class="info-row">
+                    <i class="ti ti-map-pin"></i>
+                    <span th:text="${inst.nombreDepartamento != null ? inst.nombreDepartamento : 'No especificado'}">Departamento</span>
+                </div>
+                <div class="info-row description">
+                    <i class="ti ti-notes"></i>
+                    <p th:text="${inst.descripcion != null ? inst.descripcion : 'Sin descripción'}">Descripción</p>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <a th:href="@{/instituciones(id=${inst.idInstitucion})}" class="btn-ver">
+                    <i class="ti ti-eye"></i> Ver detalles
+                </a>
+            </div>
+        </div>
+
+        <div th:if="${instituciones.empty}" class="empty-state">
+            <i class="ti ti-school-off"></i>
+            <p>No hay instituciones registradas</p>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/instituciones-cards.js}"></script>
+
+</body>
+</html>
