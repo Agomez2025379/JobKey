@@ -1,51 +1,45 @@
 package com.crusaders.jobKey.controller;
 
 import com.crusaders.jobKey.entity.Resenas;
-import com.crusaders.jobKey.enums.ResenaTipo;
 import com.crusaders.jobKey.service.services.ResenasService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/resenas")
+@Controller
 public class ResenasController {
 
-    private final ResenasService service;
+    private final ResenasService resenasService;
 
-    public ResenasController(ResenasService service) {
-        this.service = service;
+    public ResenasController(ResenasService resenasService) {
+        this.resenasService = resenasService;
     }
 
-    @GetMapping("/get")
-    public List<Resenas> listar() {
-        return service.listar();
+    @GetMapping("/resenas")
+    public String mostrarVistaResenas() {
+        return "resenas";
     }
 
-    @GetMapping("/{id}")
-    public Resenas obtener(@PathVariable Integer id) {
-        return service.obtenerPorId(id);
+    @GetMapping("/api/resenas/get")
+    @ResponseBody
+    public ResponseEntity<List<Resenas>> obtenerTodas() {
+        List<Resenas> lista = resenasService.listar();
+        return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/tipo/{tipo}")
-    public List<Resenas> obtenerPorTipo(@PathVariable String tipo) {
+    @PostMapping("/api/resenas/save")
+    @ResponseBody
+    public ResponseEntity<?> guardarNueva(@RequestBody Resenas nuevaResena) {
         try {
-            ResenaTipo t = ResenaTipo.valueOf(tipo.trim());
-            return service.obtenerPorTipo(t);
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de reseña inválido: " + tipo);
+            nuevaResena.setIdResena(null);
+            Resenas resenaGuardada = resenasService.guardar(nuevaResena);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resenaGuardada);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
         }
-    }
-
-    @GetMapping("/empresa/{empresaId}")
-    public List<Resenas> obtenerPorEmpresa(@PathVariable Integer empresaId) {
-        return service.obtenerPorEmpresaId(empresaId);
-    }
-
-    @PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Resenas guardar(@RequestBody Resenas resena) {
-        return service.guardar(resena);
     }
 }
