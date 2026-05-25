@@ -67,7 +67,7 @@ create table empresas (
 -- tabla de instituciones
 create table instituciones (
     id_institucion int primary key auto_increment,
-    id_usuario int unique not null,
+    id_usuario int  not null,
     nombre_institucion varchar(150) not null,
     telefono varchar(20),
     descripcion text,

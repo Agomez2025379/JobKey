@@ -28,12 +28,12 @@
     </div>
 
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre o tipo..." onkeyup="filtrarInstituciones()">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre o tipo..." onkeyup="filtrarInstituciones()">
     </div>
 
     <div class="cards-grid" id="cardsGrid">
         <div th:each="inst : ${instituciones}" class="card-institution"
-             data-nombre="${inst.nombreInstitucion}" data-tipo="${inst.tipo}">
+             th:attr="data-nombre=${inst.nombreInstitucion}, data-tipo=${inst.tipo}">
 
             <div class="card-header">
                 <div class="card-logo">
@@ -41,7 +41,7 @@
                          th:src="'data:image/jpeg;base64,' + ${inst.logoBase64}"
                          alt="Logo"/>
                     <div th:unless="${inst.logoBase64 != null}" class="logo-placeholder">
-                        <i class="ti ti-school" style="font-size: 2rem;"></i>
+                        <i class="bi bi-building" style="font-size: 2rem;"></i>
                     </div>
                 </div>
                 <div class="card-title">
@@ -52,28 +52,28 @@
 
             <div class="card-body">
                 <div class="info-row">
-                    <i class="ti ti-phone"></i>
+                    <i class="bi bi-telephone"></i>
                     <span th:text="${inst.telefono != null ? inst.telefono : 'No especificado'}">Teléfono</span>
                 </div>
                 <div class="info-row">
-                    <i class="ti ti-map-pin"></i>
+                    <i class="bi bi-geo-alt"></i>
                     <span th:text="${inst.nombreDepartamento != null ? inst.nombreDepartamento : 'No especificado'}">Departamento</span>
                 </div>
                 <div class="info-row description">
-                    <i class="ti ti-notes"></i>
+                    <i class="bi bi-file-text"></i>
                     <p th:text="${inst.descripcion != null ? inst.descripcion : 'Sin descripción'}">Descripción</p>
                 </div>
             </div>
 
             <div class="card-footer">
                 <a th:href="@{/instituciones(id=${inst.idInstitucion})}" class="btn-ver">
-                    <i class="ti ti-eye"></i> Ver detalles
+                    <i class="bi bi-eye"></i> Ver detalles
                 </a>
             </div>
         </div>
 
         <div th:if="${instituciones.empty}" class="empty-state">
-            <i class="ti ti-school-off"></i>
+            <i class="bi bi-building-x"></i>
             <p>No hay instituciones registradas</p>
         </div>
     </div>

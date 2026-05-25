@@ -29,6 +29,9 @@
             <h1 class="page-title">Gestión de Administradores</h1>
             <p class="page-subtitle">Crea, edita y elimina cuentas de administrador</p>
         </div>
+        <a th:href="@{/admins/nuevo}" class="btn btn-primary">
+            <i class="ti ti-plus" aria-hidden="true"></i> Nuevo admin
+        </a>
     </div>
 
     <div class="stats">
@@ -67,7 +70,6 @@
             <tr th:each="a : ${admins}" th:attr="data-nombre=${a.nombre}, data-email=${a.email}">
                 <td th:text="'#' + ${a.idAdmin}" style="color:#94a3b8;font-size:.8rem"></td>
 
-                <!-- Nombre con iniciales -->
                 <td>
                     <div class="user-cell">
                         <div class="initials" th:text="${#strings.toUpperCase(#strings.substring(a.nombre,0,1))}">A</div>
@@ -84,7 +86,6 @@
                 <td th:text="${#temporals.format(a.fechaRegistro, 'dd MMM yyyy')}">—</td>
                 <td th:text="${a.ultimoAcceso != null ? #temporals.format(a.ultimoAcceso, 'dd MMM yyyy') : '—'}">—</td>
 
-                <!-- ACCIONES -->
                 <td>
                     <div class="actions">
                         <a th:href="@{/admins/editar/{id}(id=${a.idAdmin})}" class="btn btn-edit btn-sm">
@@ -97,7 +98,6 @@
                 </td>
             </tr>
 
-            <!-- Sin resultados -->
             <tr id="empty-row" style="display:none">
                 <td colspan="7" class="empty-state">
                     <i class="ti ti-user-off" aria-hidden="true"></i>
