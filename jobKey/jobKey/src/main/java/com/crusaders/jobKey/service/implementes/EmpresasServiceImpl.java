@@ -98,6 +98,15 @@ public class EmpresasServiceImpl implements EmpresasService {
         return mapToResponse(empresaGuardada);
     }
 
+    @Override
+    public Integer obtenerIdEmpresaPorUsuario(Integer usuarioId) {
+        EmpresasResponse empresa = findByUsuarioId(usuarioId);
+        if (empresa == null) {
+            throw new RuntimeException("Este usuario no tiene empresa vinculada");
+        }
+        return empresa.getIdEmpresa();
+    }
+
     private EmpresasResponse mapToResponse(Empresas empresa) {
         Integer usuarioId = (empresa.getUsuario() != null) ? empresa.getUsuario().getIdUsuario() : null;
         Integer departamentoId = (empresa.getDepartamento() != null) ? empresa.getDepartamento().getIdDepartamento() : null;

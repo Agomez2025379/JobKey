@@ -21,4 +21,5 @@ public interface EmpresasService {
 
     EmpresasResponse createCompany(EmpresasRequest request, Integer idUsuario);
 
+    Integer obtenerIdEmpresaPorUsuario(Integer usuarioId);
 }

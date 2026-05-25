@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Setter
 public class OfertasTrabajoRequest {
 
-    @NotNull(message = "Company ID is required")
     private Integer empresaId;
 
     @NotNull(message = "Department ID is required")

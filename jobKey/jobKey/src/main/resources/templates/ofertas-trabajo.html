@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
@@ -13,7 +13,8 @@
 
 <body>
 
-<!-- navbar -->
+<div th:replace="~{navbar :: nav}"></div>
+
 <nav class="navbar">
     <div>
         <strong>Job Portal</strong>
@@ -22,9 +23,8 @@
     <div style="display: flex; align-items: center;">
         <a th:href="@{/home}">Home</a>
         <a th:href="@{/ofertas}" style="margin-left: 15px;">Offers</a>
-        <a href="#" style="margin-left: 15px;">Profile</a>
+        <a th:href="@{/candidatos}" style="margin-left: 15px;">Profile</a>
 
-        <!-- boton crear solo para admin y empresa -->
         <div sec:authorize="hasAnyRole('ADMIN', 'EMPRESA')" style="display: inline;">
             <a th:href="@{/ofertas/crear}" class="btn-create-nav"
                style="margin-left: 15px; background-color: #007bff; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
@@ -36,10 +36,8 @@
 
 <div class="jobs-layout">
 
-    <!-- panel de filtros -->
     <aside class="filters-panel">
         <form action="/ofertas" method="get">
-
             <div class="filters-header">
                 <h2>Filters</h2>
                 <a href="/ofertas" class="clear-btn">Clear</a>
@@ -47,10 +45,7 @@
 
             <div class="filter-box">
                 <label>Search</label>
-                <input type="text"
-                       name="keyword"
-                       placeholder="Title or company"
-                       th:value="${param.keyword}">
+                <input type="text" name="keyword" placeholder="Title or company" th:value="${param.keyword}">
             </div>
 
             <div class="filter-box">
@@ -76,113 +71,54 @@
                 </select>
             </div>
 
-            <div class="filter-box">
-                <label>Experience Level</label>
-                <select name="nivelRequerido">
-                    <option value="">All</option>
-                    <option value="JUNIOR" th:selected="${param.nivelRequerido == 'JUNIOR'}">Junior</option>
-                    <option value="MID"    th:selected="${param.nivelRequerido == 'MID'}">Mid</option>
-                    <option value="SENIOR" th:selected="${param.nivelRequerido == 'SENIOR'}">Senior</option>
-                </select>
-            </div>
-
             <button type="submit" class="search-btn">
                 <i class="ti ti-filter" aria-hidden="true"></i> Apply Filters
             </button>
-
         </form>
     </aside>
 
-    <!-- listado de ofertas -->
     <main class="jobs-content">
         <div class="jobs-list">
-
             <div th:if="${#lists.isEmpty(ofertas)}">
                 <p>No job offers available.</p>
             </div>
 
             <div class="job-card" th:each="oferta : ${ofertas}">
-
-                <!-- titulo y salario -->
                 <div class="job-header">
                     <h3 th:text="${oferta.titulo}">Title</h3>
                     <span class="job-salary" th:text="${oferta.salario} + ' Q'">Salary</span>
                 </div>
 
-                <!-- empresa y ubicacion -->
-                <div class="job-meta-grid" style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; color: #555; font-size: 0.9rem;">
-                    <div class="job-company">
-                        <i class="ti ti-building" aria-hidden="true"></i>
-                        <span th:text="${oferta.nombreEmpresa}">Company</span>
-                    </div>
-                    <div class="job-location">
-                        <i class="ti ti-map-pin" aria-hidden="true"></i>
-                        <span th:text="${oferta.nombreDepartamento}">Department</span>
-                    </div>
+                <div class="job-meta-grid" style="display: flex; gap: 15px; margin-bottom: 10px; color: #555; font-size: 0.9rem;">
+                    <div><i class="ti ti-building"></i> <span th:text="${oferta.nombreEmpresa}">Company</span></div>
+                    <div><i class="ti ti-map-pin"></i> <span th:text="${oferta.nombreDepartamento}">Dept</span></div>
                 </div>
 
-                <!-- tags de modalidad, jornada y nivel -->
-                <div class="job-tags" style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-                    <span class="tag tag-modality" style="background-color: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 500;">
-                        <i class="ti ti-device-laptop" aria-hidden="true"></i>
-                        <span th:text="${oferta.modalidad}">REMOTE</span>
-                    </span>
-                    <span class="tag tag-shift" style="background-color: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 500;">
-                        <i class="ti ti-clock" aria-hidden="true"></i>
-                        <span th:text="${oferta.tipoJornada}">FULL_TIME</span>
-                    </span>
-                    <span class="tag tag-level" style="background-color: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 500;">
-                        <i class="ti ti-school" aria-hidden="true"></i>
-                        <span th:text="${oferta.nivelRequerido}">JUNIOR</span>
-                    </span>
+                <div class="job-tags" style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <span class="tag" style="background-color: #e2e8f0; padding: 4px 8px; border-radius: 4px;" th:text="${oferta.modalidad}"></span>
+                    <span class="tag" style="background-color: #e2e8f0; padding: 4px 8px; border-radius: 4px;" th:text="${oferta.tipoJornada}"></span>
                 </div>
 
-                <!-- descripcion y requisitos -->
-                <div class="job-section" style="margin-bottom: 10px;">
-                    <strong style="font-size: 0.9rem; color: #333;">Description:</strong>
-                    <p class="job-description" th:text="${oferta.descripcion}"
-                       style="margin-top: 4px; color: #444; line-height: 1.4;">Description</p>
-                </div>
-                <div class="job-section" style="margin-bottom: 15px;">
-                    <strong style="font-size: 0.9rem; color: #333;">Requirements:</strong>
-                    <p class="job-requirements" th:text="${oferta.requisitos}"
-                       style="margin-top: 4px; color: #444; line-height: 1.4; font-style: italic;">Requirements</p>
-                </div>
+                <p class="job-description" th:text="${oferta.descripcion}" style="margin-bottom: 10px; color: #444;"></p>
 
-                <!-- pie de card: fechas y acciones -->
-                <div class="job-footer" style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div class="job-footer" style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
 
-                    <!-- fechas -->
-                    <div class="job-dates" style="display: flex; flex-direction: column; gap: 2px; font-size: 0.8rem; color: #666;">
-                        <div>
-                            <i class="ti ti-calendar-plus" aria-hidden="true"></i> Published:
-                            <span th:text="${#temporals.format(oferta.fechaPublicacion, 'dd/MM/yyyy')}">01/01/2026</span>
-                        </div>
-                        <div th:if="${oferta.fechaCierre != null}" style="color: #dc3545; font-weight: 500;">
-                            <i class="ti ti-calendar-x" aria-hidden="true"></i> Deadline:
-                            <span th:text="${#temporals.format(oferta.fechaCierre, 'dd/MM/yyyy')}">31/12/2026</span>
-                        </div>
+                    <div sec:authorize="hasRole('CANDIDATO')">
+                        <form th:action="@{/postulaciones/aplicar/{id}(id=${oferta.idOfertaTrabajo})}" method="post">
+                            <button type="submit" class="btn" style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                <i class="ti ti-send"></i> Apply Now
+                            </button>
+                        </form>
                     </div>
 
-                    <!-- acciones solo para admin y empresa -->
-                    <div class="job-actions" sec:authorize="hasAnyRole('ADMIN', 'EMPRESA')">
-                        <a th:href="@{'/ofertas/editar/' + ${oferta.idOfertaTrabajo}}"
-                           style="margin-right: 10px; color: #007bff; text-decoration: none; font-weight: 500;">
-                            <i class="ti ti-edit" aria-hidden="true"></i> Edit
-                        </a>
-                        <a th:href="@{'/ofertas/eliminar/' + ${oferta.idOfertaTrabajo}}"
-                           onclick="return confirm('Are you sure you want to delete this offer?')"
-                           style="color: #dc3545; text-decoration: none; font-weight: 500;">
-                            <i class="ti ti-trash" aria-hidden="true"></i> Delete
-                        </a>
+                    <div class="job-actions" th:if="${oferta.empresaId == idEmpresaUsuario or esAdmin}">
+                        <a th:href="@{'/ofertas/editar/' + ${oferta.idOfertaTrabajo}}" style="margin-right: 10px; color: #007bff; text-decoration: none;">Edit</a>
+                        <a th:href="@{'/ofertas/eliminar/' + ${oferta.idOfertaTrabajo}}" onclick="return confirm('Delete?')" style="color: #dc3545; text-decoration: none;">Delete</a>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </main>
-
 </div>
 
 </body>

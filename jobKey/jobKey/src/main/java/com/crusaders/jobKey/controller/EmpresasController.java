@@ -5,8 +5,10 @@ import com.crusaders.jobKey.dto.empresas.EmpresasResponse;
 import com.crusaders.jobKey.entity.Usuarios;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.UsuariosRepository;
+import com.crusaders.jobKey.service.services.CandidatosService;
 import com.crusaders.jobKey.service.services.EmpresasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ public class EmpresasController {
 
     @Autowired
     private EmpresasService empresasService;
+
+    @Autowired
+    private CandidatosService candidatosService;
 
     @Autowired
     private UsuariosRepository usuariosRepository;
@@ -41,6 +46,12 @@ public class EmpresasController {
         model.addAttribute("listaDepartamentos", departamentosRepository.findAll());
         model.addAttribute("nuevaEmpresa", new EmpresasRequest());
         return "formulario-empresa";
+    }
+
+    @GetMapping("/lista")
+    public String listarEmpresasPublico(Model model) {
+        model.addAttribute("empresas", empresasService.listCompanies());
+        return "empresas";
     }
 
     @PostMapping("/guardar")
@@ -97,5 +108,12 @@ public class EmpresasController {
         }
 
         return "redirect:/empresas";
+    }
+
+    @GetMapping("/candidatos")
+    @PreAuthorize("hasAnyRole('EMPRESA', 'INSTITUCION', 'ADMIN')")
+    public String listarCandidatos(Model model) {
+        model.addAttribute("candidatos", candidatosService.listarTodos());
+        return "lista-candidatos";
     }
 }

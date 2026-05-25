@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talent Pool - Candidates</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/ofertas-trabajo.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+
+<body>
+
+<div th:replace="~{navbar :: nav}"></div>
+
+<div class="jobs-layout" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+
+  <main class="jobs-content" style="width: 100%;">
+    <div class="filters-header" style="margin-bottom: 20px;">
+      <h2>Available Talent</h2>
+      <p style="color: #666; font-size: 0.9rem;">Explore professionals ready to join your team</p>
+    </div>
+
+    <div class="jobs-list">
+      <div th:if="${#lists.isEmpty(candidatos)}">
+        <p>No candidates registered yet.</p>
+      </div>
+
+      <div class="job-card" th:each="c : ${candidatos}" style="margin-bottom: 20px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: white;">
+
+        <div class="job-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <h3 th:text="${c.nombre} + ' ' + ${c.apellido}" style="margin: 0; font-size: 1.25rem; color: #1a202c;">John Doe</h3>
+            <span class="job-company" style="color: #4a5568; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px;">
+                            <i class="ti ti-briefcase" aria-hidden="true"></i> <span th:text="${c.profesion}">Software Engineer</span>
+                        </span>
+          </div>
+        </div>
+
+        <div class="job-meta-grid" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; margin-bottom: 10px; color: #555; font-size: 0.9rem;">
+          <div class="job-location">
+            <i class="ti ti-phone" aria-hidden="true"></i>
+            <span th:text="${c.telefono}">+502 1234-5678</span>
+          </div>
+        </div>
+
+        <div class="job-section" style="margin-bottom: 10px; border-top: 1px solid #f7fafc; padding-top: 10px;">
+          <strong style="font-size: 0.9rem; color: #333;">Experience:</strong>
+          <p th:text="${c.experiencia}" style="margin-top: 4px; color: #444; line-height: 1.4;"></p>
+        </div>
+
+        <div class="job-section" style="margin-bottom: 10px;">
+          <strong style="font-size: 0.9rem; color: #333;">Education:</strong>
+          <p th:text="${c.educacion}" style="margin-top: 4px; color: #444; line-height: 1.4;"></p>
+        </div>
+
+        <div class="job-section" style="margin-bottom: 15px;">
+          <strong style="font-size: 0.9rem; color: #333;">Skills:</strong>
+          <p th:text="${c.habilidades}" style="margin-top: 4px; color: #444; line-height: 1.4; font-style: italic;"></p>
+        </div>
+
+        <div class="job-footer" style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <a th:if="${c.curriculumUrl != null}" th:href="${c.curriculumUrl}" target="_blank" class="btn"
+               style="background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="ti ti-download"></i> View Resume / CV
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
