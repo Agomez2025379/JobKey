@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/jobKey/src/main/java/com/crusaders/jobKey/db/jobKey_create.sql" value="e6fa2d5e-779e-4f2c-a6bb-7331f407e9f5" />
-    <file url="file://$PROJECT_DIR$/jobKey/src/main/java/com/crusaders/jobKey/db/jobKey_inserts.sql" value="e6fa2d5e-779e-4f2c-a6bb-7331f407e9f5" />
-  </component>
-</project>
