@@ -16,4 +16,6 @@ public class InstitucionResponse {
     private String descripcion;
     private ETipoInstitucion tipo;
     private Integer departamentoId;
+    private String nombreDepartamento;
+    private String logoBase64;
 }

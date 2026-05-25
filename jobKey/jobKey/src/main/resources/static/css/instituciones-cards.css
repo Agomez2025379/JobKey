@@ -1,0 +1,199 @@
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #1B2A4A;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #64748B;
+}
+
+.search-bar {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #1B2A4A;
+    box-shadow: 0 0 0 3px rgba(27, 42, 74, 0.1);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.card-institution {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(27, 42, 74, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #E2E8F0;
+}
+
+.card-institution:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(27, 42, 74, 0.12);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.card-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #C8B8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1B2A4A;
+}
+
+.card-title h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    color: #1B2A4A;
+}
+
+.card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+.info-row i {
+    width: 20px;
+    color: #1B2A4A;
+}
+
+.info-row.description {
+    align-items: flex-start;
+}
+
+.info-row.description p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.card-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid #E2E8F0;
+    background: #F8FAFC;
+}
+
+.btn-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1B2A4A;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-ver:hover {
+    background: #3D5A8A;
+}
+
+.badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-UNIVERSIDAD {
+    background: #3b82f6;
+    color: white;
+}
+
+.badge-INSTITUTO {
+    background: #8b5cf6;
+    color: white;
+}
+
+.badge-COLEGIO {
+    background: #10b981;
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #64748B;
+    grid-column: 1 / -1;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}

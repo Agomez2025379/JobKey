@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class InstitucionRequest {
 
+
     private Integer idInstitucion;
     private String email;
     private Integer usuarioId;
@@ -17,4 +18,5 @@ public class InstitucionRequest {
     private ETipoInstitucion tipo;
     private byte[] logo;
     private Integer departamentoId;
+    private String logoBase64;
 }

@@ -1,5 +1,3 @@
-// instituciones.js - Versión simplificada
-
 function edit(id) {
     window.location.href = '/instituciones/editar/' + id;
 }
@@ -8,7 +6,6 @@ function confirmarEliminar(url) {
     return confirm('¿Estás seguro de eliminar esta institución?');
 }
 
-// Función de búsqueda/filtro para la tabla
 function filtrarInstituciones() {
     const input = document.getElementById('searchInput');
     if (!input) return;
@@ -36,7 +33,22 @@ function filtrarInstituciones() {
     }
 }
 
-// Agregar barra de búsqueda cuando carga la página
+function convertirBase64(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64 = e.target.result.split(',')[1];
+        document.getElementById('logoBase64').value = base64;
+
+        const preview = document.getElementById('logoPreview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
     if (header && !document.getElementById('searchInput')) {
