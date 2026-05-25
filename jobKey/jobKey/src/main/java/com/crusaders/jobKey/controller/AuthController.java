@@ -1,9 +1,5 @@
 package com.crusaders.jobKey.controller;
 
-import com.crusaders.jobKey.dto.auth.LoginRequest;
-import com.crusaders.jobKey.dto.auth.LoginResponse;
-import com.crusaders.jobKey.dto.auth.RegisterRequest;
-import com.crusaders.jobKey.service.AuthService;
 import com.crusaders.jobKey.entity.Usuarios;
 import com.crusaders.jobKey.enums.EUsuarioRol;
 import com.crusaders.jobKey.repository.UsuariosRepository;
