@@ -1,6 +1,5 @@
 package com.crusaders.jobKey.service.implementes;
 
-
 import com.crusaders.jobKey.dto.candidatos.*;
 import com.crusaders.jobKey.entity.*;
 import com.crusaders.jobKey.exception.ResourceNotFoundException;
@@ -27,19 +26,15 @@ public class CandidatosServiceImpl implements CandidatosService {
         this.departamentosRepository = departamentosRepository;
     }
 
-
     @Override
     public CandidatosResponse getCandidate(Integer id) {
-
         Candidatos candidato = candidatosRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidate not found"));
-
         return mapToResponse(candidato);
     }
 
     @Override
     public List<CandidatosResponse> listCandidates() {
-
         return candidatosRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -47,8 +42,12 @@ public class CandidatosServiceImpl implements CandidatosService {
     }
 
     @Override
-    public CandidatosResponse updateCandidate(Integer id, CandidatosRequest request) {
+    public List<CandidatosResponse> listarTodos() {
+        return listCandidates();
+    }
 
+    @Override
+    public CandidatosResponse updateCandidate(Integer id, CandidatosRequest request) {
         Candidatos candidato = candidatosRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidate not found"));
 
@@ -66,22 +65,18 @@ public class CandidatosServiceImpl implements CandidatosService {
         candidato.setDepartamento(departamento);
 
         candidatosRepository.save(candidato);
-
         return mapToResponse(candidato);
     }
 
     @Override
     public void deleteCandidate(Integer id) {
-
         if (!candidatosRepository.existsById(id)) {
             throw new RuntimeException("Candidate not found");
         }
-
         candidatosRepository.deleteById(id);
     }
 
     private CandidatosResponse mapToResponse(Candidatos candidato) {
-
         Integer usuarioId = null;
         if (candidato.getUsuario() != null) {
             usuarioId = candidato.getUsuario().getIdUsuario();
@@ -116,7 +111,7 @@ public class CandidatosServiceImpl implements CandidatosService {
         return mapToResponse(candidato);
     }
 
-    @Override // Metodo creado para la postulacion del formulario
+    @Override
     public CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario) {
         Usuarios usuario = usuariosRepository.findById(idUsuario)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -139,5 +134,4 @@ public class CandidatosServiceImpl implements CandidatosService {
         candidatosRepository.save(candidato);
         return mapToResponse(candidato);
     }
-
 }

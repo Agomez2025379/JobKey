@@ -10,6 +10,8 @@ public interface CandidatosService {
 
     List<CandidatosResponse> listCandidates();
 
+    List<CandidatosResponse> listarTodos();
+
     CandidatosResponse updateCandidate(Integer id, CandidatosRequest request);
 
     void deleteCandidate(Integer id);
@@ -17,5 +19,5 @@ public interface CandidatosService {
     CandidatosResponse findByUsuarioId(Integer idUsuario);
 
     CandidatosResponse createCandidate(CandidatosRequest request, Integer idUsuario);
-    
+
 }

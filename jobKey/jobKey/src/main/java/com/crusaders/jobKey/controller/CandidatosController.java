@@ -3,10 +3,12 @@ package com.crusaders.jobKey.controller;
 import com.crusaders.jobKey.dto.candidatos.CandidatosRequest;
 import com.crusaders.jobKey.dto.candidatos.CandidatosResponse;
 import com.crusaders.jobKey.entity.Usuarios;
+import com.crusaders.jobKey.enums.EUsuarioRol;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.UsuariosRepository;
 import com.crusaders.jobKey.service.services.CandidatosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,25 +28,37 @@ public class CandidatosController {
     private DepartamentosRepository departamentosRepository;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'CANDIDATO', 'EMPRESA')")
     public String listarOCrearCandidato(Authentication authentication, Model model) {
         String emailLogueado = authentication.getName();
         Usuarios usuario = usuariosRepository.findByEmail(emailLogueado)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado en sesión"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuario.getRol() == EUsuarioRol.EMPRESA || usuario.getRol() == EUsuarioRol.ADMIN) {
+            model.addAttribute("candidatos", candidatosService.listarTodos());
+            return "lista-candidatos";
+        }
 
         CandidatosResponse candidato = candidatosService.findByUsuarioId(usuario.getIdUsuario());
-
         if (candidato != null) {
             model.addAttribute("candidato", candidato);
             return "mi-perfil-candidato";
         }
 
-        // Enviamos la lista de departamentos para el select
         model.addAttribute("listaDepartamentos", departamentosRepository.findAll());
         model.addAttribute("nuevoCandidato", new CandidatosRequest());
         return "formulario-postulacion";
     }
 
+    @GetMapping("/ver/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPRESA')")
+    public String verDetalleCandidatoParaEmpresa(@PathVariable Integer id, Model model) {
+        model.addAttribute("candidato", candidatosService.getCandidate(id));
+        return "mi-perfil-candidato";
+    }
+
     @PostMapping("/guardar")
+    @PreAuthorize("hasRole('CANDIDATO')")
     public String guardarPostulacion(@ModelAttribute("nuevoCandidato") CandidatosRequest request, Authentication authentication) {
         String emailLogueado = authentication.getName();
         Usuarios usuario = usuariosRepository.findByEmail(emailLogueado)
@@ -62,6 +76,7 @@ public class CandidatosController {
     }
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('CANDIDATO')")
     public String mostrarFormularioEditar(@PathVariable Integer id, Authentication authentication, Model model) {
         String emailLogueado = authentication.getName();
         Usuarios usuario = usuariosRepository.findByEmail(emailLogueado)
@@ -90,6 +105,7 @@ public class CandidatosController {
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('CANDIDATO')")
     public String eliminarPostulacion(@PathVariable Integer id, Authentication authentication) {
         String emailLogueado = authentication.getName();
         Usuarios usuario = usuariosRepository.findByEmail(emailLogueado)
