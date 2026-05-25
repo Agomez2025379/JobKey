@@ -1,21 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Formulario Institución</title>
     <link rel="stylesheet" th:href="@{/css/instituciones.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 
-<nav class="navbar">
-    <div><strong>JobKey Admin</strong></div>
-    <div>
-        <a th:href="@{/instituciones}">Instituciones</a>
-        <a href="/usuarios">Usuarios</a>
-    </div>
-</nav>
+<div th:replace="~{navbar :: nav}"></div>
 
-<div class="container" style="max-width: 600px;">
+<div class="container" style="max-width: 600px; margin-top: 20px;">
     <div class="header">
         <a th:href="@{/instituciones}" class="btn" style="background: #64748b;">← Volver</a>
         <h1 th:text="${accion == 'crear' ? 'Nueva Institución' : 'Editar Institución'}">Formulario</h1>
@@ -73,13 +69,11 @@
 
             <div class="form-group">
                 <label>Logo</label>
-
                 <div th:if="${institucion.logoBase64 != null}" style="margin-bottom: .75rem;">
                     <img th:src="'data:image/jpeg;base64,' + ${institucion.logoBase64}"
                          style="width:80px; height:80px; border-radius:50%; object-fit:cover;"/>
                     <p style="font-size:.8rem; color:#64748b; margin-top:.25rem;">Logo actual</p>
                 </div>
-
                 <input type="file" id="logoInput" accept="image/*" onchange="convertirBase64(this)"/>
                 <img id="logoPreview" style="display:none; width:80px; height:80px;
                      border-radius:50%; object-fit:cover; margin-top:.5rem;"/>

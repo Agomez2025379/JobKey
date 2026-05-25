@@ -15,15 +15,7 @@
 
 <body>
 
-<nav class="navbar">
-    <div>
-        <strong>Job Portal</strong>
-    </div>
-    <div>
-        <a href="/">Home</a>
-        <a href="/ofertas">Offers</a>
-    </div>
-</nav>
+<div th:replace="~{navbar :: nav}"></div>
 
 <div class="form-container">
 
@@ -112,19 +104,6 @@
             <label>Closing Date</label>
             <input type="date" th:field="*{fechaCierre}">
             <small class="error" th:if="${#fields.hasErrors('fechaCierre')}" th:errors="*{fechaCierre}"></small>
-        </div>
-
-        <!-- COMPANY SELECT -->
-        <div class="form-group">
-            <label>Company</label>
-            <select th:field="*{empresaId}">
-                <option value="">Select a company</option>
-                <option th:each="emp : ${empresas}"
-                        th:value="${emp.idEmpresa}"
-                        th:text="${emp.nombreEmpresa}">
-                </option>
-            </select>
-            <small class="error" th:if="${#fields.hasErrors('empresaId')}" th:errors="*{empresaId}"></small>
         </div>
 
         <!-- DEPARTMENT SELECT -->

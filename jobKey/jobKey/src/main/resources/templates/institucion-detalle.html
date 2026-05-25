@@ -1,59 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${institucion.nombreInstitucion} + ' - JobKey'">Institución - JobKey</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 
-<nav class="navbar">
-    <div><strong>JobKey</strong></div>
-    <div>
-        <a th:href="@{/home}">Home</a>
-        <a th:href="@{/instituciones}">Instituciones</a>
-        <a th:href="@{/ofertas}">Ofertas</a>
-        <a th:href="@{/empresas}">Empresas</a>
-        <a th:href="@{/candidatos}">Candidatos</a>
-    </div>
-</nav>
+<div th:replace="~{navbar :: nav}"></div>
 
-<div class="container" style="max-width: 800px;">
-    <div class="card">
+<div class="container" style="max-width: 800px; margin-top: 20px;">
+    <div class="card" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
         <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
             <div th:if="${institucion.logoBase64 != null}">
                 <img th:src="'data:image/jpeg;base64,' + ${institucion.logoBase64}"
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;"/>
             </div>
             <div th:unless="${institucion.logoBase64 != null}" class="logo-placeholder"
-                 style="width: 100px; height: 100px; font-size: 3rem;">
-                <i class="bi bi-building" style="font-size: 3rem;"></i>
+                 style="width: 100px; height: 100px; font-size: 3rem; display: flex; align-items: center; justify-content: center; background: #e2e8f0; border-radius: 50%;">
+                <i class="ti ti-building" style="font-size: 3rem;"></i>
             </div>
             <div>
                 <h1 style="margin-bottom: 0.5rem;" th:text="${institucion.nombreInstitucion}">Nombre</h1>
-                <span class="badge" th:classappend="'badge-' + ${institucion.tipo}" th:text="${institucion.tipo}"></span>
+                <span class="badge" th:classappend="'badge-' + ${institucion.tipo}" th:text="${inst.tipo}"></span>
             </div>
         </div>
 
-        <div class="info-row">
-            <span class="info-label"><i class="bi bi-telephone"></i> Teléfono</span>
-            <span th:text="${institucion.telefono != null ? institucion.telefono : '—'}">—</span>
+        <div class="info-row" style="margin-bottom: 10px;">
+            <span class="info-label"><i class="ti ti-phone"></i> Teléfono: </span>
+            <span th:text="${institucion.telefono != null ? institution.telefono : '—'}">—</span>
         </div>
 
-        <div class="info-row">
-            <span class="info-label"><i class="bi bi-geo-alt"></i> Departamento</span>
+        <div class="info-row" style="margin-bottom: 10px;">
+            <span class="info-label"><i class="ti ti-map-pin"></i> Departamento: </span>
             <span th:text="${institucion.nombreDepartamento != null ? institucion.nombreDepartamento : 'No especificado'}">Departamento</span>
         </div>
 
-        <div class="info-row" style="align-items: flex-start;">
-            <span class="info-label"><i class="bi bi-file-text"></i> Descripción</span>
+        <div class="info-row" style="align-items: flex-start; margin-bottom: 10px;">
+            <span class="info-label"><i class="ti ti-notes"></i> Descripción: </span>
             <span th:text="${institucion.descripcion != null ? institucion.descripcion : '—'}">—</span>
         </div>
 
         <div style="margin-top: 2rem;">
-            <a th:href="@{/instituciones}" class="btn" style="background: #64748b;">← Volver</a>
+            <a th:href="@{/instituciones}" class="btn" style="background: #64748b; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none;">← Volver</a>
         </div>
     </div>
 </div>

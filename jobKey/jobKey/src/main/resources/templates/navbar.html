@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<nav th:fragment="nav" class="navbar">
+  <div class="logo">
+    <a th:href="@{/home}" style="color: white; text-decoration: none; font-weight: bold; font-size: 1.2rem;">JobKey</a>
+  </div>
+
+  <div style="display: flex; align-items: center;">
+    <a th:href="@{/home}">Home</a>
+
+    <a sec:authorize="hasRole('CANDIDATO')" th:href="@{/ofertas}">Offers</a>
+    <a sec:authorize="hasRole('CANDIDATO')" th:href="@{/candidatos}">Profile</a>
+    <a sec:authorize="hasRole('EMPRESA')" th:href="@{/empresas/lista}">Companies</a>
+
+    <a th:href="@{/resenas}" style="color: var(--accent); font-weight: bold;">Reviews</a>
+
+    <div sec:authorize="isAnonymous()" style="display: inline-block;">
+      <a th:href="@{/login}">Login</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" style="display: inline-block; margin-left: 1rem;">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-weight: 500; font-family: inherit;">
+          Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+</body>
+</html>

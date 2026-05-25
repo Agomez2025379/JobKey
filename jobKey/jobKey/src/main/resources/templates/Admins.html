@@ -9,15 +9,7 @@
 </head>
 <body>
 
-<nav class="navbar">
-    <span class="navbar-brand">⚿ JobKey Admin</span>
-    <div>
-        <a th:href="@{/home}">Home</a>
-        <a th:href="@{/admins}" style="color:var(--accent)">Admins</a>
-        <a th:href="@{/usuarios}">Usuarios</a>
-        <a th:href="@{/logout}">Cerrar sesión</a>
-    </div>
-</nav>
+<div th:replace="~{navbar :: nav}"></div>
 
 <div class="container">
 
