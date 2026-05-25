@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Instituciones - JobKey</title>
     <link rel="stylesheet" th:href="@{/css/instituciones.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 
-<nav class="navbar">
-    <div><strong>JobKey Admin</strong></div>
-    <div>
-        <a th:href="@{/instituciones}">Instituciones</a>
-    </div>
-</nav>
+<div th:replace="~{navbar :: nav}"></div>
 
 <div class="container">
-    <div th:if="${success}" class="alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+    <div th:if="${success}" class="alert-success" th:text="${success}" style="padding: 10px; margin-bottom: 10px; background: #d4edda; color: #155724;"></div>
+    <div th:if="${error}" class="alert-error" th:text="${error}" style="padding: 10px; margin-bottom: 10px; background: #f8d7da; color: #721c24;"></div>
 
-    <div class="header">
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h1>🏢 Instituciones</h1>
-        <a th:if="${puedeCrear}" th:href="@{/instituciones/nueva}" class="btn">➕ Nueva</a>
+        <a th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''INSTITUCION'')')}"
+           th:href="@{/instituciones/nueva}" class="btn">➕ Nueva</a>
     </div>
 
     <div class="card">
         <div class="table-container">
-            <table id="tablaInstituciones">
+            <table id="tablaInstituciones" style="width: 100%; border-collapse: collapse;">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -38,37 +36,35 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="inst : ${instituciones}">
+                <tr th:each="inst : ${listaInstituciones}">
                     <td th:text="${inst.idInstitucion}">1</td>
                     <td>
                         <img th:if="${inst.logoBase64 != null}"
                              th:src="'data:image/jpeg;base64,' + ${inst.logoBase64}"
                              style="width:35px; height:35px; border-radius:50%; object-fit:cover;"/>
                         <div th:unless="${inst.logoBase64 != null}" class="logo-placeholder"
-                             th:text="${inst.nombreInstitucion != null ? inst.nombreInstitucion.charAt(0) : 'I'}">
+                             th:text="${inst.nombreInstitucion != null ? inst.nombreInstitucion.charAt(0) : 'I'}"
+                             style="width:35px; height:35px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                         </div>
                     </td>
                     <td th:text="${inst.nombreInstitucion}">Nombre</td>
                     <td>
-                        <span class="badge" th:classappend="'badge-' + ${inst.tipo}" th:text="${inst.tipo}"></span>
+                        <span class="badge" th:text="${inst.tipo}"></span>
                     </td>
                     <td th:text="${inst.telefono}">12345678</td>
                     <td>
-                        <!-- VER - visible para todos (usa parámetro id) -->
                         <a th:href="@{/instituciones(id=${inst.idInstitucion})}" class="btn btn-sm">Ver</a>
 
-                        <!-- EDITAR/ELIMINAR - solo si tiene permisos -->
-                        <div th:if="${puedeEditar}" style="display: inline-block;">
-                            <a th:href="@{/instituciones/editar/{id}(id=${inst.idInstitucion})}" class="btn btn-sm">Editar</a>
-                            <a th:href="@{/instituciones/eliminar/{id}(id=${inst.idInstitucion})}"
-                               class="btn btn-sm btn-danger"
-                               onclick="return confirm('¿Eliminar esta institución?')">Eliminar</a>
-                        </div>
+                        <span th:if="${inst.usuarioId == usuarioLogueadoId or esAdmin}">
+                                <a th:href="@{/instituciones/editar/{id}(id=${inst.idInstitucion})}" class="btn btn-sm">Editar</a>
+                                <a th:href="@{/instituciones/eliminar/{id}(id=${inst.idInstitucion})}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Seguro que deseas eliminar esta institución?')">Eliminar</a>
+                            </span>
                     </td>
                 </tr>
-
-                <tr th:if="${instituciones.empty}">
-                    <td colspan="6" style="text-align: center;">No hay instituciones registradas</td>
+                <tr th:if="${listaInstituciones == null or listaInstituciones.empty}">
+                    <td colspan="6" style="text-align: center; padding: 20px;">No hay instituciones registradas</td>
                 </tr>
                 </tbody>
             </table>
@@ -77,6 +73,5 @@
 </div>
 
 <script th:src="@{/js/instituciones.js}"></script>
-
 </body>
 </html>

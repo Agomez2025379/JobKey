@@ -7,12 +7,12 @@ import com.crusaders.jobKey.enums.EUsuarioRol;
 import com.crusaders.jobKey.repository.DepartamentosRepository;
 import com.crusaders.jobKey.repository.UsuariosRepository;
 import com.crusaders.jobKey.service.services.InstitucionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.List;
 
 @Controller
 @RequestMapping("/instituciones")
@@ -31,59 +31,26 @@ public class InstitucionController {
     }
 
     @GetMapping
-    public String index(Model model,
-                        @RequestParam(required = false) Integer id,
-                        Authentication authentication) {
-
+    public String index(Model model, @RequestParam(required = false) Integer id, Authentication authentication) {
         if (id != null) {
-            InstitucionResponse institucion = institucionService.obtenerPorId(id);
-            model.addAttribute("institucion", institucion);
+            model.addAttribute("institucion", institucionService.obtenerPorId(id));
             return "institucion-detalle";
-        }
-
-        List<InstitucionResponse> instituciones;
-
-        if (authentication == null) {
-            instituciones = institucionService.listarTodas();
-            model.addAttribute("instituciones", instituciones);
-            return "instituciones-cards";
         }
 
         String email = authentication.getName();
         Usuarios usuario = usuarioRepository.findByEmail(email).orElse(null);
+        boolean esAdmin = (usuario != null && usuario.getRol() == EUsuarioRol.ADMIN);
 
-        if (usuario == null) {
-            instituciones = institucionService.listarTodas();
-            model.addAttribute("instituciones", instituciones);
-            return "instituciones-cards";
-        }
+        model.addAttribute("listaInstituciones", institucionService.listarTodas());
+        model.addAttribute("esAdmin", esAdmin);
+        model.addAttribute("usuarioLogueadoId", (usuario != null) ? usuario.getIdUsuario() : null);
 
-        if (usuario.getRol() == EUsuarioRol.ADMIN) {
-            instituciones = institucionService.listarTodas();
-            model.addAttribute("instituciones", instituciones);
-            model.addAttribute("puedeCrear", true);
-            model.addAttribute("puedeEditar", true);
-            return "instituciones";
-        }
-
-        if (usuario.getRol() == EUsuarioRol.INSTITUCION) {
-            instituciones = institucionService.listarPorUsuario(usuario.getIdUsuario());
-            model.addAttribute("instituciones", instituciones);
-            model.addAttribute("puedeCrear", true);
-            model.addAttribute("puedeEditar", true);
-            return "instituciones";
-        }
-
-        instituciones = institucionService.listarTodas();
-        model.addAttribute("instituciones", instituciones);
-        return "instituciones-cards";
+        return "instituciones";
     }
 
     @GetMapping("/nueva")
-    public String mostrarFormularioCrear(Model model, Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/login";
-        }
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTITUCION')")
+    public String mostrarFormularioCrear(Model model) {
         model.addAttribute("institucion", new InstitucionRequest());
         model.addAttribute("accion", "crear");
         model.addAttribute("departamentos", departamentosRepository.findAll());
@@ -91,62 +58,49 @@ public class InstitucionController {
     }
 
     @PostMapping("/guardar")
-    public String crearOActualizar(@ModelAttribute InstitucionRequest request,
-                                   @RequestParam(required = false) Integer idInstitucion,
-                                   RedirectAttributes redirectAttributes,
-                                   Authentication authentication) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTITUCION')")
+    public String crearOActualizar(@ModelAttribute InstitucionRequest request, @RequestParam(required = false) Integer idInstitucion, RedirectAttributes redirectAttributes, Authentication auth) {
         try {
-            if (authentication == null) {
-                throw new RuntimeException("Debes iniciar sesión");
-            }
-
-            String email = authentication.getName();
-
-            if (request.getEmail() != null && !request.getEmail().isEmpty()) {
-                Usuarios usuario = usuarioRepository.findByEmail(request.getEmail())
-                        .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + request.getEmail()));
-                request.setUsuarioId(usuario.getIdUsuario());
-            }
-
-            if (request.getUsuarioId() == null || request.getUsuarioId() == 0) {
-                throw new RuntimeException("Debes proporcionar un email de usuario válido");
-            }
-
-            if (idInstitucion != null && idInstitucion > 0) {
+            Usuarios usuario = usuarioRepository.findByEmail(auth.getName()).orElse(null);
+            if (idInstitucion != null) {
+                InstitucionResponse existente = institucionService.obtenerPorId(idInstitucion);
+                if (usuario.getRol() != EUsuarioRol.ADMIN && !existente.getUsuarioId().equals(usuario.getIdUsuario())) {
+                    throw new RuntimeException("No tienes permiso");
+                }
                 institucionService.actualizarInstitucion(idInstitucion, request);
-                redirectAttributes.addFlashAttribute("success", "Institución actualizada exitosamente");
             } else {
+                request.setUsuarioId(usuario.getIdUsuario());
                 institucionService.crearInstitucion(request);
-                redirectAttributes.addFlashAttribute("success", "Institución creada exitosamente");
             }
+            redirectAttributes.addFlashAttribute("success", "Operación exitosa");
         } catch (Exception e) {
-            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error: " + e.getMessage());
         }
         return "redirect:/instituciones";
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Integer id, Model model, Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/login";
-        }
-        InstitucionResponse institucion = institucionService.obtenerPorId(id);
-        model.addAttribute("institucion", institucion);
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTITUCION')")
+    public String editar(@PathVariable Integer id, Model model, Authentication auth) {
+        InstitucionResponse inst = institucionService.obtenerPorId(id);
+        Usuarios user = usuarioRepository.findByEmail(auth.getName()).orElse(null);
+        if (user.getRol() != EUsuarioRol.ADMIN && !inst.getUsuarioId().equals(user.getIdUsuario())) return "redirect:/instituciones";
+
+        model.addAttribute("institucion", inst);
         model.addAttribute("accion", "editar");
         model.addAttribute("departamentos", departamentosRepository.findAll());
         return "formulario-institucion";
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarInstitucion(@PathVariable Integer id,
-                                      RedirectAttributes redirectAttributes) {
-        try {
-            institucionService.eliminarInstitucion(id);
-            redirectAttributes.addFlashAttribute("success", "Institución eliminada exitosamente");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar la institución");
-        }
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTITUCION')")
+    public String eliminar(@PathVariable Integer id, Authentication auth, RedirectAttributes ra) {
+        InstitucionResponse inst = institucionService.obtenerPorId(id);
+        Usuarios user = usuarioRepository.findByEmail(auth.getName()).orElse(null);
+        if (user.getRol() != EUsuarioRol.ADMIN && !inst.getUsuarioId().equals(user.getIdUsuario())) return "redirect:/instituciones";
+
+        institucionService.eliminarInstitucion(id);
+        ra.addFlashAttribute("success", "Eliminado correctamente");
         return "redirect:/instituciones";
     }
 }
