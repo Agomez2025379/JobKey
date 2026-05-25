@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +11,15 @@
 </head>
 <body>
 
-<!-- navbar -->
+<div th:replace="~{navbar :: nav}"></div>
+
 <nav class="navbar">
     <div class="logo"><strong>JobKey</strong></div>
     <div style="display: flex; align-items: center;">
         <a th:href="@{/home}" style="margin-right: 15px;">Home</a>
+        <a th:href="@{/resenas}" style="margin-right: 15px; color: #a5b4fc; font-weight: bold;">
+            <i class="ti ti-star-filled"></i> Reviews
+        </a>
 
         <div sec:authorize="isAnonymous()">
             <a th:href="@{/login}">Login</a>
@@ -23,7 +27,7 @@
 
         <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center;">
             <span style="color: white; margin-right: 15px;">
-                Bienvenido, <strong sec:authentication="name">Usuario</strong>
+                Welcome, <strong sec:authentication="name">User</strong>
             </span>
             <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-family: inherit; font-size: inherit; font-weight: bold;">
@@ -36,270 +40,181 @@
 
 <div class="container">
 
-    <!-- vista anonima -->
     <div sec:authorize="isAnonymous()">
         <div class="hero">
             <h1>Welcome to <span style="color: var(--accent-hover)">JobKey</span></h1>
             <p>Connecting talent with the best opportunities in the market.</p>
 
             <div class="home-grid">
-
                 <div class="home-card">
-                    <div class="home-card-icon purple">
-                        <i class="ti ti-user" aria-hidden="true"></i>
-                    </div>
+                    <div class="home-card-icon purple"><i class="ti ti-user" aria-hidden="true"></i></div>
                     <h2>Candidates</h2>
                     <p>Explore professional profiles and find the perfect match for your team.</p>
-                    <a th:href="@{/candidatos}" class="btn">
-                        <i class="ti ti-arrow-right" aria-hidden="true"></i> View Candidates
-                    </a>
+                    <a th:href="@{/candidatos}" class="btn"><i class="ti ti-arrow-right" aria-hidden="true"></i> View Candidates</a>
                 </div>
 
                 <div class="home-card">
-                    <div class="home-card-icon blue">
-                        <i class="ti ti-building" aria-hidden="true"></i>
-                    </div>
+                    <div class="home-card-icon blue"><i class="ti ti-building" aria-hidden="true"></i></div>
                     <h2>Companies</h2>
                     <p>Discover leading companies and their latest job openings.</p>
-                    <a th:href="@{/empresas}" class="btn">
-                        <i class="ti ti-arrow-right" aria-hidden="true"></i> View Companies
-                    </a>
+                    <a th:href="@{/empresas}" class="btn"><i class="ti ti-arrow-right" aria-hidden="true"></i> View Companies</a>
                 </div>
 
                 <div class="home-card">
-                    <div class="home-card-icon green">
-                        <i class="ti ti-briefcase" aria-hidden="true"></i>
-                    </div>
+                    <div class="home-card-icon green"><i class="ti ti-briefcase" aria-hidden="true"></i></div>
                     <h2>Job Offers</h2>
                     <p>Browse all available job opportunities in our platform.</p>
-                    <a th:href="@{/ofertas}" class="btn">
-                        <i class="ti ti-arrow-right" aria-hidden="true"></i> View Job Offers
-                    </a>
+                    <a th:href="@{/ofertas}" class="btn"><i class="ti ti-arrow-right" aria-hidden="true"></i> View Job Offers</a>
                 </div>
 
                 <div class="home-card">
-                    <div class="home-card-icon amber">
-                        <i class="ti ti-school" aria-hidden="true"></i>
-                    </div>
+                    <div class="home-card-icon amber"><i class="ti ti-school" aria-hidden="true"></i></div>
                     <h2>Institutions</h2>
                     <p>Discover educational and professional institutions.</p>
-                    <a th:href="@{/instituciones}" class="btn">
-                        <i class="ti ti-arrow-right" aria-hidden="true"></i> View Institutions
-                    </a>
+                    <a th:href="@{/instituciones}" class="btn"><i class="ti ti-arrow-right" aria-hidden="true"></i> View Institutions</a>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- vista autenticada -->
     <div sec:authorize="isAuthenticated()">
         <h1 class="home-title">Welcome to <span style="color: var(--accent-hover)">JobKey</span></h1>
 
-        <!-- panel admin -->
         <div sec:authorize="hasRole('ADMIN')">
-
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon blue">
-                        <i class="ti ti-shield" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon blue"><i class="ti ti-shield" aria-hidden="true"></i></div>
                     <div>
                         <h2>Administration Panel</h2>
                         <p>Full access to all system features and management tools.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/usuarios}" class="btn-secondary">
-                        <i class="ti ti-users" aria-hidden="true"></i> View Users
-                    </a>
-                    <a th:href="@{/admins}" class="btn-secondary">
-                        <i class="ti ti-user-shield" aria-hidden="true"></i> View Admins
-                    </a>
-                    <a th:href="@{/admins/nuevo}" class="btn-secondary btn-success">
-                        <i class="ti ti-plus" aria-hidden="true"></i> Create Admin
-                    </a>
+                    <a th:href="@{/usuarios}" class="btn-secondary"><i class="ti ti-users" aria-hidden="true"></i> View Users</a>
+                    <a th:href="@{/admins}" class="btn-secondary"><i class="ti ti-user-shield" aria-hidden="true"></i> View Admins</a>
+                    <a th:href="@{/admins/nuevo}" class="btn-secondary btn-success"><i class="ti ti-plus" aria-hidden="true"></i> Create Admin</a>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon green">
-                        <i class="ti ti-briefcase" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon green"><i class="ti ti-briefcase" aria-hidden="true"></i></div>
                     <div>
                         <h2>Job Offers Management</h2>
                         <p>Full control over job offers in the system.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/ofertas}" class="btn-secondary">
-                        <i class="ti ti-list" aria-hidden="true"></i> View Job Offers
-                    </a>
-                    <a th:href="@{/ofertas/crear}" class="btn-secondary btn-success">
-                        <i class="ti ti-plus" aria-hidden="true"></i> Create New Offer
-                    </a>
+                    <a th:href="@{/ofertas}" class="btn-secondary"><i class="ti ti-list" aria-hidden="true"></i> View Job Offers</a>
+                    <a th:href="@{/ofertas/crear}" class="btn-secondary btn-success"><i class="ti ti-plus" aria-hidden="true"></i> Create New Offer</a>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon amber">
-                        <i class="ti ti-building" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon amber"><i class="ti ti-building" aria-hidden="true"></i></div>
                     <div>
                         <h2>Company Management</h2>
                         <p>Manage all companies in the system.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/empresas}" class="btn-secondary">
-                        <i class="ti ti-building-community" aria-hidden="true"></i> View All Companies
-                    </a>
+                    <a th:href="@{/empresas}" class="btn-secondary"><i class="ti ti-building-community" aria-hidden="true"></i> View All Companies</a>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon purple">
-                        <i class="ti ti-users" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon purple"><i class="ti ti-users" aria-hidden="true"></i></div>
                     <div>
                         <h2>Candidate Management</h2>
                         <p>Manage all candidates in the system.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/candidatos}" class="btn-secondary">
-                        <i class="ti ti-user" aria-hidden="true"></i> View All Candidates
-                    </a>
+                    <a th:href="@{/candidatos}" class="btn-secondary"><i class="ti ti-user" aria-hidden="true"></i> View All Candidates</a>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon amber">
-                        <i class="ti ti-school" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon amber"><i class="ti ti-school" aria-hidden="true"></i></div>
                     <div>
                         <h2>Institution Management</h2>
                         <p>Manage all institutions in the system.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/instituciones}" class="btn-secondary">
-                        <i class="ti ti-list" aria-hidden="true"></i> View All Institutions
-                    </a>
-                    <a th:href="@{/instituciones/nueva}" class="btn-secondary btn-success">
-                        <i class="ti ti-plus" aria-hidden="true"></i> Create Institution
-                    </a>
+                    <a th:href="@{/instituciones}" class="btn-secondary"><i class="ti ti-list" aria-hidden="true"></i> View All Institutions</a>
+                    <a th:href="@{/instituciones/nueva}" class="btn-secondary btn-success"><i class="ti ti-plus" aria-hidden="true"></i> Create Institution</a>
                 </div>
             </div>
-
         </div>
 
-        <!-- panel candidato -->
         <div sec:authorize="hasRole('CANDIDATO')">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon purple">
-                        <i class="ti ti-user" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon purple"><i class="ti ti-user" aria-hidden="true"></i></div>
                     <div>
                         <h2>Candidate Profile</h2>
                         <p>Manage your candidate profile and applications.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/candidatos}" class="btn-secondary">
-                        <i class="ti ti-id-badge" aria-hidden="true"></i> My Profile
-                    </a>
-                    <a th:href="@{/ofertas}" class="btn-secondary">
-                        <i class="ti ti-briefcase" aria-hidden="true"></i> Browse Job Offers
-                    </a>
-                    <a th:href="@{/empresas}" class="btn-secondary">
-                        <i class="ti ti-building" aria-hidden="true"></i> View Companies
-                    </a>
+                    <a th:href="@{/candidatos}" class="btn-secondary"><i class="ti ti-id-badge" aria-hidden="true"></i> My Profile</a>
+                    <a th:href="@{/ofertas}" class="btn-secondary"><i class="ti ti-briefcase" aria-hidden="true"></i> Browse Job Offers</a>
+                    <a th:href="@{/empresas/lista}" class="btn-secondary"><i class="ti ti-building" aria-hidden="true"></i> View Companies</a>
                 </div>
             </div>
         </div>
 
-        <!-- panel empresa -->
         <div sec:authorize="hasRole('EMPRESA')">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon amber">
-                        <i class="ti ti-building" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon amber"><i class="ti ti-building" aria-hidden="true"></i></div>
                     <div>
                         <h2>Company Management</h2>
                         <p>Manage your company profile and job offers.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/empresas}" class="btn-secondary">
-                        <i class="ti ti-building" aria-hidden="true"></i> My Company
-                    </a>
-                    <a th:href="@{/ofertas}" class="btn-secondary">
-                        <i class="ti ti-list" aria-hidden="true"></i> View Job Offers
-                    </a>
-                    <a th:href="@{/ofertas/crear}" class="btn-secondary btn-success">
-                        <i class="ti ti-plus" aria-hidden="true"></i> Create New Offer
-                    </a>
-                    <a th:href="@{/candidatos}" class="btn-secondary">
-                        <i class="ti ti-users" aria-hidden="true"></i> Browse Candidates
-                    </a>
+                    <a th:href="@{/empresas}" class="btn-secondary"><i class="ti ti-building" aria-hidden="true"></i> My Company</a>
+                    <a th:href="@{/ofertas}" class="btn-secondary"><i class="ti ti-list" aria-hidden="true"></i> View Job Offers</a>
+                    <a th:href="@{/ofertas/crear}" class="btn-secondary btn-success"><i class="ti ti-plus" aria-hidden="true"></i> Create New Offer</a>
+                    <a th:href="@{/candidatos}" class="btn-secondary"><i class="ti ti-users" aria-hidden="true"></i> Browse Candidates</a>
                 </div>
             </div>
         </div>
 
-        <!-- panel institucion -->
         <div sec:authorize="hasRole('INSTITUCION')">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-icon green">
-                        <i class="ti ti-school" aria-hidden="true"></i>
-                    </div>
+                    <div class="section-icon green"><i class="ti ti-school" aria-hidden="true"></i></div>
                     <div>
                         <h2>Institution Management</h2>
                         <p>Manage educational institutions.</p>
                     </div>
                 </div>
                 <div class="btn-group">
-                    <a th:href="@{/instituciones}" class="btn-secondary">
-                        <i class="ti ti-list" aria-hidden="true"></i> View Institutions
-                    </a>
-                    <a th:href="@{/instituciones/nueva}" class="btn-secondary btn-success">
-                        <i class="ti ti-plus" aria-hidden="true"></i> Create Institution
-                    </a>
+                    <a th:href="@{/instituciones}" class="btn-secondary"><i class="ti ti-list" aria-hidden="true"></i> View Institutions</a>
+                    <a th:href="@{/instituciones/nueva}" class="btn-secondary btn-success"><i class="ti ti-plus" aria-hidden="true"></i> Create Institution</a>
                 </div>
             </div>
         </div>
 
-        <!-- contenido general para todos los roles -->
         <div class="section">
             <div class="section-header">
-                <div class="section-icon blue">
-                    <i class="ti ti-layout-grid" aria-hidden="true"></i>
-                </div>
+                <div class="section-icon blue"><i class="ti ti-layout-grid" aria-hidden="true"></i></div>
                 <div>
                     <h2>General Content</h2>
                     <p>Access general platform content available to all users.</p>
                 </div>
             </div>
             <div class="btn-group">
-                <a th:href="@{/ofertas}" class="btn-secondary">
-                    <i class="ti ti-briefcase" aria-hidden="true"></i> All Job Offers
-                </a>
-                <a th:href="@{/candidatos}" class="btn-secondary">
-                    <i class="ti ti-users" aria-hidden="true"></i> All Candidates
-                </a>
-                <a th:href="@{/empresas}" class="btn-secondary">
-                    <i class="ti ti-building" aria-hidden="true"></i> All Companies
-                </a>
-                <a th:href="@{/instituciones}" class="btn-secondary">
-                    <i class="ti ti-school" aria-hidden="true"></i> All Institutions
-                </a>
+                <a th:href="@{/ofertas}" class="btn-secondary"><i class="ti ti-briefcase" aria-hidden="true"></i> All Job Offers</a>
+                <a th:href="@{/empresas/lista}" class="btn-secondary"><i class="ti ti-building" aria-hidden="true"></i> All Companies</a>
+                <a th:href="@{/instituciones}" class="btn-secondary"><i class="ti ti-school" aria-hidden="true"></i> All Institutions</a>
+                <a th:href="@{/resenas}" class="btn-secondary"><i class="ti ti-star" aria-hidden="true"></i> Platform Reviews</a>
             </div>
         </div>
 
